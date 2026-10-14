@@ -127,7 +127,9 @@ tr:hover td{background:var(--hover)}
 footer{color:var(--tertiary);font-size:12.5px;padding:24px 0 48px}
 .themebtn{position:fixed;right:14px;bottom:14px;z-index:6;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius-md);padding:8px 12px;font:inherit;font-size:13px;cursor:pointer;box-shadow:var(--shadow-accent)}
 .themebtn:hover{border-color:var(--primary-200)}
-@media print{nav.daynav,.themebtn,.foodfab,dialog.sheet,.settings input,.daypager{display:none}.day[hidden]{display:block !important}.card{break-inside:avoid}}
+@media print{dialog.sheet.info{display:block !important;position:static;max-height:none;box-shadow:none;border-radius:0;margin:16px 0}
+  dialog.sheet.info .sh-close,#overview{display:none !important}
+  nav.daynav,.themebtn,.foodfab,dialog.sheet,.settings input,.daypager{display:none}.day[hidden]{display:block !important}.card{break-inside:avoid}}
 /* Vittal Button：小按鈕＝tint，主要動作＝primary gradient */
 .navbtn{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:500;text-decoration:none;padding:3px 10px;border-radius:var(--radius-md);
   background:var(--primary-50);color:var(--primary);border:1px solid transparent;margin:6px 6px 0 0;white-space:nowrap;transition:border-color .1s ease-in}
@@ -169,9 +171,9 @@ dialog.sheet::backdrop{background:rgba(35,35,50,.4)}
 .sheet .sh-actions{display:flex;flex-wrap:wrap;gap:6px}
 .sheet .sh-actions .navbtn{margin:0}
 .sheet .sh-status{font-size:12.5px;color:var(--tertiary);margin-top:6px}
-.sheet ul{list-style:none;margin:0;padding:6px 16px 20px}
-.sheet li{padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
-.sheet li:last-child{border-bottom:0}
+#foodList{list-style:none;margin:0;padding:6px 16px 20px}
+#foodList>li{padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
+#foodList>li:last-child{border-bottom:0}
 .sheet .fn{font-weight:700}
 .sheet .fd{color:var(--muted);font-size:13px;margin-top:2px}
 .sheet .fm{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:2px}
@@ -183,7 +185,20 @@ dialog.sheet::backdrop{background:rgba(35,35,50,.4)}
 .num-icon{background:#0E86FE;color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;
   font-size:12px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)}
 .num-icon.hotel{background:#22A36A}
-#overviewMap{height:340px}
+#overviewMap{height:min(60vh,420px);margin:0 0 8px}
+dialog.sheet.info{max-width:900px}
+.sheet .sh-body{padding:12px 16px 20px}
+.sheet .note{font-size:12.5px;color:var(--tertiary)}
+/* 窄螢幕：表格每列改成卡片 */
+@media (max-width:640px){
+  .sheet.info table,.sheet.info tbody,.sheet.info tr,.sheet.info td{display:block;width:100%}
+  .sheet.info tr:first-child{display:none}
+  .sheet.info tr{border:1px solid var(--line-soft);border-radius:var(--radius-md);padding:8px 12px;margin:0 0 10px;background:var(--card)}
+  .sheet.info tr:hover td{background:transparent}
+  .sheet.info td{border:0;padding:2px 0;display:flex;gap:8px}
+  .sheet.info td::before{content:attr(data-label);flex:none;width:5.5em;color:var(--tertiary);font-size:12.5px;padding-top:1px}
+  .sheet.info td:first-child{font-weight:700}
+}
 </style>
 </head>
 <body>
@@ -210,31 +225,7 @@ dialog.sheet::backdrop{background:rgba(35,35,50,.4)}
     <div id="globalAlerts"></div>
   </section>
 
-  <section id="overview">
-    <h2>🗺 全程路線總覽</h2>
-    <div class="card">
-      <div id="overviewMap" class="daymap"></div>
-      <div class="s" style="font-size:12.5px;color:var(--muted)">地圖上的位置僅供示意；導航按鈕會用日文店名／景點名開啟 Google Maps，位置最準。</div>
-    </div>
-  </section>
-
   <div id="days"></div>
-
-  <section id="rain">
-    <h2>☔ 雨天／疲累日替代方案</h2>
-    <div class="card tablewrap"><table id="rainTable"></table></div>
-  </section>
-
-  <section id="care">
-    <h2>🤰 孕婦與親子提醒</h2>
-    <div class="card tablewrap"><table id="careTable"></table></div>
-  </section>
-
-  <section id="checklist">
-    <h2>✅ 行前檢查表</h2>
-    <div class="card check"><ul id="checkList"></ul>
-      <p class="meta" style="margin:10px 0 0">勾選狀態只存在這台裝置的瀏覽器中。</p></div>
-  </section>
 </main>
 
 <footer class="wrap">
@@ -243,6 +234,24 @@ dialog.sheet::backdrop{background:rgba(35,35,50,.4)}
 
 <button class="themebtn" id="themeBtn" type="button">🌓 深淺色</button>
 <button class="foodfab" id="foodFab" type="button">🍴 附近吃什麼</button>
+<dialog class="sheet info" id="overview" aria-labelledby="overviewT">
+  <div class="sh-head"><h2><span id="overviewT">🗺 全程路線總覽</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
+  <div class="sh-body"><div id="overviewMap" class="daymap"></div>
+    <div class="note">地圖上的位置僅供示意；導航按鈕會用日文店名／景點名開啟 Google Maps，位置最準。</div></div>
+</dialog>
+<dialog class="sheet info" id="rain" aria-labelledby="rainT">
+  <div class="sh-head"><h2><span id="rainT">☔ 雨天／疲累日替代方案</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
+  <div class="sh-body"><div class="tablewrap"><table id="rainTable"></table></div></div>
+</dialog>
+<dialog class="sheet info" id="care" aria-labelledby="careT">
+  <div class="sh-head"><h2><span id="careT">🤰 孕婦與親子提醒</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
+  <div class="sh-body"><div class="tablewrap"><table id="careTable"></table></div></div>
+</dialog>
+<dialog class="sheet info" id="checklist" aria-labelledby="checklistT">
+  <div class="sh-head"><h2><span id="checklistT">✅ 行前檢查表</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
+  <div class="sh-body"><div class="check"><ul id="checkList"></ul>
+    <p class="meta" style="margin:10px 0 0">勾選狀態只存在這台裝置的瀏覽器中。</p></div></div>
+</dialog>
 <dialog class="sheet" id="foodSheet" aria-labelledby="foodSheetTitle">
   <div class="sh-head">
     <h2><span id="foodSheetTitle">🍴 附近吃什麼</span><button type="button" class="sh-close" id="foodClose" aria-label="關閉">✕</button></h2>
@@ -684,7 +693,7 @@ const WMO = c => c===0?["☀️","晴"]:c<=2?["🌤️","晴時多雲"]:c===3?["
 function renderNav(){
   $("#daynav").innerHTML = `<span role="tablist" style="display:contents">` +
     DAYS.map((d,i)=>`<button type="button" role="tab" id="tab${i}" aria-controls="day${i+1}" aria-selected="false" data-day="${i}">Day ${i+1}<span class="today-dot" hidden>今天</span></button>`).join("") +
-    `</span><span class="sep" aria-hidden="true"></span><a href="#overview">地圖</a><a href="#" data-food>餐廳</a><a href="#" data-tops>陀螺</a><a href="#rain">雨天備案</a><a href="#care">提醒</a><a href="#checklist">檢查表</a>`;
+    `</span><span class="sep" aria-hidden="true"></span><a href="#" data-open="overview">地圖</a><a href="#" data-food>餐廳</a><a href="#" data-tops>陀螺</a><a href="#" data-open="rain">雨天備案</a><a href="#" data-open="care">提醒</a><a href="#" data-open="checklist">檢查表</a>`;
 }
 
 function renderDays(){
@@ -836,10 +845,10 @@ function initFood(){
 }
 
 function renderTables(){
-  $("#rainTable").innerHTML = `<tr><th>原行程</th><th>替代方案</th><th>適合原因</th><th>車程</th><th>何時啟用</th><th>備註</th></tr>` +
-    RAIN.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("");
-  $("#careTable").innerHTML = `<tr><th>分類</th><th>提醒</th><th>適用日期</th><th>備註</th></tr>` +
-    CARE.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("");
+  const table = (head, rows) => `<tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr>` +
+    rows.map(r=>`<tr>${r.map((c,i)=>`<td data-label="${head[i]}">${esc(c)}</td>`).join("")}</tr>`).join("");
+  $("#rainTable").innerHTML = table(["原行程","替代方案","適合原因","車程","何時啟用","備註"], RAIN);
+  $("#careTable").innerHTML = table(["分類","提醒","適用日期","備註"], CARE);
   const saved = JSON.parse(store.get("kyushu-check")||"{}");
   $("#checkList").innerHTML = CHECK.map((c,i)=>`<li><label><input type="checkbox" data-i="${i}" ${saved[i]?"checked":""}>
     <span><b>${esc(c[1])}</b><span class="pill">${esc(c[0])}・${esc(c[2])}</span><br><span class="meta">${esc(c[3])}</span></span></label></li>`).join("");
@@ -994,13 +1003,32 @@ function initMaps(){
     drawMap(e.target, pts);
   }), {rootMargin:"200px"});
   document.querySelectorAll(".daymap[data-day]").forEach(el=>io.observe(el));
-  // 全程總覽
+}
+/* 全程總覽：彈窗打開後才畫（關著的 dialog 沒有尺寸） */
+let overviewMap = null;
+function drawOverview(){
+  if(!window.L){ $("#overviewMap").style.height="auto"; $("#overviewMap").textContent="地圖暫時無法載入。"; return; }
+  if(overviewMap){ overviewMap.invalidateSize(); return; }
   const seq = ["airport"]; NAV.forEach(d=>d.forEach(([,k])=>{ if(seq[seq.length-1]!==k) seq.push(k); }));
   const uniq = [...new Set(seq)];
-  drawMap($("#overviewMap"), seq.map(k=>({k:P[k], label:uniq.indexOf(k)+1})));
+  overviewMap = drawMap($("#overviewMap"), seq.map(k=>({k:P[k], label:uniq.indexOf(k)+1})));
 }
 
-renderNav(); renderDays(); renderTables(); initDayTabs(); initFood();
+/* ---------- 額外資訊彈窗：地圖／雨天備案／提醒／檢查表 ---------- */
+function initInfoDialogs(){
+  document.querySelectorAll("[data-open]").forEach(a=>a.addEventListener("click", e=>{
+    e.preventDefault();
+    const d = document.getElementById(a.dataset.open);
+    d.showModal(); d.querySelector(".sh-body").scrollTop = 0;
+    if(d.id==="overview") drawOverview();
+  }));
+  document.querySelectorAll("dialog.info").forEach(d=>{
+    d.querySelector("[data-close]").addEventListener("click", ()=>d.close());
+    d.addEventListener("click", e=>{ if(e.target===d) d.close(); });
+  });
+}
+
+renderNav(); renderDays(); renderTables(); initDayTabs(); initFood(); initInfoDialogs();
 const initial = new URLSearchParams(location.search).get("start") || store.get("kyushu-start") || TRIP_START;
 $("#startDate").value = initial;
 $("#startDate").addEventListener("change", e=>setStart(e.target.value));
