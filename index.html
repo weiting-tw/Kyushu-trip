@@ -109,7 +109,7 @@ footer{color:var(--muted);font-size:12.5px;padding:24px 0 48px}
 <body>
 <header class="hero wrap">
   <h1>🗓️ 8天7夜【鹿兒島＋霧島＋宮崎】親子慢旅</h1>
-  <p>去程 11:00 降落鹿兒島／回程 12:30 起飛 ・ 自駕 ・ 孕媽咪＋3 歲大寶 ・ 10 週年紀念</p>
+  <p>2026/10/15（四）– 10/22（四）・去程 11:00 降落鹿兒島／回程 12:30 起飛 ・ 自駕 ・ 孕媽咪＋3 歲大寶 ・ 10 週年紀念</p>
   <div class="chips">
     <span class="chip">🏨 城山飯店鹿兒島 ×2</span>
     <span class="chip">♨️ 霧島國際飯店 ×2</span>
@@ -125,7 +125,7 @@ footer{color:var(--muted);font-size:12.5px;padding:24px 0 48px}
       <label for="startDate">📅 出發日（Day 1）</label>
       <input type="date" id="startDate">
       <span id="dateSummary" class="s"></span>
-      <div class="hint">設定出發日後，每天會自動帶入當地天氣預報（Open-Meteo，約 16 天內可查）；超過預報範圍時顯示 10 月下旬氣候平均值。也可以用網址 <code>?start=2026-10-24</code> 直接分享。</div>
+      <div class="hint">設定出發日後，每天會自動帶入當地天氣預報（Open-Meteo，約 16 天內可查）；若即時預報無法取得，會顯示出發前查到的預報快照。也可以用網址 <code>?start=2026-10-24</code> 直接分享。</div>
     </div>
     <div id="globalAlerts"></div>
   </section>
@@ -172,13 +172,26 @@ footer{color:var(--muted);font-size:12.5px;padding:24px 0 48px}
 <script>
 /* ---------- 地點（天氣用） ---------- */
 const LOC = {
-  kagoshima:{name:"鹿兒島市", lat:31.596, lon:130.557, normal:{hi:24, lo:17, rain:"約 25%"}},
-  sakurajima:{name:"櫻島", lat:31.590, lon:130.600, normal:{hi:24, lo:17, rain:"約 25%"}},
-  kirishima:{name:"霧島溫泉鄉", lat:31.860, lon:130.860, normal:{hi:18, lo:9, rain:"約 30%"}},
-  takachiho:{name:"高千穗牧場", lat:31.830, lon:130.960, normal:{hi:20, lo:11, rain:"約 30%"}},
-  miyazaki:{name:"宮崎市", lat:31.960, lon:131.470, normal:{hi:23, lo:15, rain:"約 25%"}},
-  nichinan:{name:"日南海岸", lat:31.730, lon:131.470, normal:{hi:23, lo:16, rain:"約 25%"}},
+  kagoshima:{name:"鹿兒島市", lat:31.596, lon:130.557, normal:{hi:26, lo:18, rain:"約 25%"}},
+  sakurajima:{name:"櫻島", lat:31.590, lon:130.600, normal:{hi:26, lo:18, rain:"約 25%"}},
+  kirishima:{name:"霧島溫泉鄉", lat:31.860, lon:130.860, normal:{hi:20, lo:11, rain:"約 30%"}},
+  takachiho:{name:"高千穗牧場", lat:31.830, lon:130.960, normal:{hi:22, lo:13, rain:"約 30%"}},
+  miyazaki:{name:"宮崎市", lat:31.960, lon:131.470, normal:{hi:25, lo:17, rain:"約 25%"}},
+  nichinan:{name:"日南海岸", lat:31.730, lon:131.470, normal:{hi:25, lo:18, rain:"約 25%"}},
 };
+
+/* ---------- 出發前預報快照（10/13–14 發布，綜合 tenki.jp／Yahoo!天氣） ---------- */
+const TRIP_START = "2026-10-15";
+const SNAP = [
+  {ico:"🌤️", txt:"晴時多雲", hi:28, lo:18, p:"10%", note:"白天偏熱，防曬＋補水"},
+  {ico:"⛅", txt:"多雲轉晴", hi:26, lo:17, p:"30%", note:"渡輪甲板風大帶外套"},
+  {ico:"☀️", txt:"晴", hi:24, lo:13, p:"20%", note:"霧島平地約 29°C，溫泉鄉約低 5°C"},
+  {ico:"🌦️", txt:"多雲，午後可能有雨", hi:23, lo:14, p:"20–60%", note:"各家預報不一，帶傘；神宮石階濕滑"},
+  {ico:"🌤️", txt:"晴時多雲，局部陣雨", hi:30, lo:20, p:"10–40%", note:"宮崎平地 30°C 左右，牧場高原較涼"},
+  {ico:"☀️", txt:"晴（部分預報多雲）", hi:29, lo:20, p:"10–30%", note:"日南海岸日曬強，帽子必備"},
+  {ico:"☀️", txt:"晴", hi:25, lo:18, p:"10%", note:"營火夜天氣佳"},
+  {ico:"🌦️", txt:"晴轉雨（鋒面）", hi:23, lo:15, p:"50%", note:"降溫明顯，雨天開高速放慢、提早出發"},
+];
 
 /* ---------- 行程 ---------- */
 const DAYS = [
@@ -260,7 +273,7 @@ const DAYS = [
 { title:"霧島神宮安產祈福・私人湯屋", area:"霧島溫泉鄉", loc:"kirishima", items:[
   {t:"09:00-10:30", meal:true, title:"悠閒享用日式早餐", plan:"在旅館內享用精緻晨間和食。", tip:"不用趕出門，睡到自然醒。",
    notes:["和式早餐常有生蛋、溫泉蛋（半熟），孕媽咪可請廚房改成玉子燒或全熟蛋。"]},
-  {t:"11:00-12:30", drive:"15 分鐘", title:"霧島神宮安產祈福", plan:"杉木環繞的芬多精古剎散步。", alt:"10月下旬有機會捕捉到初秋轉紅的楓葉。", tip:"媽媽在此祈求安產、二寶與大寶健康。",
+  {t:"11:00-12:30", drive:"15 分鐘", title:"霧島神宮安產祈福", plan:"杉木環繞的芬多精古剎散步。", alt:"10/18 楓葉多半還是綠的（霧島紅葉約 11 月），可改拍杉木參道與朱紅社殿。", tip:"媽媽在此祈求安產、二寶與大寶健康。",
    notes:["國寶社殿，朱紅色本殿與千年「御神木」老杉很好拍。","可在授與所求「安產御守」與「腹帶」（祈禱需預約，詳見神宮官網）。","從停車場到本殿有一段石階，推車需走旁邊的坡道或由爸爸抱上去；孕媽咪慢慢走、扶扶手。","山上霧多，地面石板濕滑，穿防滑鞋。","霧島楓葉一般 11 月上中旬較紅，10 月下旬是「初紅葉」。"],
    food:[
     {n:"霧島神宮 參道茶屋・霧島民藝村", d:"大鳥居旁的參道茶屋與食事處，麵食簡餐、伴手禮。", tag:"步行可到"},
@@ -464,7 +477,7 @@ const CHECK = [
   ["健康","常備藥、退燒藥、OK繃、防蚊、口罩（火山灰）","高","兒童藥以醫師建議為準"],
   ["交通","ETC卡／導航APP／離線地圖","中","Mapcode 或電話號碼導航最準"],
   ["訂位","第一晚城山飯店餐廳、10 週年會席、霧島家族風呂、喜來登晚餐","高","會席備註孕婦與紀念日"],
-  ["確認","Day 6 不是週三（Sun Messe 日南公休）","高","是週三就和 Day 7 對調"],
+  ["確認","Day 6 = 10/20（二），Sun Messe 日南有營業（週三公休）","高","若行程對調要再確認"],
   ["採買","伴手禮清單","低","Day7 AEON 集中採買"],
 ];
 
@@ -550,12 +563,21 @@ function renderTables(){
 }
 
 /* ---------- 天氣 ---------- */
+function showSnap(i, why){
+  const w = SNAP[i];
+  $("#wx"+i).innerHTML = `<div class="ico">${w.ico}</div><div><div class="t">${w.txt}　${w.lo}–${w.hi}°C</div>
+    <div class="s">${esc(LOC[DAYS[i].loc].name)}・降雨機率 ${w.p}・${esc(w.note)}</div><div class="src">${why}</div></div>`;
+}
 function showNormal(i, why){
   const l = LOC[DAYS[i].loc], n = l.normal;
   $("#wx"+i).innerHTML = `<div class="ico">🍂</div><div><div class="t">${n.lo}–${n.hi}°C</div>
-    <div class="s">${esc(l.name)}・10 月下旬平均，降雨機率${n.rain}</div><div class="src">${why||"設定出發日可看即時預報"}</div></div>`;
+    <div class="s">${esc(l.name)}・10 月中旬平均，降雨機率${n.rain}</div><div class="src">${why||"設定出發日可看即時預報"}</div></div>`;
 }
 
+function fallback(i, start){
+  if(start===TRIP_START) showSnap(i, "出發前預報快照（10/13–14 發布），即時預報暫時無法取得");
+  else showNormal(i, "預報暫時無法取得");
+}
 async function loadWeather(start){
   const today = new Date(); today.setHours(0,0,0,0);
   const limit = new Date(today); limit.setDate(limit.getDate()+15);
@@ -567,7 +589,7 @@ async function loadWeather(start){
   const byLoc = {};
   DAYS.forEach((d,i)=>{
     const iso = fmt(addDays(start,i)); const dt = new Date(iso+"T00:00:00");
-    if(dt < today || dt > limit){ showNormal(i, "超出預報範圍（出發前 16 天內可查）"); return; }
+    if(dt < today || dt > limit){ start===TRIP_START ? fallback(i, start) : showNormal(i, "超出預報範圍（出發前 16 天內可查）"); return; }
     (byLoc[d.loc] ||= []).push({i, iso});
     $("#wx"+i).innerHTML = `<div class="ico">⏳</div><div class="s">讀取天氣中…</div>`;
   });
@@ -580,13 +602,13 @@ async function loadWeather(start){
       const r = await fetch(url); if(!r.ok) throw 0;
       const j = await r.json();
       list.forEach(({i,iso})=>{
-        const k = j.daily.time.indexOf(iso); if(k<0){ showNormal(i); return; }
+        const k = j.daily.time.indexOf(iso); if(k<0){ fallback(i, start); return; }
         const [ico,txt] = WMO(j.daily.weather_code[k]);
         const p = j.daily.precipitation_probability_max[k];
         $("#wx"+i).innerHTML = `<div class="ico">${ico}</div><div><div class="t">${txt}　${Math.round(j.daily.temperature_2m_min[k])}–${Math.round(j.daily.temperature_2m_max[k])}°C</div>
           <div class="s">${esc(l.name)}・降雨機率 ${p??"-"}%</div><div class="src">Open-Meteo 預報</div></div>`;
       });
-    }catch(e){ list.forEach(({i})=>showNormal(i, "預報暫時無法取得")); }
+    }catch(e){ list.forEach(({i})=>fallback(i, start)); }
   }));
 }
 
@@ -594,8 +616,9 @@ function checkAlerts(start){
   const out = [];
   const d6 = addDays(start,5);
   if(d6.getUTCDay()===3) out.push(`⚠️ Day 6（${fmt(d6)}）是<b>週三</b>，Sun Messe 日南公休！建議和 Day 7 的 AEON／渡假村行程對調。`);
+  if(start===TRIP_START) out.push(`🌡️ <b>天氣重點</b>：前半段偏熱（平地 26–30°C，像初夏），孕媽咪注意防曬補水、避免中午久曬；霧島溫泉鄉早晚約 13°C，要帶外套。10/18（Day 4）各家預報有雨的可能，10/22（Day 8）鋒面帶來降雨與降溫，回程開車請預留時間。`);
   out.push(`ℹ️ Day 8 國際線 12:30 起飛、行程 11:00 才抵達航廈，櫃台通常起飛前 60 分鐘關閉 → 建議提早 1 小時從宮崎出發。`);
-  $("#globalAlerts").innerHTML = out.map(t=>`<div class="alert${t.startsWith("ℹ️")?" info":""}">${t}</div>`).join("");
+  $("#globalAlerts").innerHTML = out.map(t=>`<div class="alert${t.startsWith("⚠️")?"":" info"}">${t}</div>`).join("");
   const end = addDays(start,7);
   $("#dateSummary").textContent = `${fmt(addDays(start,0))}（${WEEK[addDays(start,0).getUTCDay()]}）→ ${fmt(end)}（${WEEK[end.getUTCDay()]}）`;
 }
@@ -653,7 +676,7 @@ function initMaps(){
 }
 
 renderNav(); renderDays(); renderFood(); renderTables();
-const initial = new URLSearchParams(location.search).get("start") || store.get("kyushu-start") || "";
+const initial = new URLSearchParams(location.search).get("start") || store.get("kyushu-start") || TRIP_START;
 $("#startDate").value = initial;
 $("#startDate").addEventListener("change", e=>setStart(e.target.value));
 setStart(initial);
