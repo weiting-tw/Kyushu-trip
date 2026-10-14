@@ -135,6 +135,21 @@ footer{color:var(--tertiary);font-size:12.5px;padding:24px 0 48px}
 .navbtn.big{font-size:14px;padding:7px 16px;font-weight:600;color:#fff;background:var(--gradient-primary);box-shadow:var(--shadow-btn)}
 .navbtn.big:hover{color:#fff;filter:brightness(1.05)}
 .food a.pin{text-decoration:none;margin-left:4px;font-size:13px}
+.links{display:flex;flex-wrap:wrap;gap:4px 6px;margin:3px 0 2px}
+.links a{display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:500;text-decoration:none;padding:1px 8px;border-radius:var(--radius-md);
+  background:var(--card);border:1px solid var(--line);color:var(--ink);white-space:nowrap}
+.links a:hover{border-color:var(--primary-200);color:var(--primary)}
+.links a.rate{border-color:var(--warn);color:var(--warn-ink);font-weight:700}
+.links a.rate small{font-weight:400;color:var(--tertiary)}
+.links a.nav{background:var(--primary-50);border-color:transparent;color:var(--primary)}
+.award{display:inline-block;font-size:11px;font-weight:600;padding:0 5px;border-radius:var(--radius-sm);background:var(--warn-soft);color:var(--warn-ink);border:1px solid var(--warn);margin-left:4px}
+.rec{display:inline-block;font-size:11px;font-weight:700;padding:0 5px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;margin-left:4px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden}
+.seg button{font:inherit;font-size:12.5px;font-weight:500;border:0;background:transparent;color:var(--muted);padding:3px 10px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--primary-50);color:var(--primary)}
+.sh-filters{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-size:12.5px;color:var(--muted)}
+.sh-filters label{display:inline-flex;gap:4px;align-items:center;cursor:pointer}
+.sh-filters input{accent-color:var(--primary)}
 .food .km{font-size:11.5px;color:var(--tertiary);margin-left:4px;white-space:nowrap}
 .food.near{background:transparent;border:1px dashed var(--line)}
 .food .more{display:inline-block;margin-top:4px;font-size:12.5px;text-decoration:none}
@@ -231,6 +246,10 @@ dialog.sheet::backdrop{background:rgba(35,35,50,.4)}
     <div class="sh-actions">
       <button type="button" class="navbtn" id="foodLocate">📍 用我目前的位置排序</button>
       <a class="navbtn" id="foodGmaps" href="#" target="_blank" rel="noopener">🔎 Google Maps 搜我附近的餐廳</a>
+    </div>
+    <div class="sh-filters">排序
+      <span class="seg" role="group" aria-label="排序"><button type="button" data-sort="dist" aria-pressed="true">距離</button><button type="button" data-sort="score" aria-pressed="false">食べログ評分</button></span>
+      <label><input type="checkbox" id="foodRec"> 只看推薦</label>
     </div>
     <div class="sh-status" id="foodStatus"></div>
   </div>
@@ -508,6 +527,9 @@ const FOODAT = {
   "おぐら":[31.9105,131.4230],"AEON MALL 宮崎 美食街":"aeon","館內迴轉壽司／定食店":"aeon",
   "鹿兒島機場 國內線航廈 美食街／伴手禮":"airport",
 };
+/* 食べログ評分（分數會變動，以連結頁面為準）。s=分數 r=口コミ數 u=口コミ頁 aw=獎項 t=食べログ店名 */
+const RATE = {};
+const REC_TAGS = new Set(["推薦","首選","必吃","親子友善","10週年"]);
 const gDir = q => `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(q)}`;
 const gSearch = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 const gNearby = ([lat,lon]) => `https://www.google.com/maps/search/${encodeURIComponent("レストラン")}/@${lat},${lon},16z`;
@@ -515,6 +537,19 @@ const foodBase = n => n.replace(/（[^）]*）$/,"").trim();
 function km([a,b],[c,d]){
   const r = Math.PI/180, x = Math.sin((c-a)*r/2)**2 + Math.cos(a*r)*Math.cos(c*r)*Math.sin((d-b)*r/2)**2;
   return 12742*Math.asin(Math.sqrt(x));
+}
+const rateOf = f => RATE[foodBase(f.n)] || RATE[f.n] || null;
+const isRec = f => REC_TAGS.has(f.tag) || (rateOf(f)?.s||0) >= 3.5;
+/* 名稱旁：推薦標記＋獎項；下一行：食べログ評分（點了到口コミ頁）、Google 評論、導航 */
+function foodTitle(f){
+  const r = rateOf(f);
+  return `<span class="n">${esc(f.n)}</span>${f.tag?`<span class="tag">${esc(f.tag)}</span>`:""}${isRec(f)?`<span class="rec">推薦</span>`:""}${r?.aw?`<span class="award">🏅 ${esc(r.aw)}</span>`:""}`;
+}
+function foodLinks(f){
+  const r = rateOf(f), q = FOODQ[f.n] || f.q || f.n;
+  return `<div class="links">${r?.u?`<a class="rate" href="${esc(r.u)}" target="_blank" rel="noopener" title="${esc(r.t||"")}｜食べログ口コミ">⭐ ${r.s!=null?r.s.toFixed(2):"–"}${r.r?` <small>(${r.r})</small>`:""} 食べログ</a>`:""}` +
+    `<a href="${gSearch(q)}" target="_blank" rel="noopener">💬 Google 評論</a>` +
+    `<a class="nav" href="${gDir(q)}" target="_blank" rel="noopener">🧭 導航</a></div>`;
 }
 const kmTxt = d => d<0.2 ? "就在旁邊" : d<1 ? `約 ${Math.round(d*10)*100} m` : `約 ${d.toFixed(d<10?1:0)} km`;
 /* 全部餐廳（去重），附上座標 */
@@ -629,7 +664,7 @@ function renderItem(it, di, ii){
   const navs = places.map(k=>`<a class="navbtn" href="${gDir(P[k][1])}" target="_blank" rel="noopener">📍 導航：${esc(P[k][0])}</a>`).join("");
   const notes = it.notes?.length ? `<div class="box tips"><h4>💡 注意與推薦</h4><ul>${it.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div>` : "";
   const food = it.food?.length ? `<div class="box food"><h4>🍽 附近餐廳</h4><ul>${it.food.map(f=>
-     `<li><span class="n">${esc(f.n)}</span>${FOODQ[f.n]?`<a class="pin" href="${gSearch(FOODQ[f.n])}" target="_blank" rel="noopener" title="在 Google Maps 開啟">📍</a>`:""}${f.tag?`<span class="tag">${esc(f.tag)}</span>`:""}　${esc(f.d)}</li>`).join("")}</ul></div>` : "";
+     `<li>${foodTitle(f)}${FOODQ[f.n]?foodLinks(f):""}<div>${esc(f.d)}</div></li>`).join("")}</ul></div>` : "";
   const near = places.length ? nearbyBox(places, new Set((it.food||[]).map(f=>foodBase(f.n)))) : "";
   return `<li class="item${it.meal?" meal":""}">
     <div class="time">${esc(it.t||"　")}${it.drive?`<span class="drive">🚗 ${esc(it.drive)}</span>`:""}</div>
@@ -649,11 +684,14 @@ function nearbyBox(places, skip){
     .map(f=>({f, d:Math.min(...pts.map(p=>km(p,f.ll)))})).filter(x=>x.d<=3).sort((a,b)=>a.d-b.d).slice(0,5);
   const more = places.map(k=>`<a class="more" href="${gNearby([P[k][2],P[k][3]])}" target="_blank" rel="noopener">🔎 在 Google Maps 找「${esc(P[k][0])}」附近餐廳</a>`).join("<br>");
   return `<div class="box food near"><h4>🍴 這附近也能吃</h4>${list.length?`<ul>${list.map(({f,d})=>
-    `<li><span class="n">${esc(f.n)}</span><a class="pin" href="${gDir(f.q)}" target="_blank" rel="noopener" title="導航">📍</a><span class="km">${kmTxt(d)}</span>　${esc(f.d)}</li>`).join("")}</ul>`:""}${more}</div>`;
+    `<li>${foodTitle(f)}<span class="km">${kmTxt(d)}</span>${foodLinks(f)}<div>${esc(f.d)}</div></li>`).join("")}</ul>`:""}${more}</div>`;
 }
 
 /* ---------- 附近吃什麼 ---------- */
+const foodView = {origin:null, sort:"dist", rec:false};
 function renderFoodList(origin){
+  if(origin !== undefined) foodView.origin = origin;
+  origin = foodView.origin;
   let rows;
   if(origin){
     rows = FOODS.map(f=>({f, d:km(origin,f.ll), from:"你"}));
@@ -666,17 +704,20 @@ function renderFoodList(origin){
       return {f, ...best};
     });
   }
-  rows.sort((a,b)=>a.d-b.d);
-  $("#foodList").innerHTML = rows.map(({f,d,from})=>`<li>
-    <div class="fn">${esc(f.n)}${f.tag?` <span class="pill">${esc(f.tag)}</span>`:""}</div>
+  if(foodView.rec) rows = rows.filter(({f})=>isRec(f));
+  rows.sort(foodView.sort==="score" ? (a,b)=>((rateOf(b.f)?.s||0)-(rateOf(a.f)?.s||0)) || a.d-b.d : (a,b)=>a.d-b.d);
+  $("#foodList").innerHTML = rows.length ? rows.map(({f,d,from})=>`<li>
+    <div class="fn">${foodTitle(f)}</div>
     <div class="fd">${esc(f.d)}</div>
-    <div class="fm"><span class="km">${d<0.2?`${esc(from==="你"?"":from)}${kmTxt(d)}`:`${from==="你"?"距你":`距${esc(from)}`} ${kmTxt(d)}`}</span><span class="pill">Day ${f.day+1}</span>
-      <a class="navbtn" href="${gDir(f.q)}" target="_blank" rel="noopener">🧭 導航</a></div></li>`).join("");
+    ${foodLinks(f)}
+    <div class="fm"><span class="km">${d<0.2?`${esc(from==="你"?"":from)}${kmTxt(d)}`:`${from==="你"?"距你":`距${esc(from)}`} ${kmTxt(d)}`}</span><span class="pill">Day ${f.day+1}</span></div></li>`).join("")
+    : `<li class="fd">沒有符合的餐廳。</li>`;
 }
 function openFood(){
   $("#foodStatus").textContent = `依 Day ${currentDay+1} 行程地點的距離排序；離開行程範圍時，按「用我目前的位置排序」。`;
   $("#foodGmaps").href = gSearch("レストラン");
-  renderFoodList(null);
+  foodView.origin = null;
+  renderFoodList();
   $("#foodSheet").showModal();
   $("#foodList").scrollTop = 0;
 }
@@ -684,6 +725,12 @@ function initFood(){
   $("#foodFab").addEventListener("click", openFood);
   document.querySelector("[data-food]").addEventListener("click", e=>{ e.preventDefault(); openFood(); });
   $("#foodClose").addEventListener("click", ()=>$("#foodSheet").close());
+  document.querySelectorAll("[data-sort]").forEach(b=>b.addEventListener("click", ()=>{
+    foodView.sort = b.dataset.sort;
+    document.querySelectorAll("[data-sort]").forEach(x=>x.setAttribute("aria-pressed", x===b));
+    renderFoodList();
+  }));
+  $("#foodRec").addEventListener("change", e=>{ foodView.rec = e.target.checked; renderFoodList(); });
   $("#foodSheet").addEventListener("click", e=>{ if(e.target===e.currentTarget) e.currentTarget.close(); });
   $("#foodLocate").addEventListener("click", ()=>{
     if(!navigator.geolocation){ $("#foodStatus").textContent = "這個瀏覽器無法取得位置，請改用 Google Maps 搜尋。"; return; }
