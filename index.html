@@ -144,6 +144,9 @@ footer{color:var(--tertiary);font-size:12.5px;padding:24px 0 48px}
 .links a.nav{background:var(--primary-50);border-color:transparent;color:var(--primary)}
 .award{display:inline-block;font-size:11px;font-weight:600;padding:0 5px;border-radius:var(--radius-sm);background:var(--warn-soft);color:var(--warn-ink);border:1px solid var(--warn);margin-left:4px}
 .rec{display:inline-block;font-size:11px;font-weight:700;padding:0 5px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;margin-left:4px}
+.shop{background:var(--sea-soft)} .shop h4{color:var(--sea)}
+.shop .n{font-weight:700}
+.sh-cat{margin-bottom:8px}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden}
 .seg button{font:inherit;font-size:12.5px;font-weight:500;border:0;background:transparent;color:var(--muted);padding:3px 10px;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--primary-50);color:var(--primary)}
@@ -243,11 +246,12 @@ dialog.sheet::backdrop{background:rgba(35,35,50,.4)}
 <dialog class="sheet" id="foodSheet" aria-labelledby="foodSheetTitle">
   <div class="sh-head">
     <h2><span id="foodSheetTitle">🍴 附近吃什麼</span><button type="button" class="sh-close" id="foodClose" aria-label="關閉">✕</button></h2>
+    <div class="sh-cat"><span class="seg" role="group" aria-label="類別"><button type="button" data-cat="food" aria-pressed="true">🍴 餐廳</button><button type="button" data-cat="tops" aria-pressed="false">🌀 買陀螺</button></span></div>
     <div class="sh-actions">
       <button type="button" class="navbtn" id="foodLocate">📍 用我目前的位置排序</button>
-      <a class="navbtn" id="foodGmaps" href="#" target="_blank" rel="noopener">🔎 Google Maps 搜我附近的餐廳</a>
+      <a class="navbtn" id="foodGmaps" href="#" target="_blank" rel="noopener">🔎 Google Maps 搜我附近</a>
     </div>
-    <div class="sh-filters">排序
+    <div class="sh-filters" id="foodFilters">排序
       <span class="seg" role="group" aria-label="排序"><button type="button" data-sort="dist" aria-pressed="true">距離</button><button type="button" data-sort="score" aria-pressed="false">食べログ評分</button></span>
       <label><input type="checkbox" id="foodRec"> 只看推薦</label>
     </div>
@@ -559,10 +563,13 @@ const RATE = {
   "青島ういろう":{"t":"青島屋 売店（參道口賣外郎糕）","s":3.02,"r":17,"u":"https://tabelog.com/miyazaki/A4501/A450101/45010598/dtlrvwlst/"},
   "おぐら":{"t":"味のおぐら 本店（週二公休）","s":3.53,"r":2184,"u":"https://tabelog.com/miyazaki/A4501/A450101/45000012/dtlrvwlst/","aw":"洋食 百名店 2025"}
 };
+/* 買陀螺（ベイブレードX／傳統こま）：n=店名（Google Maps 搜尋用） d=說明 ll=約略座標 h=營業時間 type=beyblade|traditional|both */
+const TOPS = [];
+const TOP_TYPE = {beyblade:"ベイブレードX", traditional:"傳統陀螺", both:"ベイブレード＋傳統"};
 const REC_TAGS = new Set(["推薦","首選","必吃","親子友善","10週年"]);
 const gDir = q => `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(q)}`;
 const gSearch = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
-const gNearby = ([lat,lon]) => `https://www.google.com/maps/search/${encodeURIComponent("レストラン")}/@${lat},${lon},16z`;
+const gNearby = ([lat,lon], q="レストラン") => `https://www.google.com/maps/search/${encodeURIComponent(q)}/@${lat},${lon},15z`;
 const foodBase = n => n.replace(/（[^）]*）$/,"").trim();
 function km([a,b],[c,d]){
   const r = Math.PI/180, x = Math.sin((c-a)*r/2)**2 + Math.cos(a*r)*Math.cos(c*r)*Math.sin((d-b)*r/2)**2;
@@ -664,7 +671,7 @@ const WMO = c => c===0?["☀️","晴"]:c<=2?["🌤️","晴時多雲"]:c===3?["
 function renderNav(){
   $("#daynav").innerHTML = `<span role="tablist" style="display:contents">` +
     DAYS.map((d,i)=>`<button type="button" role="tab" id="tab${i}" aria-controls="day${i+1}" aria-selected="false" data-day="${i}">Day ${i+1}<span class="today-dot" hidden>今天</span></button>`).join("") +
-    `</span><span class="sep" aria-hidden="true"></span><a href="#overview">地圖</a><a href="#" data-food>餐廳</a><a href="#rain">雨天備案</a><a href="#care">提醒</a><a href="#checklist">檢查表</a>`;
+    `</span><span class="sep" aria-hidden="true"></span><a href="#overview">地圖</a><a href="#" data-food>餐廳</a><a href="#" data-tops>陀螺</a><a href="#rain">雨天備案</a><a href="#care">提醒</a><a href="#checklist">檢查表</a>`;
 }
 
 function renderDays(){
@@ -713,47 +720,74 @@ function nearbyBox(places, skip){
   const list = FOODS.filter(f=>!skip.has(f.base))
     .map(f=>({f, d:Math.min(...pts.map(p=>km(p,f.ll)))})).filter(x=>x.d<=3).sort((a,b)=>a.d-b.d).slice(0,5);
   const more = places.map(k=>`<a class="more" href="${gNearby([P[k][2],P[k][3]])}" target="_blank" rel="noopener">🔎 在 Google Maps 找「${esc(P[k][0])}」附近餐廳</a>`).join("<br>");
+  const tops = TOPS.map(t=>({t, d:Math.min(...pts.map(p=>km(p,t.ll)))})).filter(x=>x.d<=5).sort((a,b)=>a.d-b.d).slice(0,2);
   return `<div class="box food near"><h4>🍴 這附近也能吃</h4>${list.length?`<ul>${list.map(({f,d})=>
-    `<li>${foodTitle(f)}<span class="km">${kmTxt(d)}</span>${foodLinks(f)}<div>${esc(f.d)}</div></li>`).join("")}</ul>`:""}${more}</div>`;
+    `<li>${foodTitle(f)}<span class="km">${kmTxt(d)}</span>${foodLinks(f)}<div>${esc(f.d)}</div></li>`).join("")}</ul>`:""}${more}</div>` +
+    (tops.length ? `<div class="box shop"><h4>🌀 這附近買陀螺</h4><ul>${tops.map(({t,d})=>`<li>${topTitle(t)}<span class="km">${kmTxt(d)}</span>${topLinks(t)}<div>${esc(t.d)}</div></li>`).join("")}</ul></div>` : "");
+}
+function topTitle(t){ return `<span class="n">${esc(t.n)}</span><span class="pill">${esc(TOP_TYPE[t.type]||"陀螺")}</span>`; }
+function topLinks(t){
+  return `<div class="links"><a href="${gSearch(t.n)}" target="_blank" rel="noopener">💬 Google 評論／營業時間</a><a class="nav" href="${gDir(t.n)}" target="_blank" rel="noopener">🧭 導航</a></div>`;
 }
 
 /* ---------- 附近吃什麼 ---------- */
-const foodView = {origin:null, sort:"dist", rec:false};
+const foodView = {origin:null, sort:"dist", rec:false, cat:"food"};
+const distTxt = (d, from) => d<0.2 ? `${esc(from==="你"?"":from)}${kmTxt(d)}` : `${from==="你"?"距你":`距${esc(from)}`} ${kmTxt(d)}`;
+/* 每筆資料與「目前位置」或「當天行程地點」的最近距離 */
+function withDist(list, origin){
+  if(origin) return list.map(x=>({x, d:km(origin,x.ll), from:"你"}));
+  const {origin:o, stops} = dayStops(currentDay);
+  const keys = (o?[o]:[]).concat(stops);
+  return list.map(x=>{
+    let best = {d:Infinity};
+    keys.forEach(k=>{ const d = km([P[k][2],P[k][3]], x.ll); if(d<best.d) best = {d, from:P[k][0]}; });
+    return {x, ...best};
+  });
+}
 function renderFoodList(origin){
   if(origin !== undefined) foodView.origin = origin;
   origin = foodView.origin;
-  let rows;
-  if(origin){
-    rows = FOODS.map(f=>({f, d:km(origin,f.ll), from:"你"}));
-  }else{
-    const {origin:o, stops} = dayStops(currentDay);
-    const keys = (o?[o]:[]).concat(stops);
-    rows = FOODS.map(f=>{
-      let best = {d:Infinity};
-      keys.forEach(k=>{ const d = km([P[k][2],P[k][3]], f.ll); if(d<best.d) best = {d, from:P[k][0]}; });
-      return {f, ...best};
-    });
+  const tops = foodView.cat==="tops";
+  $("#foodSheetTitle").textContent = tops ? "🌀 附近買陀螺" : "🍴 附近吃什麼";
+  $("#foodFilters").hidden = tops;
+  $("#foodGmaps").href = origin ? gNearby(origin, tops?"ベイブレード":"レストラン") : gSearch(tops?"ベイブレード 販売":"レストラン");
+  if(tops){
+    const rows = withDist(TOPS, origin).sort((a,b)=>a.d-b.d);
+    $("#foodList").innerHTML = rows.length ? rows.map(({x:t,d,from})=>`<li>
+      <div class="fn">${topTitle(t)}</div>
+      <div class="fd">${esc(t.d)}${t.h?`<br>🕘 ${esc(t.h)}`:""}</div>
+      ${topLinks(t)}
+      <div class="fm"><span class="km">${distTxt(d, from)}</span></div></li>`).join("")
+      : `<li class="fd">尚無資料，請用上方 Google Maps 搜尋。</li>`;
+    return;
   }
+  let rows = withDist(FOODS, origin).map(({x,...r})=>({f:x, ...r}));
   if(foodView.rec) rows = rows.filter(({f})=>isRec(f));
   rows.sort(foodView.sort==="score" ? (a,b)=>((rateOf(b.f)?.s||0)-(rateOf(a.f)?.s||0)) || a.d-b.d : (a,b)=>a.d-b.d);
   $("#foodList").innerHTML = rows.length ? rows.map(({f,d,from})=>`<li>
     <div class="fn">${foodTitle(f)}</div>
     <div class="fd">${esc(f.d)}</div>
     ${foodLinks(f)}
-    <div class="fm"><span class="km">${d<0.2?`${esc(from==="你"?"":from)}${kmTxt(d)}`:`${from==="你"?"距你":`距${esc(from)}`} ${kmTxt(d)}`}</span><span class="pill">Day ${f.day+1}</span></div></li>`).join("")
+    <div class="fm"><span class="km">${distTxt(d, from)}</span><span class="pill">Day ${f.day+1}</span></div></li>`).join("")
     : `<li class="fd">沒有符合的餐廳。</li>`;
 }
-function openFood(){
+function setCat(cat){
+  foodView.cat = cat;
+  document.querySelectorAll("[data-cat]").forEach(x=>x.setAttribute("aria-pressed", x.dataset.cat===cat));
+}
+function openFood(cat){
+  setCat(cat==="tops" ? "tops" : "food");
   $("#foodStatus").textContent = `依 Day ${currentDay+1} 行程地點的距離排序；離開行程範圍時，按「用我目前的位置排序」。`;
-  $("#foodGmaps").href = gSearch("レストラン");
   foodView.origin = null;
   renderFoodList();
   $("#foodSheet").showModal();
   $("#foodList").scrollTop = 0;
 }
 function initFood(){
-  $("#foodFab").addEventListener("click", openFood);
+  $("#foodFab").addEventListener("click", ()=>openFood());
   document.querySelector("[data-food]").addEventListener("click", e=>{ e.preventDefault(); openFood(); });
+  document.querySelector("[data-tops]").addEventListener("click", e=>{ e.preventDefault(); openFood("tops"); });
+  document.querySelectorAll("[data-cat]").forEach(b=>b.addEventListener("click", ()=>{ setCat(b.dataset.cat); renderFoodList(); }));
   $("#foodClose").addEventListener("click", ()=>$("#foodSheet").close());
   document.querySelectorAll("[data-sort]").forEach(b=>b.addEventListener("click", ()=>{
     foodView.sort = b.dataset.sort;
@@ -767,11 +801,10 @@ function initFood(){
     $("#foodStatus").textContent = "定位中…";
     navigator.geolocation.getCurrentPosition(pos=>{
       const me = [pos.coords.latitude, pos.coords.longitude];
-      $("#foodGmaps").href = gNearby(me);
       renderFoodList(me);
-      const near = FOODS.some(f=>km(me,f.ll)<=5);
+      const near = (foodView.cat==="tops" ? TOPS : FOODS).some(f=>km(me,f.ll)<=5);
       $("#foodStatus").textContent = near ? "已依你目前位置排序（距離為直線距離）。"
-        : "你附近 5 km 內沒有行程中的餐廳，建議直接用上方「Google Maps 搜我附近的餐廳」。";
+        : "你附近 5 km 內沒有清單中的店，建議直接用上方「Google Maps 搜我附近」。";
     }, ()=>{ $("#foodStatus").textContent = "無法取得位置（可能未允許定位），請改用 Google Maps 搜尋。"; },
     {enableHighAccuracy:false, timeout:10000, maximumAge:300000});
   });
