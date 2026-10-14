@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>九州親子慢旅行程</title>
+<meta name="description" content="8天7夜【鹿兒島＋霧島＋宮崎】親子＆孕婦友善自駕行程：景點注意事項、附近餐廳、每日天氣。">
+<style>
+:root{
+  --bg:#f7f4ef; --card:#ffffff; --ink:#2b2622; --muted:#6f665d; --line:#e6dfd5;
+  --accent:#c2502e; --accent-soft:#fbe9e2; --sea:#2f6f8f; --sea-soft:#e3f0f6;
+  --green:#3f7d4e; --green-soft:#e5f2e8; --gold:#a8771a; --gold-soft:#fbf1dc;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1816; --card:#24211e; --ink:#eee8e1; --muted:#a99f94; --line:#3a352f;
+    --accent:#ee8463; --accent-soft:#3b2620; --sea:#7fbadb; --sea-soft:#1f3038;
+    --green:#86c896; --green-soft:#1f3124; --gold:#e1b45c; --gold-soft:#372c18;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1a1816; --card:#24211e; --ink:#eee8e1; --muted:#a99f94; --line:#3a352f;
+  --accent:#ee8463; --accent-soft:#3b2620; --sea:#7fbadb; --sea-soft:#1f3038;
+  --green:#86c896; --green-soft:#1f3124; --gold:#e1b45c; --gold-soft:#372c18;
+  --shadow:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.65;font-size:15px}
+a{color:var(--sea)}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+header.hero{padding:36px 0 20px}
+.hero h1{font-size:clamp(22px,4.5vw,32px);margin:0 0 6px;line-height:1.3}
+.hero p{margin:0;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{font-size:12.5px;padding:3px 10px;border-radius:99px;background:var(--card);border:1px solid var(--line);color:var(--muted)}
+nav.daynav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.daynav .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none}
+nav.daynav a{flex:none;text-decoration:none;color:var(--ink);font-size:13.5px;padding:5px 12px;border-radius:99px;border:1px solid var(--line);background:var(--card)}
+nav.daynav a:hover{border-color:var(--accent);color:var(--accent)}
+section{margin:28px 0}
+h2{font-size:20px;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px}
+.settings{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.settings label{font-weight:600}
+.settings input{font:inherit;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.settings .hint{color:var(--muted);font-size:13px;flex-basis:100%}
+.alert{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:8px;margin:10px 0;font-size:14px}
+.alert.info{border-color:var(--sea);background:var(--sea-soft)}
+.day{scroll-margin-top:64px}
+.dayhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.dayhead h2{margin:0}
+.dayhead .sub{color:var(--muted);font-size:13.5px}
+.wx{display:flex;align-items:center;gap:10px;background:var(--sea-soft);border-radius:12px;padding:8px 12px;min-width:220px}
+.wx .ico{font-size:28px;line-height:1}
+.wx .t{font-weight:700}
+.wx .s{font-size:12.5px;color:var(--muted)}
+.wx .src{font-size:11px;color:var(--muted)}
+.timeline{list-style:none;margin:0;padding:0}
+.item{position:relative;padding:0 0 18px 22px;border-left:2px solid var(--line);margin-left:6px}
+.item:last-child{padding-bottom:4px}
+.item::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--accent)}
+.item.meal::before{border-color:var(--gold)}
+.time{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.time .drive{margin-left:8px}
+.item h3{font-size:16px;margin:2px 0 6px}
+.row{font-size:14px;margin:3px 0}
+.row b{color:var(--muted);font-weight:600;margin-right:4px}
+.box{margin-top:8px;border-radius:10px;padding:9px 12px;font-size:14px}
+.box h4{margin:0 0 4px;font-size:13px;letter-spacing:.02em}
+.box ul{margin:0;padding-left:18px}
+.box li{margin:2px 0}
+.tips{background:var(--green-soft)} .tips h4{color:var(--green)}
+.food{background:var(--gold-soft)} .food h4{color:var(--gold)}
+.food .n{font-weight:700}
+.food .tag{font-size:11.5px;border:1px solid currentColor;border-radius:4px;padding:0 4px;margin-left:4px;color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:13px}
+.tablewrap{overflow-x:auto}
+.check li{list-style:none;margin:4px 0}
+.check ul{padding:0;margin:0}
+.check label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.check input{margin-top:5px;accent-color:var(--accent)}
+.check .meta{color:var(--muted);font-size:12.5px}
+.pill{display:inline-block;font-size:11.5px;padding:0 6px;border-radius:4px;background:var(--accent-soft);color:var(--accent);margin-left:4px}
+footer{color:var(--muted);font-size:12.5px;padding:24px 0 48px}
+.themebtn{position:fixed;right:14px;bottom:14px;z-index:6;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer;box-shadow:var(--shadow)}
+@media print{nav.daynav,.themebtn,.settings input{display:none}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="hero wrap">
+  <h1>🗓️ 8天7夜【鹿兒島＋霧島＋宮崎】親子慢旅</h1>
+  <p>去程 11:00 降落鹿兒島／回程 12:30 起飛 ・ 自駕 ・ 孕媽咪＋3 歲大寶 ・ 10 週年紀念</p>
+  <div class="chips">
+    <span class="chip">🏨 城山飯店鹿兒島 ×2</span>
+    <span class="chip">♨️ 霧島國際飯店 ×2</span>
+    <span class="chip">🌊 宮崎喜來登（Phoenix Seagaia）×3</span>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="天數導覽"><div class="wrap" id="daynav"></div></nav>
+
+<main class="wrap">
+  <section id="settings">
+    <div class="card settings">
+      <label for="startDate">📅 出發日（Day 1）</label>
+      <input type="date" id="startDate">
+      <span id="dateSummary" class="s"></span>
+      <div class="hint">設定出發日後，每天會自動帶入當地天氣預報（Open-Meteo，約 16 天內可查）；超過預報範圍時顯示 10 月下旬氣候平均值。也可以用網址 <code>?start=2026-10-24</code> 直接分享。</div>
+    </div>
+    <div id="globalAlerts"></div>
+  </section>
+
+  <div id="days"></div>
+
+  <section id="food">
+    <h2>🍽 餐廳總覽（依區域）</h2>
+    <div class="grid" id="foodGrid"></div>
+  </section>
+
+  <section id="rain">
+    <h2>☔ 雨天／疲累日替代方案</h2>
+    <div class="card tablewrap"><table id="rainTable"></table></div>
+  </section>
+
+  <section id="care">
+    <h2>🤰 孕婦與親子提醒</h2>
+    <div class="card tablewrap"><table id="careTable"></table></div>
+  </section>
+
+  <section id="checklist">
+    <h2>✅ 行前檢查表</h2>
+    <div class="card check"><ul id="checkList"></ul>
+      <p class="meta" style="margin:10px 0 0">勾選狀態只存在這台裝置的瀏覽器中。</p></div>
+  </section>
+</main>
+
+<footer class="wrap">
+  餐廳營業時間、公休日與價格常有變動，出發前請以 Google Maps／官網再確認；熱門店建議先訂位。天氣資料來源：<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>，氣候平均參考日本氣象廳 10 月平年值。孕期相關建議僅供參考，請以產檢醫師意見為準。
+</footer>
+
+<button class="themebtn" id="themeBtn" type="button">🌓 深淺色</button>
+
+<script>
+/* ---------- 地點（天氣用） ---------- */
+const LOC = {
+  kagoshima:{name:"鹿兒島市", lat:31.596, lon:130.557, normal:{hi:24, lo:17, rain:"約 25%"}},
+  sakurajima:{name:"櫻島", lat:31.590, lon:130.600, normal:{hi:24, lo:17, rain:"約 25%"}},
+  kirishima:{name:"霧島溫泉鄉", lat:31.860, lon:130.860, normal:{hi:18, lo:9, rain:"約 30%"}},
+  takachiho:{name:"高千穗牧場", lat:31.830, lon:130.960, normal:{hi:20, lo:11, rain:"約 30%"}},
+  miyazaki:{name:"宮崎市", lat:31.960, lon:131.470, normal:{hi:23, lo:15, rain:"約 25%"}},
+  nichinan:{name:"日南海岸", lat:31.730, lon:131.470, normal:{hi:23, lo:16, rain:"約 25%"}},
+};
+
+/* ---------- 行程 ---------- */
+const DAYS = [
+{ title:"抵達鹿兒島・仙巖園・城山飯店", area:"鹿兒島市區", loc:"kagoshima", items:[
+  {t:"11:00-12:30", title:"降落鹿兒島與辦理入境", plan:"11:00 順利降落，辦理通關與提領行李。", tip:"下飛機後先帶大寶上洗手間，放慢步調。",
+   notes:["國際線航廈較小，入境約 30–60 分鐘；可先在入境大廳換好日幣、買水。","國內線航廈外有免費的「天然溫泉足湯」（おやっとさあ），等車時可讓大寶泡腳放鬆（媽媽以 5–10 分鐘為限）。","手機先開好漫遊或 eSIM，接下來導航整天都要用。"]},
+  {t:"12:30-13:15", drive:"45 分鐘", title:"租車取車 ➡️ 前往市區", plan:"取車確認安全座椅，自駕前往市區。", tip:"這段車程大寶可在車上小補眠，媽媽也休息。",
+   notes:["取車時確認：兒童座椅安裝方向、ETC 卡、導航設定成中文／電話號碼搜尋（Mapcode 也可）。","九州自動車道 鹿兒島IC 下來即進市區；注意日本是靠左行駛，第一個小時慢慢開。","拍下車身四周照片，避免還車爭議。"]},
+  {t:"13:15-14:30", meal:true, title:"午餐：薩摩黑豬肉料理", plan:"享用黑豬肉涮涮鍋或全熟炸豬排。", tip:"孕期請避免半熟肉品，務必點全熟。",
+   notes:["涮涮鍋要涮到肉完全變色；黑豚「炸豬排」最保險。","午餐時段 13:00 後人潮較少，抵達日不用排隊。"],
+   food:[
+    {n:"黒かつ亭 中央駅本店", d:"黑豚炸豬排老店，有兒童可分食的套餐，離 AMU Plaza 近、停車方便。", tag:"親子友善"},
+    {n:"いちにいさん（AMU Plaza／天文館）", d:"招牌「黑豚涮涮鍋」用蕎麥湯底，口味清淡，孕媽咪不負擔。", tag:"推薦"},
+    {n:"あぢもり（天文館）", d:"黑豚涮涮鍋元祖，氣氛較正式，適合想吃好一點；建議預約。"},
+   ]},
+  {t:"14:45-16:30", drive:"15 分鐘", title:"仙巖園散策 ＆ 兩棒餅點心", plan:"平坦庭園推車散步，茶屋吃點心。", tip:"邊吃點心邊隔海遠眺櫻島火山，極舒適。",
+   notes:["世界遺產「明治日本產業革命遺產」的一部分；主要庭園路線平坦可推車，後山步道有坡度，孕媽咪不必上去。","園內茶屋的「兩棒餅（ぢゃんぼ餅）」是現烤糯米糰配甜醬，大寶也能吃，注意切小塊避免噎到。","旁邊的「尚古集成館」與「薩摩切子」工房可順看；門票以官網為準，有停車場。","櫻島若有噴發，風向往市區時會降火山灰，帶口罩與濕紙巾。"],
+   food:[
+    {n:"仙巖園內 茶屋・餐廳", d:"兩棒餅、薩摩料理簡餐與甜點，坐著就能看櫻島。"},
+    {n:"磯街道 兩棒餅老店（平田屋／中川家）", d:"仙巖園對面海邊的兩棒餅專賣，價格更實惠，可外帶。"},
+   ]},
+  {t:"17:00~", drive:"15 分鐘", title:"城山飯店鹿兒島 Check-in", plan:"入住進房，欣賞櫻島火山日落晚霞。", tip:"鹿兒島市區連住 2 晚，不用天天打包。",
+   notes:["指定「櫻島側」房型才看得到火山景；訂房時可備註需要嬰兒床／床欄。","飯店位在城山上，展望台走路即到，傍晚 17:00 前後光線最美。","10 月日落約 17:50，Check-in 後在房間看夕陽剛好。"]},
+  {t:"18:30-20:00", meal:true, title:"晚餐時間", plan:"市區天文館通散策或直接在飯店享用。", tip:"建議第一天在飯店用餐最省體力。",
+   notes:["城山飯店館內有日式、法式、中式等多家餐廳，第一晚建議直接在館內用餐並先訂位。","若想下山，天文館距飯店約 10 分鐘車程。"],
+   food:[
+    {n:"城山飯店館內餐廳", d:"不用移動、兒童椅齊全，最適合抵達日。", tag:"首選"},
+    {n:"天文館むじゃき（白熊冰）", d:"鹿兒島名物「白熊」煉乳刨冰，有小份「Baby 白熊」適合大寶。孕媽咪注意糖分。"},
+   ]},
+  {t:"20:15-21:15", title:"絕景溫泉放鬆（薩摩乃湯）", plan:"先生帶大寶去大浴場泡湯放電。", tip:"溫泉區備有幼兒洗澡椅；孕媽咪泡腳放鬆。",
+   notes:["露天風呂正面就是櫻島與錦江灣，夜景也漂亮。","幼兒進大浴場要先沖淨身體、不能穿泳衣；大寶可以跟爸爸進男湯。","孕媽咪泡湯原則：水溫不過熱、每次 10 分鐘內、起身慢、補水。"]},
+]},
+{ title:"櫻島渡輪＆半日遊", area:"櫻島・鹿兒島市區", loc:"sakurajima", items:[
+  {t:"08:00-09:30", meal:true, title:"晨間悠閒早餐", plan:"享用城山飯店全日本頂級自助早餐。", tip:"備有大量適合 3 歲大寶的熟食與鮮果汁。",
+   notes:["城山飯店早餐常獲日本「最佳飯店早餐」，週末人多，建議 8:00 前入場。","孕媽咪注意：避開生蛋拌飯（TKG）、生魚片、明太子等生食。"]},
+  {t:"10:00-10:30", drive:"15 分鐘", title:"體驗：開車上渡輪往櫻島", plan:"整台車開進「櫻島渡輪」甲板乘船。", tip:"大寶看到車子開進大船裡會非常興奮。",
+   notes:["櫻島渡輪 24 小時運行、白天約 15 分鐘一班、航程約 15 分鐘，不用預約。","上船時免購票，抵達櫻島港出口時依車長付費（現金或 IC）。","船上名物「やぶ金」烏龍麵，15 分鐘內就要吃完，算是鹿兒島人的儀式感！","停好車後全家要到客艙，帶好大寶的外套（甲板風大）。"]},
+  {t:"10:30-12:30", title:"櫻島半日遊（足湯 ＆ 恐龍公園）", plan:"櫻島熔岩渚公園足湯 ＋ 恐龍公園大滑梯。", tip:"10月海風微涼，恐龍公園大滑梯大寶超愛。",
+   notes:["熔岩渚公園足湯長約 100 公尺、免費，就在櫻島港旁，記得帶小毛巾。","「櫻島自然恐龍公園」有大型恐龍造型溜滑梯，免費停車；遊具區有坡道，孕媽咪在下方看就好。","出發前查「桜島 降灰予報」（日本氣象廳），落灰多時改去 Io World 水族館。","時間夠可到「湯之平展望所」看火山口（車可直達）。"],
+   food:[
+    {n:"道之驛 櫻島「火の島めぐみ館」", d:"櫻島小蜜柑霜淇淋、櫻島蘿蔔、在地農產；有簡餐。", tag:"點心"},
+    {n:"Rainbow 櫻島（國民宿舍）", d:"熔岩渚公園旁的飯店餐廳，海景定食，適合在島上提早吃午餐。"},
+   ]},
+  {t:"12:45-13:45", drive:"15 分鐘", meal:true, title:"午餐：搭渡輪回市區用餐", plan:"返回市區天文館通或 AMU Plaza 用餐。", tip:"回程船上大寶可以吃個小點心。",
+   notes:["AMU Plaza 有付費停車、育嬰室、兒童椅，雨天也最方便。","AMU Plaza 頂樓有摩天輪「Amuran」，大寶可能會吵著要搭 😄"],
+   food:[
+    {n:"AMU Plaza 美食樓層", d:"拉麵、黑豚、壽司、洋食一次滿足，電梯廁所齊全。", tag:"親子友善"},
+    {n:"吾愛人（わいど）", d:"鹿兒島關東煮（おでん）與黑豚料理老店，湯頭清淡，孩子可分食。"},
+    {n:"迴轉壽司 めっけもん", d:"鹿兒島在地迴轉壽司，孕媽咪可點炙燒、玉子燒、茶碗蒸、烏龍麵。"},
+   ]},
+  {t:"14:00~", drive:"15 分鐘", title:"返回城山飯店休息（續住）", plan:"大寶在房間深度午睡，媽媽靜養。", alt:"大寶太興奮不睡：在飯店室內散步或觀景台看火山。", tip:"下午兩點就回到飯店，大人小孩都完全不累。",
+   notes:["回飯店前可順路在 AMU Plaza 地下超市補水、水果、零食。"]},
+  {t:"18:00~", meal:true, title:"晚餐時間", plan:"市區天文館通散策。", tip:"天文館通附近許多拉麵名店，動線平緩。",
+   notes:["天文館是有屋頂的拱廊商店街，下雨也能推車。","鹿兒島拉麵屬豚骨清湯系，比博多淡；多數店會附醃蘿蔔。"],
+   food:[
+    {n:"こむらさき（天文館）", d:"高麗菜絲＋黑豚叉燒的老牌鹿兒島拉麵，湯頭溫和。", tag:"推薦"},
+    {n:"豚とろ（天文館本店）", d:"入口即化的叉燒是招牌，晚餐時段可能要排隊。"},
+    {n:"天文館むじゃき", d:"晚餐後吃白熊冰當甜點，跟大寶分一份小的。"},
+   ]},
+]},
+{ title:"平川動物公園・移動霧島", area:"鹿兒島市 → 霧島溫泉鄉", loc:"kirishima", items:[
+  {t:"09:30-10:30", drive:"35 分鐘", title:"退房，出發前往平川動物園", plan:"辦理退房，前往動物園放電。", tip:"車程 35 分鐘，上午大寶精神正好。",
+   notes:["退房前把兩天份的髒衣服整理好，霧島飯店有投幣洗衣機可用。"]},
+  {t:"10:30-13:00", title:"平川動物公園大放電", plan:"看白虎、無尾熊，坐旋轉木馬與小火車。", tip:"走累了隨時到園內的「天然溫泉足湯」泡腳。",
+   notes:["園區沿山坡而建，有些路段坡度明顯，推車必帶；孕媽咪走累就坐足湯等。","無尾熊館是人氣首選，建議先去；長頸鹿、斑馬區背景就是櫻島，很好拍照。","遊樂區（旋轉木馬、小火車）另外收費，準備零錢。","10 月早上偶有遠足團體，平日上午會比較熱鬧。","週末停車場較滿，10:30 前抵達較好停。"]},
+  {t:"13:00-14:00", meal:true, title:"午餐時間", plan:"動物園內簡餐或附近用餐。", tip:"簡單吃完，準備下午的長途移動。",
+   notes:["動物園周邊餐廳不多，最省力是在園內解決；也可把正餐挪到霧島（抵達後 15:30 吃點心）。"],
+   food:[
+    {n:"平川動物公園 園內餐廳／賣店", d:"咖哩、烏龍麵、兒童餐等簡餐，有座位與兒童椅。", tag:"省時"},
+    {n:"自備便當野餐", d:"早上在超市／便利商店買飯糰、三明治，在園內草地野餐。"},
+   ]},
+  {t:"14:00-15:00", drive:"50 分鐘", title:"移動：前往霧島溫泉鄉", plan:"【午睡計時器】大寶在車上深度午睡。", tip:"車程正好 50 分鐘，大寶下車剛好充飽電。",
+   notes:["經九州自動車道到溝邊鹿兒島機場IC／橫川IC 後上山，後段山路彎道多，孕媽咪若會暈車可坐副駕。","山區氣溫比市區低 5–7°C，車上先備好外套。"]},
+  {t:"15:30~", drive:"10 分鐘", title:"霧島溫泉旅館 Check-in", plan:"辦理入住（如：霧島國際飯店，連住 2 晚）。", alt:"帶大寶去飯店附設的球池滑梯遊戲室放電。", tip:"榻榻米房型大寶隨意翻滾，媽媽最安心。",
+   notes:["霧島國際飯店有兒童遊戲室（Kids Room）與戶外「霧島 Kids Park」；也有家族風呂（貸切風呂）。","泉質為硫磺泉，銀飾會變黑，泡湯前請拿下。","若遇上「白紫」等露天風呂整修，以現場公告為準。"]},
+  {t:"18:00-20:30", meal:true, title:"💖 10週年頂級溫泉會席晚餐", plan:"享用精緻黑豬肉或和牛溫泉會席料理。", tip:"訂房備註「10th Anniversary」有驚喜祝賀。",
+   notes:["會席常有生魚片／半熟料理，訂房時用日文備註「妊娠中のため、生もの・半熟の料理は加熱でお願いします」，大多可替換。","預約兒童餐（お子様ランチ）給大寶，免得大人份太多吃不完。"]},
+]},
+{ title:"霧島神宮安產祈福・私人湯屋", area:"霧島溫泉鄉", loc:"kirishima", items:[
+  {t:"09:00-10:30", meal:true, title:"悠閒享用日式早餐", plan:"在旅館內享用精緻晨間和食。", tip:"不用趕出門，睡到自然醒。",
+   notes:["和式早餐常有生蛋、溫泉蛋（半熟），孕媽咪可請廚房改成玉子燒或全熟蛋。"]},
+  {t:"11:00-12:30", drive:"15 分鐘", title:"霧島神宮安產祈福", plan:"杉木環繞的芬多精古剎散步。", alt:"10月下旬有機會捕捉到初秋轉紅的楓葉。", tip:"媽媽在此祈求安產、二寶與大寶健康。",
+   notes:["國寶社殿，朱紅色本殿與千年「御神木」老杉很好拍。","可在授與所求「安產御守」與「腹帶」（祈禱需預約，詳見神宮官網）。","從停車場到本殿有一段石階，推車需走旁邊的坡道或由爸爸抱上去；孕媽咪慢慢走、扶扶手。","山上霧多，地面石板濕滑，穿防滑鞋。","霧島楓葉一般 11 月上中旬較紅，10 月下旬是「初紅葉」。"],
+   food:[
+    {n:"霧島神宮 參道茶屋・霧島民藝村", d:"大鳥居旁的參道茶屋與食事處，麵食簡餐、伴手禮。", tag:"步行可到"},
+   ]},
+  {t:"12:45-14:15", meal:true, title:"午餐：神宮周邊手工蕎麥麵", plan:"神宮參道旁享用日式烏龍麵或蕎麥麵。", tip:"清淡好消化的日式麵食，大寶接受度高。",
+   notes:["參道店家多 15:00 前結束午餐，避免太晚去。","少數蕎麥麵店不適合幼兒（座位小、氣氛安靜），先看一下店內再入座。","大寶第一次吃蕎麥要注意過敏，建議點烏龍麵。"],
+   food:[
+    {n:"霧島民藝村 食事處", d:"大鳥居旁，村內有食事處（麵食、定食），座位多。", tag:"親子友善"},
+    {n:"霧島溫泉市場", d:"回旅館路上，溫泉蒸蛋、蒸地瓜、黑豚包子，邊吃邊泡足湯。"},
+    {n:"Google Maps 搜尋「霧島神宮 そば」", d:"周邊有數家手打蕎麥小店，營業日不固定，出發前查最新營業狀態。"},
+   ]},
+  {t:"14:30~", drive:"15 分鐘", title:"返回溫泉旅館", plan:"自駕返回旅館，準備下午活動。", tip:"車程超短，隨時可回防。"},
+  {t:"15:00-16:30", title:"下午獨處與泡湯時光", plan:"【標準動線】大寶午睡，夫妻泡私人湯屋。", alt:"【備用動線】帶大寶去溫泉市場蒸氣足湯。", tip:"湯屋空間大，大寶不睡也可帶進去榻榻米區玩。",
+   notes:["溫泉市場的足湯與「蒸氣」都很燙，孕媽咪坐遠一點、時間短一點。"]},
+  {t:"", title:"💖 預約專屬私人獨立湯屋", plan:"獨立隱密「離れ湯」，山林庭園間浪漫泡湯。", alt:"或是將湯屋時間往後延，下午先帶大寶放電。", tip:"享受久違的雙人世界，好好聊聊10年心路。",
+   notes:["貸切風呂多為 Check-in 時現場登記制，抵達當天就先預約 15:00 時段。","硫磺泉蒸氣較濃，泡湯區保持通風；孕媽咪起身前先坐在池邊一下再站起。"]},
+  {t:"18:30~", meal:true, title:"晚餐時間", plan:"溫泉旅館精緻晚餐。", tip:"每天都在飯店用餐，免去舟車勞頓。"},
+]},
+{ title:"高千穗牧場・移動宮崎", area:"霧島 → 宮崎市", loc:"takachiho", items:[
+  {t:"09:30-10:30", drive:"15 分鐘", title:"退房，出發前往高千穗牧場", plan:"辦理退房，前往高原牧場。", tip:"車程非常短，動線極順暢。",
+   notes:["注意：這裡的「高千穗牧場」位於霧島山麓（宮崎縣都城市），不是宮崎北部的高千穗峽，導航請設定電話 0986-33-2102。"]},
+  {t:"10:30-13:00", title:"高千穗牧場親子同樂", plan:"親近、餵食小羊小牛，看高原風光。", tip:"免門票。大寶草地奔跑，夫妻享用牛奶冰淇淋。",
+   notes:["營業約 9:00–17:00（4–10 月可能到 17:30），不定休，出發前查官網。","可擠牛奶、餵小羊（體驗多為假日或定時，現場確認）；摸完動物一定要洗手，孕媽咪避免接觸動物糞便。","高原風大、比平地涼，給大寶加件外套。","伴手禮推薦：牧場牛奶、優格、起司、現做香腸。"],
+   food:[
+    {n:"高千穗牧場 野外美食區", d:"招牌牛奶霜淇淋、現烤香腸、輕食。", tag:"必吃"},
+  ]},
+  {t:"13:00-14:00", meal:true, title:"午餐：牧場內景觀餐廳", plan:"牧場內景觀餐廳享用烤肉或日式簡餐。", tip:"風景極佳，全家輕鬆用餐。",
+   notes:["燒肉／成吉思汗烤羊肉要全熟再吃；大寶可點咖哩飯或兒童餐。"],
+   food:[
+    {n:"高千穗牧場「まきばのレストラン」", d:"成吉思汗烤肉、燒肉、定食，戶外景觀座位。", tag:"園內"},
+    {n:"霧島溫泉市場（回程方向）", d:"若牧場餐廳客滿，可回溫泉市場吃黑豚包子、溫泉蒸蛋。"},
+   ]},
+  {t:"14:00-15:20", drive:"1小時20分", title:"移動：跨越山林前往宮崎市區", plan:"【10週年金曲公路 ＋ 大寶深度午睡時間】", tip:"這段跨縣長車程完美當作大寶午睡定時器。",
+   notes:["走宮崎自動車道（都城IC → 宮崎IC），可在途中 SA 休息上廁所，孕媽咪每 1 小時下車活動一下。"]},
+  {t:"15:45~", drive:"15 分鐘", title:"飯店 Check-in：宮崎喜來登", plan:"入住 Phoenix Seagaia Resort（連住 3 晚）。", alt:"大寶不睡：在飯店室內兒童遊戲區看繪本。", tip:"房間全數面海，光是待在房間看太平洋就很享受。",
+   notes:["正式名稱：Sheraton Grande Ocean Resort（九州最高的 43 層飯店）。","渡假村內有多家餐廳（日式、壽司、義式、宮崎牛鐵板燒、地雞鄉土料理），連住 3 晚建議 Check-in 時一次預約好晚餐。"]},
+  {t:"18:30~", meal:true, title:"晚餐：渡假村內高空晚宴", plan:"在飯店頂級餐廳慶祝。", tip:"推薦預約飯店內高評價餐廳，免去出門奔波。",
+   notes:["宮崎牛鐵板燒可指定「Well-done 全熟」。","⚠️ 宮崎名物「地雞炙燒（たたき）」是半生雞肉，孕婦絕對不要吃，大寶也不建議。"],
+   food:[
+    {n:"渡假村內 鐵板燒（宮崎牛）", d:"慶祝感最強，主廚現煎、可全熟。", tag:"10週年"},
+    {n:"渡假村內 日式／壽司餐廳", d:"可點熟食壽司、天婦羅、茶碗蒸。"},
+   ]},
+]},
+{ title:"日南海岸・青島", area:"日南海岸・青島", loc:"nichinan", items:[
+  {t:"09:00-10:30", meal:true, title:"睡到自然醒與悠閒早餐", plan:"享用渡假村澎湃自助早餐。", tip:"10月的南國海風最舒適，不急著出門。"},
+  {t:"11:00-12:30", drive:"40 分鐘", title:"Sun Messe Nichinan（日南太陽花園）", plan:"觀看摩艾石像，親近牧場小動物。", tip:"【神助攻】一進園區立刻租借高爾夫球車代步！",
+   notes:["⚠️ 每週三休園（遇假日營業），請確認 Day 6 不是週三！","營業時間約 9:30–17:00。","園區在山坡上，從停車場到摩艾石像需要走一段坡，高爾夫球車（電動車）是孕媽咪救星；數量有限，先租。","經過「堀切峠」可停下看「鬼之洗衣板」全景，沿途是日南海岸國道 220 號超美海景公路。"],
+   food:[
+    {n:"南洋餐廳 noa noa（園內）", d:"看海吃午餐；人氣「Sun Messe Lunch」拼盤有漢堡排、炸蝦與南蠻雞。", tag:"推薦"},
+  ]},
+  {t:"12:45-14:15", meal:true, title:"午餐：日南海岸海景餐廳", plan:"享用宮崎名物「南蠻雞料理」（全熟炸雞）。", tip:"窗外就是太平洋海景，非常有度假氛圍。",
+   notes:["南蠻雞＝炸雞＋甜醋＋塔塔醬，塔塔醬含蛋（已熟），孕媽咪可放心；大寶可以分食。","若在 Sun Messe 已吃，也可以留到青島再吃點心。"],
+   food:[
+    {n:"南洋餐廳 noa noa（Sun Messe 內）", d:"不必再移動，海景第一排。", tag:"省時"},
+    {n:"道之驛 フェニックス", d:"堀切峠上的休息站，芒果霜淇淋、海景小吃。"},
+    {n:"AOSHIMAYA（青島參道）", d:"南蠻雞、海鮮丼、宮崎在地料理；餐廳約 10:00–15:00。"},
+  ]},
+  {t:"14:30-15:45", drive:"20 分鐘", title:"青島神社 ＆ 鬼之洗衣板", plan:"走過平坦紅磚橋連接沙灘小島，步道完全平坦。", tip:"大寶觀察奇特的波浪狀岩石，夫妻手牽手散步。",
+   notes:["「彌生橋」到島上約 5 分鐘，島一圈約 20–30 分鐘，推車可通行（沙地路段需抬一下）。","青島神社求「姻緣」聞名，很適合 10 週年夫妻來還願；可在「天之平瓮」投瓦片許願。","退潮時鬼之洗衣板露出最多，出發前查潮汐表；岩石濕滑，孕媽咪不要走下礁岩。","附近停車場多為付費。"],
+   food:[
+    {n:"AOSHIMAYA", d:"參道上的咖啡＆伴手禮，咖啡營業到約 16:30。", tag:"下午茶"},
+    {n:"青島 Beach Village", d:"海邊的貨櫃屋美食區，飲料、刨冰、輕食。"},
+    {n:"青島ういろう（外郎糕）", d:"青島名物，Q 彈米糕，大寶好入口（小塊）。"},
+   ]},
+  {t:"16:15~", drive:"25 分鐘", title:"返回喜來登渡假村休息", plan:"16:30回到房間。大寶吃點心，媽媽補眠。", alt:"大寶不睡：在渡假村的松林露天泳池沙灘挖沙。", tip:"晚上全家在飯店內悠閒用餐。",
+   notes:["渡假村前的海灘一般禁止游泳（浪大），只在沙灘玩即可。"],
+   food:[
+    {n:"渡假村內 地雞／鄉土料理", d:"可點炭烤地雞（もも焼き，全熟）、冷汁、宮崎牛。", tag:"晚餐"},
+    {n:"おぐら（宮崎市區）", d:"南蠻雞發源名店之一，若晚上想進市區，約 25 分鐘。"},
+   ]},
+]},
+{ title:"AEON MALL 補貨・渡假村 Staycation", area:"宮崎市", loc:"miyazaki", items:[
+  {t:"09:00-10:30", meal:true, title:"晨間享受與悠閒早餐", plan:"續住第3晚，完全不換飯店的頂級 Staycation。", tip:"今天不排開車出遠門行程，把時間完整留給渡假村。"},
+  {t:"11:00-13:30", drive:"約 15 分鐘", title:"提前大補貨：AEON MALL 宮崎", plan:"【關鍵調整】今早先去宮崎超大 AEON。", tip:"二寶用品（阿卡將本舖）與伴手禮在此大補貨。",
+   notes:["實際車程約 15 分鐘（原表寫 5 分鐘偏樂觀）。","外國旅客購物滿 5,000 日圓（未稅）可在服務台辦免稅，記得帶護照。","阿卡將本舖有孕婦用品、新生兒衣物；館內也有兒童遊樂區可讓大寶放電。","宮崎伴手禮：日向夏甜點、宮崎牛咖哩、地雞炭烤真空包、チーズ饅頭（起司饅頭）。"]},
+  {t:"", meal:true, title:"購物中心午餐", plan:"享用百貨美食街或日式定食。", alt:"大寶挑選10週年紀念小玩具。", tip:"商場大、備有完善育嬰室，推車寬敞好推。",
+   food:[
+    {n:"AEON MALL 宮崎 美食街", d:"烏龍麵、拉麵、漢堡、蛋包飯選擇多，有兒童椅。", tag:"親子友善"},
+    {n:"館內迴轉壽司／定食店", d:"孕媽咪選熟食壽司與定食。"},
+   ]},
+  {t:"14:00~", drive:"約 15 分鐘", title:"返回喜來登渡假村休息", plan:"媽媽去「松泉宮溫泉」泡湯補眠，釋放疲勞。", tip:"先生帶大寶在房間午睡，或在飯店內騎腳踏車。",
+   notes:["松泉宮在松林中，有露天風呂與按摩；喜來登住客通常有優惠，詳見飯店。","明天一早要長途開車，今晚先把行李打包好、免稅品裝箱。"]},
+  {t:"19:30-20:30", title:"💖 星空營火卡片交換最終章", plan:"返回飯店中庭的 Living Garden 篝火區。", tip:"先生帶大寶免費烤棉花糖。夫妻倆交換10週年卡片。",
+   notes:["營火活動受天候影響，雨天或強風可能取消；可改在客房陽台交換卡片。","火堆旁看緊大寶，烤棉花糖用長竹籤。"],
+   food:[{n:"晚餐：渡假村內輕鬆用餐", d:"營火前先吃（約 18:00），或客房服務。", tag:"晚餐"}]},
+]},
+{ title:"宮崎 → 鹿兒島機場・返台", area:"宮崎 → 鹿兒島機場", loc:"kagoshima", items:[
+  {t:"08:00-09:00", meal:true, title:"飯店早餐 ＆ 辦理退房", plan:"享用早餐，辦理退房。", tip:"收拾隨身行李，準備回台。",
+   notes:["⚠️ 時程偏緊：建議 07:00 早餐、08:00 出發，多留 1 小時緩衝（理由見下方）。"]},
+  {t:"09:00-10:40", drive:"1小時40分", title:"移動：跨越九州前往機場", plan:"【大寶車上補眠 ＆ 媽媽歇息時段】", tip:"行駛高速公路直達鹿兒島機場旁加油站，不塞車。",
+   notes:["宮崎IC → 九州自動車道 → 溝邊鹿兒島機場IC；中途可在「霧島 SA」上廁所。","日本規定還車要加滿油並出示收據，記得保留加油收據。"]},
+  {t:"10:40-11:00", drive:"5 分鐘", title:"加滿油、辦理還車手續", plan:"機場旁還車，搭乘租車公司免費接駁車。", tip:"還車手續通常5-10分鐘內即可搞定。"},
+  {t:"11:00-12:30", title:"機場辦理登機 ＆ 安全返航", plan:"11:00抵達航廈，辦理行李託運與通關返台。", tip:"12:30起飛，帶著滿滿的10週年溫暖回憶平安回家！",
+   notes:["⚠️ 國際線櫃台多在起飛前 60 分鐘關櫃，11:00 才到航廈只有 30 分鐘餘裕，遇到塞車或還車排隊就很危險 → 強烈建議提早 1 小時出發。","鹿兒島機場國際線航廈小、餐飲少；想吃東西可先在國內線航廈（走路即到）買便當或伴手禮。","孕婦搭機：多數航空公司 32–36 週後需診斷書，出發前確認航空公司規定。"],
+   food:[
+    {n:"鹿兒島機場 國內線航廈 美食街／伴手禮", d:"黑豚便當、さつま揚げ（薩摩炸魚餅）、かるかん（輕羹）。", tag:"伴手禮"},
+   ]},
+]},
+];
+
+/* ---------- 其他表格 ---------- */
+const RAIN = [
+  ["櫻島戶外步道","Io World 鹿兒島水族館","室內、親子友善、廁所方便","市區約 10 分","下雨、火山灰多、風大","櫻島渡輪可保留或取消"],
+  ["平川動物公園","AMU Plaza／AEON Mall 鹿兒島","室內、用餐與採買方便","10~20 分","大雨或孩子疲累","不要硬逛戶外園區"],
+  ["仙巖園","百貨咖啡 ＋ 水族館","少走戶外、移動短","10~15 分","雨勢大或體力不足","可保留晚餐安排"],
+  ["高千穗牧場","霧島國際飯店 Kids Room／霧島溫泉市場","室內遊戲、可再泡湯","0~10 分","高原大雨或濃霧","牧場伴手禮可在機場或 AEON 補買"],
+  ["Sun Messe 日南／青島","宮崎科學技術館／AEON MALL 宮崎","室內、有天象館與兒童區","20~25 分","颱風、大雨","日南海岸公路風雨大時不建議開"],
+  ["晚間逛街","飯店休息／外帶","降低孩子崩潰風險","0 分","任何一天太累","親子行程不需要天天滿檔"],
+];
+const CARE = [
+  ["孕婦","避免過熱與久泡溫泉；足湯也以短時間為主","Day1–Day7","以醫師與身體狀況為準"],
+  ["孕婦","飲食避開生魚片、生蛋、半熟肉、地雞炙燒（たたき）、未殺菌起司","全程","會席料理預約時先告知"],
+  ["孕婦","每天保留午睡或飯店休息，不追加景點","全程","Day3、Day4、Day5 尤其重要"],
+  ["孕婦","長途車程每 1 小時下車活動、補水","Day3、Day5、Day8","預防水腫與血栓"],
+  ["兒童","推車、零食、水壺、備用衣、濕紙巾固定放出門包","全程","動物園與牧場日必備"],
+  ["兒童","摸動物後洗手；溫泉區看緊孩子避免滑倒","Day3、Day5","牧場有洗手台"],
+  ["交通","租車確認兒童安全座椅、導航與停車場","Day1","建議取車時現場再次確認"],
+  ["衣物","10月早晚與海邊微涼，霧島山區更冷（低溫可能 10°C 以下），準備薄防風外套","Day2–Day6","洋蔥式穿搭"],
+  ["火山","櫻島降灰：查氣象廳「降灰予報」，備口罩、濕紙巾","Day1–Day2","灰多就改室內"],
+  ["備案","下雨或累了就改飯店、商場或水族館，不硬跑戶外","全程","親子行程舒適度優先"],
+];
+const CHECK = [
+  ["證件","護照、駕照日文譯本、租車文件","高","自駕必備"],
+  ["親子","兒童安全座椅","高","租車時確認，可事前預約"],
+  ["親子","推車／背巾","高","動物園、商場、機場都好用"],
+  ["孕婦","孕婦手冊／醫師允許旅行資訊（航空公司週數規定）","高","以自身狀況與醫師建議為準"],
+  ["衣物","薄外套、帽子、舒適防滑鞋","中","10月早晚偏涼，霧島更冷"],
+  ["兒童","水壺、零食、濕紙巾、備用衣","高","動物園日多準備一套"],
+  ["健康","常備藥、退燒藥、OK繃、防蚊、口罩（火山灰）","高","兒童藥以醫師建議為準"],
+  ["交通","ETC卡／導航APP／離線地圖","中","Mapcode 或電話號碼導航最準"],
+  ["訂位","第一晚城山飯店餐廳、10 週年會席、霧島家族風呂、喜來登晚餐","高","會席備註孕婦與紀念日"],
+  ["確認","Day 6 不是週三（Sun Messe 日南公休）","高","是週三就和 Day 7 對調"],
+  ["採買","伴手禮清單","低","Day7 AEON 集中採買"],
+];
+
+/* ---------- 工具 ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = d => d.toISOString().slice(0,10);
+const WEEK = "日一二三四五六";
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} },
+};
+function addDays(iso, n){ const d = new Date(iso+"T00:00:00Z"); d.setUTCDate(d.getUTCDate()+n); return d; }
+
+const WMO = c => c===0?["☀️","晴"]:c<=2?["🌤️","晴時多雲"]:c===3?["☁️","陰"]:c<=48?["🌫️","霧"]:
+  c<=57?["🌦️","毛毛雨"]:c<=67?["🌧️","雨"]:c<=77?["🌨️","雪"]:c<=82?["🌦️","陣雨"]:["⛈️","雷雨"];
+
+/* ---------- 渲染 ---------- */
+function renderNav(){
+  $("#daynav").innerHTML = DAYS.map((d,i)=>`<a href="#day${i+1}">Day ${i+1}</a>`).join("") +
+    `<a href="#food">餐廳</a><a href="#rain">雨天備案</a><a href="#care">提醒</a><a href="#checklist">檢查表</a>`;
+}
+
+function renderDays(){
+  $("#days").innerHTML = DAYS.map((d,i)=>`
+  <section class="day" id="day${i+1}">
+    <div class="card">
+      <div class="dayhead">
+        <div><h2>Day ${i+1}｜${esc(d.title)}</h2><div class="sub" id="date${i}">${esc(d.area)}</div></div>
+        <div class="wx" id="wx${i}"></div>
+      </div>
+      <ul class="timeline">${d.items.map(renderItem).join("")}</ul>
+    </div>
+  </section>`).join("");
+}
+
+function renderItem(it){
+  const notes = it.notes?.length ? `<div class="box tips"><h4>💡 注意與推薦</h4><ul>${it.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div>` : "";
+  const food = it.food?.length ? `<div class="box food"><h4>🍽 附近餐廳</h4><ul>${it.food.map(f=>
+     `<li><span class="n">${esc(f.n)}</span>${f.tag?`<span class="tag">${esc(f.tag)}</span>`:""}　${esc(f.d)}</li>`).join("")}</ul></div>` : "";
+  return `<li class="item${it.meal?" meal":""}">
+    <div class="time">${esc(it.t||"　")}${it.drive?`<span class="drive">🚗 ${esc(it.drive)}</span>`:""}</div>
+    <h3>${esc(it.title)}</h3>
+    <div class="row"><b>標準</b>${esc(it.plan)}</div>
+    ${it.alt?`<div class="row"><b>備用</b>${esc(it.alt)}</div>`:""}
+    ${it.tip?`<div class="row"><b>貼心</b>${esc(it.tip)}</div>`:""}
+    ${notes}${food}
+  </li>`;
+}
+
+function renderFood(){
+  const groups = {};
+  DAYS.forEach((d,i)=>d.items.forEach(it=>(it.food||[]).forEach(f=>{
+    (groups[d.area] ||= {days:new Set(), list:new Map()});
+    groups[d.area].days.add(i+1);
+    if(!groups[d.area].list.has(f.n)) groups[d.area].list.set(f.n, f);
+  })));
+  $("#foodGrid").innerHTML = Object.entries(groups).map(([area,g])=>`
+    <div class="card"><h3 style="margin:0 0 6px;font-size:16px">${esc(area)} <span class="pill">Day ${[...g.days].join("、")}</span></h3>
+    <ul style="margin:0;padding-left:18px;font-size:14px">${[...g.list.values()].map(f=>`<li><b>${esc(f.n)}</b>：${esc(f.d)}</li>`).join("")}</ul></div>`).join("");
+}
+
+function renderTables(){
+  $("#rainTable").innerHTML = `<tr><th>原行程</th><th>替代方案</th><th>適合原因</th><th>車程</th><th>何時啟用</th><th>備註</th></tr>` +
+    RAIN.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("");
+  $("#careTable").innerHTML = `<tr><th>分類</th><th>提醒</th><th>適用日期</th><th>備註</th></tr>` +
+    CARE.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("");
+  const saved = JSON.parse(store.get("kyushu-check")||"{}");
+  $("#checkList").innerHTML = CHECK.map((c,i)=>`<li><label><input type="checkbox" data-i="${i}" ${saved[i]?"checked":""}>
+    <span><b>${esc(c[1])}</b><span class="pill">${esc(c[0])}・${esc(c[2])}</span><br><span class="meta">${esc(c[3])}</span></span></label></li>`).join("");
+  $("#checkList").addEventListener("change", e=>{
+    const s = JSON.parse(store.get("kyushu-check")||"{}"); s[e.target.dataset.i] = e.target.checked;
+    store.set("kyushu-check", JSON.stringify(s));
+  });
+}
+
+/* ---------- 天氣 ---------- */
+function showNormal(i, why){
+  const l = LOC[DAYS[i].loc], n = l.normal;
+  $("#wx"+i).innerHTML = `<div class="ico">🍂</div><div><div class="t">${n.lo}–${n.hi}°C</div>
+    <div class="s">${esc(l.name)}・10 月下旬平均，降雨機率${n.rain}</div><div class="src">${why||"設定出發日可看即時預報"}</div></div>`;
+}
+
+async function loadWeather(start){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const limit = new Date(today); limit.setDate(limit.getDate()+15);
+  DAYS.forEach((d,i)=>{
+    const date = addDays(start,i);
+    $("#date"+i).textContent = `${date.getUTCMonth()+1}/${date.getUTCDate()}（${WEEK[date.getUTCDay()]}）・${d.area}`;
+  });
+  // 需要查詢的地點與日期
+  const byLoc = {};
+  DAYS.forEach((d,i)=>{
+    const iso = fmt(addDays(start,i)); const dt = new Date(iso+"T00:00:00");
+    if(dt < today || dt > limit){ showNormal(i, "超出預報範圍（出發前 16 天內可查）"); return; }
+    (byLoc[d.loc] ||= []).push({i, iso});
+    $("#wx"+i).innerHTML = `<div class="ico">⏳</div><div class="s">讀取天氣中…</div>`;
+  });
+  await Promise.all(Object.entries(byLoc).map(async ([key, list])=>{
+    const l = LOC[key];
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${l.lat}&longitude=${l.lon}` +
+      `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
+      `&timezone=Asia%2FTokyo&start_date=${list[0].iso}&end_date=${list[list.length-1].iso}`;
+    try{
+      const r = await fetch(url); if(!r.ok) throw 0;
+      const j = await r.json();
+      list.forEach(({i,iso})=>{
+        const k = j.daily.time.indexOf(iso); if(k<0){ showNormal(i); return; }
+        const [ico,txt] = WMO(j.daily.weather_code[k]);
+        const p = j.daily.precipitation_probability_max[k];
+        $("#wx"+i).innerHTML = `<div class="ico">${ico}</div><div><div class="t">${txt}　${Math.round(j.daily.temperature_2m_min[k])}–${Math.round(j.daily.temperature_2m_max[k])}°C</div>
+          <div class="s">${esc(l.name)}・降雨機率 ${p??"-"}%</div><div class="src">Open-Meteo 預報</div></div>`;
+      });
+    }catch(e){ list.forEach(({i})=>showNormal(i, "預報暫時無法取得")); }
+  }));
+}
+
+function checkAlerts(start){
+  const out = [];
+  const d6 = addDays(start,5);
+  if(d6.getUTCDay()===3) out.push(`⚠️ Day 6（${fmt(d6)}）是<b>週三</b>，Sun Messe 日南公休！建議和 Day 7 的 AEON／渡假村行程對調。`);
+  out.push(`ℹ️ Day 8 國際線 12:30 起飛、行程 11:00 才抵達航廈，櫃台通常起飛前 60 分鐘關閉 → 建議提早 1 小時從宮崎出發。`);
+  $("#globalAlerts").innerHTML = out.map(t=>`<div class="alert${t.startsWith("ℹ️")?" info":""}">${t}</div>`).join("");
+  const end = addDays(start,7);
+  $("#dateSummary").textContent = `${fmt(addDays(start,0))}（${WEEK[addDays(start,0).getUTCDay()]}）→ ${fmt(end)}（${WEEK[end.getUTCDay()]}）`;
+}
+
+function setStart(v){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(v||"")){ DAYS.forEach((_,i)=>showNormal(i)); checkAlertsNoDate(); return; }
+  store.set("kyushu-start", v);
+  checkAlerts(v); loadWeather(v);
+}
+function checkAlertsNoDate(){
+  $("#globalAlerts").innerHTML = `<div class="alert info">ℹ️ Day 8 國際線 12:30 起飛、行程 11:00 才抵達航廈，櫃台通常起飛前 60 分鐘關閉 → 建議提早 1 小時從宮崎出發。</div>
+  <div class="alert">⚠️ Sun Messe 日南每週三公休：設定出發日後會自動檢查 Day 6 是不是週三。</div>`;
+}
+
+/* ---------- 深淺色 ---------- */
+(function(){
+  const t = store.get("kyushu-theme"); if(t) document.documentElement.dataset.theme = t;
+  $("#themeBtn").addEventListener("click", ()=>{
+    const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme==="dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    const next = dark ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store.set("kyushu-theme", next);
+  });
+})();
+
+renderNav(); renderDays(); renderFood(); renderTables();
+const initial = new URLSearchParams(location.search).get("start") || store.get("kyushu-start") || "";
+$("#startDate").value = initial;
+$("#startDate").addEventListener("change", e=>setStart(e.target.value));
+setStart(initial);
+</script>
+</body>
+</html>
