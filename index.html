@@ -5,104 +5,142 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>九州親子慢旅行程</title>
 <meta name="description" content="8天7夜【鹿兒島＋霧島＋宮崎】親子＆孕婦友善自駕行程：景點注意事項、附近餐廳、每日天氣。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
+/* 設計 token 取自 Vittal Design（vittal.design）vital-theme：primary／grayscale／semantic 色票、radius、shadow、字體 */
 :root{
-  --bg:#f7f4ef; --card:#ffffff; --ink:#2b2622; --muted:#6f665d; --line:#e6dfd5;
-  --accent:#c2502e; --accent-soft:#fbe9e2; --sea:#2f6f8f; --sea-soft:#e3f0f6;
-  --green:#3f7d4e; --green-soft:#e5f2e8; --gold:#a8771a; --gold-soft:#fbf1dc;
-  --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.05);
+  --primary:#0E86FE; --primary-hover:#016DD8; --primary-50:#EBF5FF; --primary-200:#A6D2FF; --primary-700:#0153A5;
+  --gradient-primary:linear-gradient(45deg,#33CFFF 0%,#0E86FE 100%);
+  --bg:#F9F9FA; --card:#FFFFFF; --ink:#232332; --muted:rgba(35,35,50,.70); --tertiary:rgba(35,35,50,.55);
+  --line:#DEDEE2; --line-soft:rgba(35,35,50,.08); --hover:rgba(35,35,50,.05);
+  --accent:var(--primary); --accent-soft:var(--primary-50);
+  --sea:#0576BD; --sea-soft:#EBF9FF;
+  --green:#19794F; --green-soft:#E7F8EF;
+  --gold:#996400; --gold-soft:#FFF6E3;
+  --warn:#FFA700; --warn-soft:#FFF6E0; --warn-ink:#996400;
+  --radius-sm:4px; --radius-md:8px; --radius-lg:15px;
+  --shadow:0 6px 10px 0 rgba(35,35,50,.08);
+  --shadow-accent:0 2px 8px 0 rgba(35,35,50,.15);
+  --shadow-btn:0 6px 10px rgba(14,134,254,.3);
+  --focus:0 0 0 2px rgba(14,134,254,.2);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#1a1816; --card:#24211e; --ink:#eee8e1; --muted:#a99f94; --line:#3a352f;
-    --accent:#ee8463; --accent-soft:#3b2620; --sea:#7fbadb; --sea-soft:#1f3038;
-    --green:#86c896; --green-soft:#1f3124; --gold:#e1b45c; --gold-soft:#372c18;
-    --shadow:none;
+    --primary:#419FFE; --primary-hover:#73B9FE; --primary-50:#0F2742; --primary-200:#1C4C80; --primary-700:#A6D2FF;
+    --bg:#16161C; --card:#202028; --ink:#EDEDF2; --muted:rgba(237,237,242,.72); --tertiary:rgba(237,237,242,.55);
+    --line:#36363F; --line-soft:rgba(237,237,242,.08); --hover:rgba(237,237,242,.06);
+    --sea:#66C4F5; --sea-soft:#12293A; --green:#7BE3B5; --green-soft:#12291F;
+    --gold:#FFCA66; --gold-soft:#2E2412; --warn:#FFB933; --warn-soft:#2E2412; --warn-ink:#FFCA66;
+    --shadow:none; --shadow-accent:0 2px 8px rgba(0,0,0,.4); --shadow-btn:0 6px 10px rgba(14,134,254,.25);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#1a1816; --card:#24211e; --ink:#eee8e1; --muted:#a99f94; --line:#3a352f;
-  --accent:#ee8463; --accent-soft:#3b2620; --sea:#7fbadb; --sea-soft:#1f3038;
-  --green:#86c896; --green-soft:#1f3124; --gold:#e1b45c; --gold-soft:#372c18;
-  --shadow:none;
+  --primary:#419FFE; --primary-hover:#73B9FE; --primary-50:#0F2742; --primary-200:#1C4C80; --primary-700:#A6D2FF;
+  --bg:#16161C; --card:#202028; --ink:#EDEDF2; --muted:rgba(237,237,242,.72); --tertiary:rgba(237,237,242,.55);
+  --line:#36363F; --line-soft:rgba(237,237,242,.08); --hover:rgba(237,237,242,.06);
+  --sea:#66C4F5; --sea-soft:#12293A; --green:#7BE3B5; --green-soft:#12291F;
+  --gold:#FFCA66; --gold-soft:#2E2412; --warn:#FFB933; --warn-soft:#2E2412; --warn-ink:#FFCA66;
+  --shadow:none; --shadow-accent:0 2px 8px rgba(0,0,0,.4); --shadow-btn:0 6px 10px rgba(14,134,254,.25);
 }
 *{box-sizing:border-box}
+[hidden]{display:none !important}
 html{scroll-behavior:smooth;scroll-padding-top:64px}
 body{margin:0;background:var(--bg);color:var(--ink);
-  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.65;font-size:15px}
-a{color:var(--sea)}
+  font-family:Roboto,"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.65;font-size:15px}
+a{color:var(--primary)}
+a:hover{color:var(--primary-hover)}
+:focus-visible{outline:none;box-shadow:var(--focus)}
 .wrap{max-width:980px;margin:0 auto;padding:0 16px}
 header.hero{padding:36px 0 20px}
-.hero h1{font-size:clamp(22px,4.5vw,32px);margin:0 0 6px;line-height:1.3}
+.hero h1{font-size:clamp(22px,4.5vw,30px);margin:0 0 6px;line-height:1.3;font-weight:700}
 .hero p{margin:0;color:var(--muted)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.chip{font-size:12.5px;padding:3px 10px;border-radius:99px;background:var(--card);border:1px solid var(--line);color:var(--muted)}
-nav.daynav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
-nav.daynav .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none}
-nav.daynav a{flex:none;text-decoration:none;color:var(--ink);font-size:13.5px;padding:5px 12px;border-radius:99px;border:1px solid var(--line);background:var(--card)}
-nav.daynav a:hover{border-color:var(--accent);color:var(--accent)}
+.chip{font-size:12.5px;padding:2px 8px;border-radius:var(--radius-sm);background:var(--sea-soft);color:var(--sea);font-weight:500}
+/* 導覽：Vittal Tabs（pill） */
+nav.daynav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-soft)}
+nav.daynav .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none;align-items:center}
+nav.daynav a,nav.daynav button{flex:none;text-decoration:none;color:var(--muted);font:inherit;font-size:13.5px;font-weight:500;padding:5px 12px;border-radius:var(--radius-md);
+  border:1px solid transparent;background:transparent;cursor:pointer;transition:background .1s ease-in,color .1s ease-in}
+nav.daynav a:hover,nav.daynav button:hover{background:var(--hover);color:var(--ink)}
+nav.daynav button[aria-selected="true"]{background:var(--primary-50);color:var(--primary);border-color:var(--primary-200)}
+nav.daynav .today-dot{display:inline-block;font-size:10.5px;line-height:1;padding:2px 4px;margin-left:4px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;vertical-align:1px}
+nav.daynav .sep{flex:none;width:1px;height:18px;background:var(--line);margin:0 6px}
 section{margin:28px 0}
-h2{font-size:20px;margin:0 0 12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px}
+h2{font-size:20px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line-soft);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:16px}
 .settings{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
 .settings label{font-weight:600}
-.settings input{font:inherit;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
-.settings .hint{color:var(--muted);font-size:13px;flex-basis:100%}
-.alert{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:8px;margin:10px 0;font-size:14px}
-.alert.info{border-color:var(--sea);background:var(--sea-soft)}
+.settings input{font:inherit;padding:6px 10px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--card);color:var(--ink);transition:border-color .1s ease-in}
+.settings input:hover{border-color:var(--primary-200)}
+.settings input:focus{outline:none;border-color:var(--primary);box-shadow:var(--focus)}
+.settings .hint{color:var(--tertiary);font-size:13px;flex-basis:100%}
+/* Vittal Alert */
+.alert{border:1px solid var(--warn);background:var(--warn-soft);padding:10px 14px;border-radius:var(--radius-md);margin:10px 0;font-size:14px}
+.alert.info{border-color:var(--primary-200);background:var(--primary-50)}
 .day{scroll-margin-top:64px}
 .dayhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
 .dayhead h2{margin:0}
 .dayhead .sub{color:var(--muted);font-size:13.5px}
-.wx{display:flex;align-items:center;gap:10px;background:var(--sea-soft);border-radius:12px;padding:8px 12px;min-width:220px}
+.dayhead .badge{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:99px;background:var(--primary);color:#fff;margin-left:6px;vertical-align:3px}
+.daypager{display:flex;justify-content:space-between;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft)}
+.btn-ghost{font:inherit;font-size:13.5px;font-weight:500;color:var(--primary);background:transparent;border:1px solid var(--line);border-radius:var(--radius-md);padding:6px 14px;cursor:pointer}
+.btn-ghost:hover{background:var(--primary-50);border-color:var(--primary-200)}
+.btn-ghost[disabled]{visibility:hidden}
+.wx{display:flex;align-items:center;gap:10px;background:var(--sea-soft);border-radius:var(--radius-md);padding:8px 12px;min-width:220px}
 .wx .ico{font-size:28px;line-height:1}
 .wx .t{font-weight:700}
 .wx .s{font-size:12.5px;color:var(--muted)}
-.wx .src{font-size:11px;color:var(--muted)}
+.wx .src{font-size:11px;color:var(--tertiary)}
 .timeline{list-style:none;margin:0;padding:0}
 .item{position:relative;padding:0 0 18px 22px;border-left:2px solid var(--line);margin-left:6px}
 .item:last-child{padding-bottom:4px}
-.item::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--accent)}
-.item.meal::before{border-color:var(--gold)}
-.time{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.item::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--primary)}
+.item.meal::before{border-color:var(--warn)}
+.time{font-size:12.5px;color:var(--tertiary);font-variant-numeric:tabular-nums}
 .time .drive{margin-left:8px}
-.item h3{font-size:16px;margin:2px 0 6px}
+.item h3{font-size:16px;margin:2px 0 6px;font-weight:600}
 .row{font-size:14px;margin:3px 0}
-.row b{color:var(--muted);font-weight:600;margin-right:4px}
-.box{margin-top:8px;border-radius:10px;padding:9px 12px;font-size:14px}
+.row b{color:var(--tertiary);font-weight:600;margin-right:4px}
+.box{margin-top:8px;border-radius:var(--radius-md);padding:9px 12px;font-size:14px}
 .box h4{margin:0 0 4px;font-size:13px;letter-spacing:.02em}
 .box ul{margin:0;padding-left:18px}
 .box li{margin:2px 0}
 .tips{background:var(--green-soft)} .tips h4{color:var(--green)}
 .food{background:var(--gold-soft)} .food h4{color:var(--gold)}
 .food .n{font-weight:700}
-.food .tag{font-size:11.5px;border:1px solid currentColor;border-radius:4px;padding:0 4px;margin-left:4px;color:var(--gold)}
+.food .tag{font-size:11.5px;border-radius:var(--radius-sm);padding:0 5px;margin-left:4px;color:var(--gold);background:var(--card);border:1px solid var(--line-soft)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
 table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
-th{color:var(--muted);font-weight:600;font-size:13px}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:13px;background:var(--hover)}
+tr:hover td{background:var(--hover)}
 .tablewrap{overflow-x:auto}
 .check li{list-style:none;margin:4px 0}
 .check ul{padding:0;margin:0}
 .check label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
-.check input{margin-top:5px;accent-color:var(--accent)}
-.check .meta{color:var(--muted);font-size:12.5px}
-.pill{display:inline-block;font-size:11.5px;padding:0 6px;border-radius:4px;background:var(--accent-soft);color:var(--accent);margin-left:4px}
-footer{color:var(--muted);font-size:12.5px;padding:24px 0 48px}
-.themebtn{position:fixed;right:14px;bottom:14px;z-index:6;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer;box-shadow:var(--shadow)}
-@media print{nav.daynav,.themebtn,.settings input{display:none}.card{break-inside:avoid}}
-.navbtn{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;text-decoration:none;padding:3px 10px;border-radius:99px;
-  background:var(--sea-soft);color:var(--sea);border:1px solid transparent;margin:6px 6px 0 0;white-space:nowrap}
-.navbtn:hover{border-color:var(--sea)}
-.navbtn.big{font-size:14px;padding:6px 14px;font-weight:600}
+.check input{margin-top:5px;accent-color:var(--primary);width:16px;height:16px}
+.check .meta{color:var(--tertiary);font-size:12.5px}
+.pill{display:inline-block;font-size:11.5px;font-weight:500;padding:0 6px;border-radius:var(--radius-sm);background:var(--primary-50);color:var(--primary);margin-left:4px}
+footer{color:var(--tertiary);font-size:12.5px;padding:24px 0 48px}
+.themebtn{position:fixed;right:14px;bottom:14px;z-index:6;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius-md);padding:8px 12px;font:inherit;font-size:13px;cursor:pointer;box-shadow:var(--shadow-accent)}
+.themebtn:hover{border-color:var(--primary-200)}
+@media print{nav.daynav,.themebtn,.settings input,.daypager{display:none}.day[hidden]{display:block !important}.card{break-inside:avoid}}
+/* Vittal Button：小按鈕＝tint，主要動作＝primary gradient */
+.navbtn{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:500;text-decoration:none;padding:3px 10px;border-radius:var(--radius-md);
+  background:var(--primary-50);color:var(--primary);border:1px solid transparent;margin:6px 6px 0 0;white-space:nowrap;transition:border-color .1s ease-in}
+.navbtn:hover{border-color:var(--primary-200);color:var(--primary)}
+.navbtn.big{font-size:14px;padding:7px 16px;font-weight:600;color:#fff;background:var(--gradient-primary);box-shadow:var(--shadow-btn)}
+.navbtn.big:hover{color:#fff;filter:brightness(1.05)}
 .food a.pin{text-decoration:none;margin-left:4px;font-size:13px}
-.daymap{height:260px;border-radius:12px;margin:4px 0 12px;border:1px solid var(--line);background:var(--sea-soft);z-index:0}
+.daymap{height:260px;border-radius:var(--radius-md);margin:4px 0 12px;border:1px solid var(--line-soft);background:var(--sea-soft);z-index:0}
 .maphead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px}
-.maphead .s{font-size:12px;color:var(--muted)}
-.num-icon{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+.maphead .s{font-size:12px;color:var(--tertiary)}
+.num-icon{background:#0E86FE;color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;
   font-size:12px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)}
-.num-icon.hotel{background:var(--sea)}
+.num-icon.hotel{background:#22A36A}
 #overviewMap{height:340px}
 </style>
 </head>
@@ -497,16 +535,17 @@ const WMO = c => c===0?["☀️","晴"]:c<=2?["🌤️","晴時多雲"]:c===3?["
 
 /* ---------- 渲染 ---------- */
 function renderNav(){
-  $("#daynav").innerHTML = DAYS.map((d,i)=>`<a href="#day${i+1}">Day ${i+1}</a>`).join("") +
-    `<a href="#overview">地圖</a><a href="#food">餐廳</a><a href="#rain">雨天備案</a><a href="#care">提醒</a><a href="#checklist">檢查表</a>`;
+  $("#daynav").innerHTML = `<span role="tablist" style="display:contents">` +
+    DAYS.map((d,i)=>`<button type="button" role="tab" id="tab${i}" aria-controls="day${i+1}" aria-selected="false" data-day="${i}">Day ${i+1}<span class="today-dot" hidden>今天</span></button>`).join("") +
+    `</span><span class="sep" aria-hidden="true"></span><a href="#overview">地圖</a><a href="#food">餐廳</a><a href="#rain">雨天備案</a><a href="#care">提醒</a><a href="#checklist">檢查表</a>`;
 }
 
 function renderDays(){
   $("#days").innerHTML = DAYS.map((d,i)=>`
-  <section class="day" id="day${i+1}">
+  <section class="day" id="day${i+1}" role="tabpanel" aria-labelledby="tab${i}" hidden>
     <div class="card">
       <div class="dayhead">
-        <div><h2>Day ${i+1}｜${esc(d.title)}</h2><div class="sub" id="date${i}">${esc(d.area)}</div></div>
+        <div><h2>Day ${i+1}｜${esc(d.title)}<span class="badge" hidden>今天</span></h2><div class="sub" id="date${i}">${esc(d.area)}</div></div>
         <div class="wx" id="wx${i}"></div>
       </div>
       <div class="maphead">
@@ -515,6 +554,10 @@ function renderDays(){
       </div>
       <div class="daymap" id="map${i}" data-day="${i}"></div>
       <ul class="timeline">${d.items.map((it,j)=>renderItem(it,i,j)).join("")}</ul>
+      <div class="daypager">
+        <button type="button" class="btn-ghost" data-go="${i-1}" ${i===0?"disabled":""}>← Day ${i}</button>
+        <button type="button" class="btn-ghost" data-go="${i+1}" ${i===DAYS.length-1?"disabled":""}>Day ${i+2} →</button>
+      </div>
     </div>
   </section>`).join("");
 }
@@ -559,6 +602,43 @@ function renderTables(){
   $("#checkList").addEventListener("change", e=>{
     const s = JSON.parse(store.get("kyushu-check")||"{}"); s[e.target.dataset.i] = e.target.checked;
     store.set("kyushu-check", JSON.stringify(s));
+  });
+}
+
+/* ---------- 每日分頁：預設顯示「今天」，不在行程期間則顯示 Day 1 ---------- */
+let currentDay = 0;
+function showDay(i, scroll){
+  currentDay = i;
+  document.querySelectorAll(".day").forEach((el,k)=>{ el.hidden = k!==i; });
+  document.querySelectorAll("#daynav [role=tab]").forEach((b,k)=>b.setAttribute("aria-selected", k===i));
+  const tab = $("#tab"+i); tab && tab.scrollIntoView({block:"nearest", inline:"nearest"});
+  if(scroll) $("#day"+(i+1)).scrollIntoView({behavior:"smooth", block:"start"});
+}
+function todayIndex(start){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(start||"")) return -1;
+  const t = new Date();
+  const today = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;
+  return DAYS.findIndex((_,i)=>fmt(addDays(start,i))===today);
+}
+function markToday(start){
+  const ti = todayIndex(start);
+  DAYS.forEach((_,i)=>{
+    $("#tab"+i).querySelector(".today-dot").hidden = i!==ti;
+    $("#day"+(i+1)).querySelector(".badge").hidden = i!==ti;
+  });
+  return ti;
+}
+function initDayTabs(){
+  $("#daynav").addEventListener("click", e=>{
+    const b = e.target.closest("[role=tab]"); if(b) showDay(+b.dataset.day, true);
+  });
+  $("#daynav").addEventListener("keydown", e=>{
+    if(!e.target.matches("[role=tab]") || !["ArrowLeft","ArrowRight"].includes(e.key)) return;
+    const n = (currentDay + (e.key==="ArrowRight"?1:-1) + DAYS.length) % DAYS.length;
+    showDay(n); $("#tab"+n).focus();
+  });
+  $("#days").addEventListener("click", e=>{
+    const b = e.target.closest("[data-go]"); if(b) showDay(+b.dataset.go, true);
   });
 }
 
@@ -624,6 +704,7 @@ function checkAlerts(start){
 }
 
 function setStart(v){
+  showDay(Math.max(0, markToday(v)));
   if(!/^\d{4}-\d{2}-\d{2}$/.test(v||"")){ DAYS.forEach((_,i)=>showNormal(i)); checkAlertsNoDate(); return; }
   store.set("kyushu-start", v);
   checkAlerts(v); loadWeather(v);
@@ -653,7 +734,7 @@ function drawMap(el, pts){
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom:18,
     attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
   const lls = pts.map(p=>[p.k[2], p.k[3]]);
-  L.polyline(lls, {color:getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#c2502e", weight:3, dashArray:"6 6", opacity:.8}).addTo(map);
+  L.polyline(lls, {color:getComputedStyle(document.documentElement).getPropertyValue("--primary").trim()||"#0E86FE", weight:3, dashArray:"6 6", opacity:.8}).addTo(map);
   pts.forEach(p=>L.marker([p.k[2],p.k[3]], {icon:icon(p.label, p.k[4])}).addTo(map)
     .bindPopup(`<b>${esc(p.k[0])}</b><br><a href="${gDir(p.k[1])}" target="_blank" rel="noopener">📍 Google Maps 導航</a>`));
   map.fitBounds(L.latLngBounds(lls).pad(0.2), {maxZoom:14});
@@ -675,7 +756,7 @@ function initMaps(){
   drawMap($("#overviewMap"), seq.map(k=>({k:P[k], label:uniq.indexOf(k)+1})));
 }
 
-renderNav(); renderDays(); renderFood(); renderTables();
+renderNav(); renderDays(); renderFood(); renderTables(); initDayTabs();
 const initial = new URLSearchParams(location.search).get("start") || store.get("kyushu-start") || TRIP_START;
 $("#startDate").value = initial;
 $("#startDate").addEventListener("change", e=>setStart(e.target.value));
