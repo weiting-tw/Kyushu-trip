@@ -127,7 +127,7 @@ tr:hover td{background:var(--hover)}
 footer{color:var(--tertiary);font-size:12.5px;padding:24px 0 48px}
 .themebtn{position:fixed;right:14px;bottom:14px;z-index:6;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius-md);padding:8px 12px;font:inherit;font-size:13px;cursor:pointer;box-shadow:var(--shadow-accent)}
 .themebtn:hover{border-color:var(--primary-200)}
-@media print{nav.daynav,.themebtn,.settings input,.daypager{display:none}.day[hidden]{display:block !important}.card{break-inside:avoid}}
+@media print{nav.daynav,.themebtn,.foodfab,dialog.sheet,.settings input,.daypager{display:none}.day[hidden]{display:block !important}.card{break-inside:avoid}}
 /* Vittal Button：小按鈕＝tint，主要動作＝primary gradient */
 .navbtn{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:500;text-decoration:none;padding:3px 10px;border-radius:var(--radius-md);
   background:var(--primary-50);color:var(--primary);border:1px solid transparent;margin:6px 6px 0 0;white-space:nowrap;transition:border-color .1s ease-in}
@@ -135,6 +135,30 @@ footer{color:var(--tertiary);font-size:12.5px;padding:24px 0 48px}
 .navbtn.big{font-size:14px;padding:7px 16px;font-weight:600;color:#fff;background:var(--gradient-primary);box-shadow:var(--shadow-btn)}
 .navbtn.big:hover{color:#fff;filter:brightness(1.05)}
 .food a.pin{text-decoration:none;margin-left:4px;font-size:13px}
+.food .km{font-size:11.5px;color:var(--tertiary);margin-left:4px;white-space:nowrap}
+.food.near{background:transparent;border:1px dashed var(--line)}
+.food .more{display:inline-block;margin-top:4px;font-size:12.5px;text-decoration:none}
+/* 附近吃什麼：Vittal Sheet（底部） */
+.foodfab{position:fixed;left:14px;bottom:14px;z-index:6;border:0;color:#fff;background:var(--gradient-primary);border-radius:var(--radius-md);padding:8px 14px;
+  font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;box-shadow:var(--shadow-btn)}
+dialog.sheet{border:0;padding:0;margin:auto auto 0;width:100%;max-width:640px;max-height:85vh;border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+  background:var(--card);color:var(--ink);box-shadow:0 6px 32px -4px rgba(35,35,50,.25)}
+dialog.sheet::backdrop{background:rgba(35,35,50,.4)}
+.sheet .sh-head{position:sticky;top:0;background:var(--card);padding:14px 16px 10px;border-bottom:1px solid var(--line-soft);z-index:1}
+.sheet .sh-head h2{font-size:17px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center}
+.sheet .sh-close{font:inherit;font-size:18px;line-height:1;border:0;background:transparent;color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:var(--radius-md)}
+.sheet .sh-close:hover{background:var(--hover)}
+.sheet .sh-actions{display:flex;flex-wrap:wrap;gap:6px}
+.sheet .sh-actions .navbtn{margin:0}
+.sheet .sh-status{font-size:12.5px;color:var(--tertiary);margin-top:6px}
+.sheet ul{list-style:none;margin:0;padding:6px 16px 20px}
+.sheet li{padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
+.sheet li:last-child{border-bottom:0}
+.sheet .fn{font-weight:700}
+.sheet .fd{color:var(--muted);font-size:13px;margin-top:2px}
+.sheet .fm{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:2px}
+.sheet .fm .km{font-size:12px;color:var(--primary);font-weight:600}
+.sheet .fm .navbtn{margin:0}
 .daymap{height:260px;border-radius:var(--radius-md);margin:4px 0 12px;border:1px solid var(--line-soft);background:var(--sea-soft);z-index:0}
 .maphead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px}
 .maphead .s{font-size:12px;color:var(--tertiary)}
@@ -178,11 +202,6 @@ footer{color:var(--tertiary);font-size:12.5px;padding:24px 0 48px}
 
   <div id="days"></div>
 
-  <section id="food">
-    <h2>🍽 餐廳總覽（依區域）</h2>
-    <div class="grid" id="foodGrid"></div>
-  </section>
-
   <section id="rain">
     <h2>☔ 雨天／疲累日替代方案</h2>
     <div class="card tablewrap"><table id="rainTable"></table></div>
@@ -205,6 +224,18 @@ footer{color:var(--tertiary);font-size:12.5px;padding:24px 0 48px}
 </footer>
 
 <button class="themebtn" id="themeBtn" type="button">🌓 深淺色</button>
+<button class="foodfab" id="foodFab" type="button">🍴 附近吃什麼</button>
+<dialog class="sheet" id="foodSheet" aria-labelledby="foodSheetTitle">
+  <div class="sh-head">
+    <h2><span id="foodSheetTitle">🍴 附近吃什麼</span><button type="button" class="sh-close" id="foodClose" aria-label="關閉">✕</button></h2>
+    <div class="sh-actions">
+      <button type="button" class="navbtn" id="foodLocate">📍 用我目前的位置排序</button>
+      <a class="navbtn" id="foodGmaps" href="#" target="_blank" rel="noopener">🔎 Google Maps 搜我附近的餐廳</a>
+    </div>
+    <div class="sh-status" id="foodStatus"></div>
+  </div>
+  <ul id="foodList"></ul>
+</dialog>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
@@ -463,8 +494,39 @@ const FOODQ = {
   "渡假村內 鐵板燒（宮崎牛）":"シェラトン・グランデ・オーシャンリゾート","渡假村內 日式／壽司餐廳":"シェラトン・グランデ・オーシャンリゾート",
   "渡假村內 地雞／鄉土料理":"フェニックス・シーガイア・リゾート","鹿兒島機場 國內線航廈 美食街／伴手禮":"鹿児島空港",
 };
+/* 餐廳位置：對應到上面的導航地點，或約略座標 [緯度, 經度]（用來算「附近」與距離，僅供排序參考） */
+const FOODAT = {
+  "黒かつ亭 中央駅本店":"kurokatsu","いちにいさん":"amu","あぢもり":"tenmonkan","仙巖園內 茶屋・餐廳":"sengan",
+  "磯街道 兩棒餅老店":"sengan","城山飯店館內餐廳":"shiroyama","天文館むじゃき":"tenmonkan",
+  "道之驛 櫻島「火の島めぐみ館」":[31.5927,130.6012],"Rainbow 櫻島":"nagisa","AMU Plaza 美食樓層":"amu",
+  "吾愛人":"tenmonkan","迴轉壽司 めっけもん":"amu","こむらさき":"tenmonkan","豚とろ":"tenmonkan",
+  "平川動物公園 園內餐廳／賣店":"hirakawa","霧島神宮 參道茶屋・霧島民藝村":"mingei","霧島民藝村 食事處":"mingei",
+  "霧島溫泉市場":"ichiba","Google Maps 搜尋「霧島神宮 そば」":"jingu","高千穗牧場 野外美食區":"bokujo",
+  "高千穗牧場「まきばのレストラン」":"bokujo","渡假村內 鐵板燒":"sheraton","渡假村內 日式／壽司餐廳":"sheraton",
+  "渡假村內 地雞／鄉土料理":"sheraton","晚餐：渡假村內輕鬆用餐":"sheraton","南洋餐廳 noa noa":"sunmesse",
+  "道之驛 フェニックス":[31.7640,131.4750],"AOSHIMAYA":"aoshima","青島 Beach Village":"aoshima","青島ういろう":"aoshima",
+  "おぐら":[31.9105,131.4230],"AEON MALL 宮崎 美食街":"aeon","館內迴轉壽司／定食店":"aeon",
+  "鹿兒島機場 國內線航廈 美食街／伴手禮":"airport",
+};
 const gDir = q => `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(q)}`;
 const gSearch = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+const gNearby = ([lat,lon]) => `https://www.google.com/maps/search/${encodeURIComponent("レストラン")}/@${lat},${lon},16z`;
+const foodBase = n => n.replace(/（[^）]*）$/,"").trim();
+function km([a,b],[c,d]){
+  const r = Math.PI/180, x = Math.sin((c-a)*r/2)**2 + Math.cos(a*r)*Math.cos(c*r)*Math.sin((d-b)*r/2)**2;
+  return 12742*Math.asin(Math.sqrt(x));
+}
+const kmTxt = d => d<0.2 ? "就在旁邊" : d<1 ? `約 ${Math.round(d*10)*100} m` : `約 ${d.toFixed(d<10?1:0)} km`;
+/* 全部餐廳（去重），附上座標 */
+const FOODS = (()=>{
+  const m = new Map();
+  DAYS.forEach((d,di)=>d.items.forEach(it=>(it.food||[]).forEach(f=>{
+    const b = foodBase(f.n), at = FOODAT[b] ?? FOODAT[f.n];
+    if(!at || m.has(b)) return;
+    m.set(b, {...f, base:b, day:di, q:FOODQ[f.n]||f.n, ll: typeof at==="string" ? [P[at][2],P[at][3]] : at});
+  })));
+  return [...m.values()];
+})();
 function dayStops(i){
   const seen = new Set(), out = [];
   const prev = i===0 ? "airport" : SLEEP[i-1];
@@ -537,7 +599,7 @@ const WMO = c => c===0?["☀️","晴"]:c<=2?["🌤️","晴時多雲"]:c===3?["
 function renderNav(){
   $("#daynav").innerHTML = `<span role="tablist" style="display:contents">` +
     DAYS.map((d,i)=>`<button type="button" role="tab" id="tab${i}" aria-controls="day${i+1}" aria-selected="false" data-day="${i}">Day ${i+1}<span class="today-dot" hidden>今天</span></button>`).join("") +
-    `</span><span class="sep" aria-hidden="true"></span><a href="#overview">地圖</a><a href="#food">餐廳</a><a href="#rain">雨天備案</a><a href="#care">提醒</a><a href="#checklist">檢查表</a>`;
+    `</span><span class="sep" aria-hidden="true"></span><a href="#overview">地圖</a><a href="#" data-food>餐廳</a><a href="#rain">雨天備案</a><a href="#care">提醒</a><a href="#checklist">檢查表</a>`;
 }
 
 function renderDays(){
@@ -568,6 +630,7 @@ function renderItem(it, di, ii){
   const notes = it.notes?.length ? `<div class="box tips"><h4>💡 注意與推薦</h4><ul>${it.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div>` : "";
   const food = it.food?.length ? `<div class="box food"><h4>🍽 附近餐廳</h4><ul>${it.food.map(f=>
      `<li><span class="n">${esc(f.n)}</span>${FOODQ[f.n]?`<a class="pin" href="${gSearch(FOODQ[f.n])}" target="_blank" rel="noopener" title="在 Google Maps 開啟">📍</a>`:""}${f.tag?`<span class="tag">${esc(f.tag)}</span>`:""}　${esc(f.d)}</li>`).join("")}</ul></div>` : "";
+  const near = places.length ? nearbyBox(places, new Set((it.food||[]).map(f=>foodBase(f.n)))) : "";
   return `<li class="item${it.meal?" meal":""}">
     <div class="time">${esc(it.t||"　")}${it.drive?`<span class="drive">🚗 ${esc(it.drive)}</span>`:""}</div>
     <h3>${esc(it.title)}</h3>
@@ -575,20 +638,66 @@ function renderItem(it, di, ii){
     ${it.alt?`<div class="row"><b>備用</b>${esc(it.alt)}</div>`:""}
     ${it.tip?`<div class="row"><b>貼心</b>${esc(it.tip)}</div>`:""}
     ${navs?`<div>${navs}</div>`:""}
-    ${notes}${food}
+    ${notes}${food}${near}
   </li>`;
 }
 
-function renderFood(){
-  const groups = {};
-  DAYS.forEach((d,i)=>d.items.forEach(it=>(it.food||[]).forEach(f=>{
-    (groups[d.area] ||= {days:new Set(), list:new Map()});
-    groups[d.area].days.add(i+1);
-    if(!groups[d.area].list.has(f.n)) groups[d.area].list.set(f.n, f);
-  })));
-  $("#foodGrid").innerHTML = Object.entries(groups).map(([area,g])=>`
-    <div class="card"><h3 style="margin:0 0 6px;font-size:16px">${esc(area)} <span class="pill">Day ${[...g.days].join("、")}</span></h3>
-    <ul style="margin:0;padding-left:18px;font-size:14px">${[...g.list.values()].map(f=>`<li><b>${esc(f.n)}</b>${FOODQ[f.n]?` <a href="${gSearch(FOODQ[f.n])}" target="_blank" rel="noopener" style="text-decoration:none">📍</a>`:""}：${esc(f.d)}</li>`).join("")}</ul></div>`).join("");
+/* 這個地點方圓 3 km 內、行程其他地方提到的餐廳 */
+function nearbyBox(places, skip){
+  const pts = places.map(k=>[P[k][2],P[k][3]]);
+  const list = FOODS.filter(f=>!skip.has(f.base))
+    .map(f=>({f, d:Math.min(...pts.map(p=>km(p,f.ll)))})).filter(x=>x.d<=3).sort((a,b)=>a.d-b.d).slice(0,5);
+  const more = places.map(k=>`<a class="more" href="${gNearby([P[k][2],P[k][3]])}" target="_blank" rel="noopener">🔎 在 Google Maps 找「${esc(P[k][0])}」附近餐廳</a>`).join("<br>");
+  return `<div class="box food near"><h4>🍴 這附近也能吃</h4>${list.length?`<ul>${list.map(({f,d})=>
+    `<li><span class="n">${esc(f.n)}</span><a class="pin" href="${gDir(f.q)}" target="_blank" rel="noopener" title="導航">📍</a><span class="km">${kmTxt(d)}</span>　${esc(f.d)}</li>`).join("")}</ul>`:""}${more}</div>`;
+}
+
+/* ---------- 附近吃什麼 ---------- */
+function renderFoodList(origin){
+  let rows;
+  if(origin){
+    rows = FOODS.map(f=>({f, d:km(origin,f.ll), from:"你"}));
+  }else{
+    const {origin:o, stops} = dayStops(currentDay);
+    const keys = (o?[o]:[]).concat(stops);
+    rows = FOODS.map(f=>{
+      let best = {d:Infinity};
+      keys.forEach(k=>{ const d = km([P[k][2],P[k][3]], f.ll); if(d<best.d) best = {d, from:P[k][0]}; });
+      return {f, ...best};
+    });
+  }
+  rows.sort((a,b)=>a.d-b.d);
+  $("#foodList").innerHTML = rows.map(({f,d,from})=>`<li>
+    <div class="fn">${esc(f.n)}${f.tag?` <span class="pill">${esc(f.tag)}</span>`:""}</div>
+    <div class="fd">${esc(f.d)}</div>
+    <div class="fm"><span class="km">${d<0.2?`${esc(from==="你"?"":from)}${kmTxt(d)}`:`${from==="你"?"距你":`距${esc(from)}`} ${kmTxt(d)}`}</span><span class="pill">Day ${f.day+1}</span>
+      <a class="navbtn" href="${gDir(f.q)}" target="_blank" rel="noopener">🧭 導航</a></div></li>`).join("");
+}
+function openFood(){
+  $("#foodStatus").textContent = `依 Day ${currentDay+1} 行程地點的距離排序；離開行程範圍時，按「用我目前的位置排序」。`;
+  $("#foodGmaps").href = gSearch("レストラン");
+  renderFoodList(null);
+  $("#foodSheet").showModal();
+  $("#foodList").scrollTop = 0;
+}
+function initFood(){
+  $("#foodFab").addEventListener("click", openFood);
+  document.querySelector("[data-food]").addEventListener("click", e=>{ e.preventDefault(); openFood(); });
+  $("#foodClose").addEventListener("click", ()=>$("#foodSheet").close());
+  $("#foodSheet").addEventListener("click", e=>{ if(e.target===e.currentTarget) e.currentTarget.close(); });
+  $("#foodLocate").addEventListener("click", ()=>{
+    if(!navigator.geolocation){ $("#foodStatus").textContent = "這個瀏覽器無法取得位置，請改用 Google Maps 搜尋。"; return; }
+    $("#foodStatus").textContent = "定位中…";
+    navigator.geolocation.getCurrentPosition(pos=>{
+      const me = [pos.coords.latitude, pos.coords.longitude];
+      $("#foodGmaps").href = gNearby(me);
+      renderFoodList(me);
+      const near = FOODS.some(f=>km(me,f.ll)<=5);
+      $("#foodStatus").textContent = near ? "已依你目前位置排序（距離為直線距離）。"
+        : "你附近 5 km 內沒有行程中的餐廳，建議直接用上方「Google Maps 搜我附近的餐廳」。";
+    }, ()=>{ $("#foodStatus").textContent = "無法取得位置（可能未允許定位），請改用 Google Maps 搜尋。"; },
+    {enableHighAccuracy:false, timeout:10000, maximumAge:300000});
+  });
 }
 
 function renderTables(){
@@ -756,7 +865,7 @@ function initMaps(){
   drawMap($("#overviewMap"), seq.map(k=>({k:P[k], label:uniq.indexOf(k)+1})));
 }
 
-renderNav(); renderDays(); renderFood(); renderTables(); initDayTabs();
+renderNav(); renderDays(); renderTables(); initDayTabs(); initFood();
 const initial = new URLSearchParams(location.search).get("start") || store.get("kyushu-start") || TRIP_START;
 $("#startDate").value = initial;
 $("#startDate").addEventListener("change", e=>setStart(e.target.value));
