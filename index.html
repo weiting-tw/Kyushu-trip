@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>九州親子慢旅行程</title>
 <meta name="description" content="8天7夜【鹿兒島＋霧島＋宮崎】親子＆孕婦友善自駕行程：景點注意事項、附近餐廳、每日天氣。">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
 :root{
   --bg:#f7f4ef; --card:#ffffff; --ink:#2b2622; --muted:#6f665d; --line:#e6dfd5;
@@ -91,6 +92,18 @@ th{color:var(--muted);font-weight:600;font-size:13px}
 footer{color:var(--muted);font-size:12.5px;padding:24px 0 48px}
 .themebtn{position:fixed;right:14px;bottom:14px;z-index:6;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer;box-shadow:var(--shadow)}
 @media print{nav.daynav,.themebtn,.settings input{display:none}.card{break-inside:avoid}}
+.navbtn{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;text-decoration:none;padding:3px 10px;border-radius:99px;
+  background:var(--sea-soft);color:var(--sea);border:1px solid transparent;margin:6px 6px 0 0;white-space:nowrap}
+.navbtn:hover{border-color:var(--sea)}
+.navbtn.big{font-size:14px;padding:6px 14px;font-weight:600}
+.food a.pin{text-decoration:none;margin-left:4px;font-size:13px}
+.daymap{height:260px;border-radius:12px;margin:4px 0 12px;border:1px solid var(--line);background:var(--sea-soft);z-index:0}
+.maphead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px}
+.maphead .s{font-size:12px;color:var(--muted)}
+.num-icon{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.num-icon.hotel{background:var(--sea)}
+#overviewMap{height:340px}
 </style>
 </head>
 <body>
@@ -115,6 +128,14 @@ footer{color:var(--muted);font-size:12.5px;padding:24px 0 48px}
       <div class="hint">設定出發日後，每天會自動帶入當地天氣預報（Open-Meteo，約 16 天內可查）；超過預報範圍時顯示 10 月下旬氣候平均值。也可以用網址 <code>?start=2026-10-24</code> 直接分享。</div>
     </div>
     <div id="globalAlerts"></div>
+  </section>
+
+  <section id="overview">
+    <h2>🗺 全程路線總覽</h2>
+    <div class="card">
+      <div id="overviewMap" class="daymap"></div>
+      <div class="s" style="font-size:12.5px;color:var(--muted)">地圖上的位置僅供示意；導航按鈕會用日文店名／景點名開啟 Google Maps，位置最準。</div>
+    </div>
   </section>
 
   <div id="days"></div>
@@ -147,6 +168,7 @@ footer{color:var(--muted);font-size:12.5px;padding:24px 0 48px}
 
 <button class="themebtn" id="themeBtn" type="button">🌓 深淺色</button>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 /* ---------- 地點（天氣用） ---------- */
 const LOC = {
@@ -339,6 +361,78 @@ const DAYS = [
 ]},
 ];
 
+/* ---------- 導航地點 ----------
+   每天：[項目索引, 顯示名稱, Google Maps 搜尋字（日文）, 緯度, 經度, 是否為住宿] */
+const P = {
+  airport:["鹿兒島機場","鹿児島空港",31.8034,130.7194],
+  kurokatsu:["黒かつ亭 中央駅本店","黒かつ亭 中央駅本店",31.5843,130.5436],
+  sengan:["仙巖園","仙巌園",31.6177,130.5767],
+  shiroyama:["城山飯店鹿兒島","SHIROYAMA HOTEL kagoshima",31.6000,130.5527,1],
+  ferry:["櫻島渡輪 鹿兒島港","桜島フェリーターミナル 鹿児島港",31.5947,130.5636],
+  nagisa:["熔岩渚公園足湯","桜島 溶岩なぎさ公園 足湯",31.5886,130.6004],
+  dino:["櫻島自然恐龍公園","桜島自然恐竜公園",31.5934,130.6097],
+  amu:["AMU Plaza 鹿兒島","アミュプラザ鹿児島",31.5838,130.5418],
+  tenmonkan:["天文館","天文館 鹿児島",31.5896,130.5555],
+  hirakawa:["平川動物公園","平川動物公園",31.4795,130.5186],
+  kih:["霧島國際飯店","霧島国際ホテル",31.8740,130.8452,1],
+  jingu:["霧島神宮","霧島神宮",31.8590,130.8713],
+  mingei:["霧島民藝村","霧島民芸村",31.8547,130.8698],
+  ichiba:["霧島溫泉市場","霧島温泉市場",31.8770,130.8445],
+  bokujo:["高千穗牧場","高千穂牧場 都城",31.8290,130.9620],
+  sheraton:["宮崎喜來登","シェラトン・グランデ・オーシャンリゾート",31.9603,131.4690,1],
+  sunmesse:["Sun Messe 日南","サンメッセ日南",31.7395,131.4680],
+  aoshima:["青島神社","青島神社",31.8047,131.4746],
+  aeon:["AEON MALL 宮崎","イオンモール宮崎",31.9418,131.4402],
+  shosenkyu:["松泉宮溫泉","シーガイア 松泉宮",31.9570,131.4660],
+  airportReturn:["鹿兒島機場（還車＆登機）","鹿児島空港 国際線",31.8034,130.7194],
+};
+const NAV = [
+  [[0,"airport"],[2,"kurokatsu"],[3,"sengan"],[4,"shiroyama"]],
+  [[1,"ferry"],[2,"nagisa"],[2,"dino"],[3,"amu"],[4,"shiroyama"],[5,"tenmonkan"]],
+  [[1,"hirakawa"],[4,"kih"]],
+  [[1,"jingu"],[2,"mingei"],[3,"kih"],[4,"ichiba"]],
+  [[1,"bokujo"],[4,"sheraton"]],
+  [[1,"sunmesse"],[3,"aoshima"],[4,"sheraton"]],
+  [[1,"aeon"],[3,"shosenkyu"]],
+  [[3,"airportReturn"]],
+];
+const SLEEP = ["shiroyama","shiroyama","kih","kih","sheraton","sheraton","sheraton",null];
+const FOODQ = {
+  "黒かつ亭 中央駅本店":"黒かつ亭 中央駅本店","いちにいさん（AMU Plaza／天文館）":"いちにいさん 鹿児島","あぢもり（天文館）":"あぢもり 天文館",
+  "仙巖園內 茶屋・餐廳":"仙巌園","磯街道 兩棒餅老店（平田屋／中川家）":"両棒餅 平田屋 鹿児島","城山飯店館內餐廳":"SHIROYAMA HOTEL kagoshima",
+  "天文館むじゃき（白熊冰）":"天文館むじゃき","天文館むじゃき":"天文館むじゃき","道之驛 櫻島「火の島めぐみ館」":"道の駅 桜島 火の島めぐみ館",
+  "Rainbow 櫻島（國民宿舍）":"国民宿舎レインボー桜島","AMU Plaza 美食樓層":"アミュプラザ鹿児島","吾愛人（わいど）":"吾愛人 本店 鹿児島",
+  "迴轉壽司 めっけもん":"めっけもん 回転寿司 鹿児島","こむらさき（天文館）":"ラーメン こむらさき 天文館","豚とろ（天文館本店）":"豚とろ 天文館本店",
+  "平川動物公園 園內餐廳／賣店":"平川動物公園","霧島神宮 參道茶屋・霧島民藝村":"霧島民芸村","霧島民藝村 食事處":"霧島民芸村",
+  "霧島溫泉市場":"霧島温泉市場","霧島溫泉市場（回程方向）":"霧島温泉市場","Google Maps 搜尋「霧島神宮 そば」":"霧島神宮 そば",
+  "高千穗牧場 野外美食區":"高千穂牧場 都城","高千穗牧場「まきばのレストラン」":"高千穂牧場 都城",
+  "南洋餐廳 noa noa（園內）":"サンメッセ日南","南洋餐廳 noa noa（Sun Messe 內）":"サンメッセ日南","道之驛 フェニックス":"道の駅フェニックス",
+  "AOSHIMAYA（青島參道）":"AOSHIMAYA 青島","AOSHIMAYA":"AOSHIMAYA 青島","青島 Beach Village":"AOSHIMA BEACH VILLAGE",
+  "青島ういろう（外郎糕）":"青島ういろう","おぐら（宮崎市區）":"おぐら 本店 宮崎","AEON MALL 宮崎 美食街":"イオンモール宮崎",
+  "渡假村內 鐵板燒（宮崎牛）":"シェラトン・グランデ・オーシャンリゾート","渡假村內 日式／壽司餐廳":"シェラトン・グランデ・オーシャンリゾート",
+  "渡假村內 地雞／鄉土料理":"フェニックス・シーガイア・リゾート","鹿兒島機場 國內線航廈 美食街／伴手禮":"鹿児島空港",
+};
+const gDir = q => `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(q)}`;
+const gSearch = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+function dayStops(i){
+  const seen = new Set(), out = [];
+  const prev = i===0 ? "airport" : SLEEP[i-1];
+  NAV[i].forEach(([,k])=>{
+    const last = out.length ? out[out.length-1] : prev;
+    if(k!==last && !(seen.has(k) && k!==prev)){ seen.add(k); out.push(k); }
+  });
+  return {origin: prev, stops: out};
+}
+function dayRouteUrl(i){
+  const {origin, stops} = dayStops(i);
+  const list = stops.map(k=>P[k][1]);
+  const dest = list.pop();
+  let u = `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(dest)}`;
+  if(origin) u += `&origin=${encodeURIComponent(P[origin][1])}`;
+  if(list.length) u += `&waypoints=${encodeURIComponent(list.join("|"))}`;
+  return u;
+}
+
 /* ---------- 其他表格 ---------- */
 const RAIN = [
   ["櫻島戶外步道","Io World 鹿兒島水族館","室內、親子友善、廁所方便","市區約 10 分","下雨、火山灰多、風大","櫻島渡輪可保留或取消"],
@@ -391,7 +485,7 @@ const WMO = c => c===0?["☀️","晴"]:c<=2?["🌤️","晴時多雲"]:c===3?["
 /* ---------- 渲染 ---------- */
 function renderNav(){
   $("#daynav").innerHTML = DAYS.map((d,i)=>`<a href="#day${i+1}">Day ${i+1}</a>`).join("") +
-    `<a href="#food">餐廳</a><a href="#rain">雨天備案</a><a href="#care">提醒</a><a href="#checklist">檢查表</a>`;
+    `<a href="#overview">地圖</a><a href="#food">餐廳</a><a href="#rain">雨天備案</a><a href="#care">提醒</a><a href="#checklist">檢查表</a>`;
 }
 
 function renderDays(){
@@ -402,21 +496,29 @@ function renderDays(){
         <div><h2>Day ${i+1}｜${esc(d.title)}</h2><div class="sub" id="date${i}">${esc(d.area)}</div></div>
         <div class="wx" id="wx${i}"></div>
       </div>
-      <ul class="timeline">${d.items.map(renderItem).join("")}</ul>
+      <div class="maphead">
+        <a class="navbtn big" href="${dayRouteUrl(i)}" target="_blank" rel="noopener">🧭 開啟 Day ${i+1} 完整自駕路線</a>
+        <span class="s">${dayStops(i).origin?`從 ${esc(P[dayStops(i).origin][0])} 出發 → `:""}${dayStops(i).stops.map(k=>esc(P[k][0])).join(" → ")}</span>
+      </div>
+      <div class="daymap" id="map${i}" data-day="${i}"></div>
+      <ul class="timeline">${d.items.map((it,j)=>renderItem(it,i,j)).join("")}</ul>
     </div>
   </section>`).join("");
 }
 
-function renderItem(it){
+function renderItem(it, di, ii){
+  const places = NAV[di].filter(([j])=>j===ii).map(([,k])=>k);
+  const navs = places.map(k=>`<a class="navbtn" href="${gDir(P[k][1])}" target="_blank" rel="noopener">📍 導航：${esc(P[k][0])}</a>`).join("");
   const notes = it.notes?.length ? `<div class="box tips"><h4>💡 注意與推薦</h4><ul>${it.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div>` : "";
   const food = it.food?.length ? `<div class="box food"><h4>🍽 附近餐廳</h4><ul>${it.food.map(f=>
-     `<li><span class="n">${esc(f.n)}</span>${f.tag?`<span class="tag">${esc(f.tag)}</span>`:""}　${esc(f.d)}</li>`).join("")}</ul></div>` : "";
+     `<li><span class="n">${esc(f.n)}</span>${FOODQ[f.n]?`<a class="pin" href="${gSearch(FOODQ[f.n])}" target="_blank" rel="noopener" title="在 Google Maps 開啟">📍</a>`:""}${f.tag?`<span class="tag">${esc(f.tag)}</span>`:""}　${esc(f.d)}</li>`).join("")}</ul></div>` : "";
   return `<li class="item${it.meal?" meal":""}">
     <div class="time">${esc(it.t||"　")}${it.drive?`<span class="drive">🚗 ${esc(it.drive)}</span>`:""}</div>
     <h3>${esc(it.title)}</h3>
     <div class="row"><b>標準</b>${esc(it.plan)}</div>
     ${it.alt?`<div class="row"><b>備用</b>${esc(it.alt)}</div>`:""}
     ${it.tip?`<div class="row"><b>貼心</b>${esc(it.tip)}</div>`:""}
+    ${navs?`<div>${navs}</div>`:""}
     ${notes}${food}
   </li>`;
 }
@@ -430,7 +532,7 @@ function renderFood(){
   })));
   $("#foodGrid").innerHTML = Object.entries(groups).map(([area,g])=>`
     <div class="card"><h3 style="margin:0 0 6px;font-size:16px">${esc(area)} <span class="pill">Day ${[...g.days].join("、")}</span></h3>
-    <ul style="margin:0;padding-left:18px;font-size:14px">${[...g.list.values()].map(f=>`<li><b>${esc(f.n)}</b>：${esc(f.d)}</li>`).join("")}</ul></div>`).join("");
+    <ul style="margin:0;padding-left:18px;font-size:14px">${[...g.list.values()].map(f=>`<li><b>${esc(f.n)}</b>${FOODQ[f.n]?` <a href="${gSearch(FOODQ[f.n])}" target="_blank" rel="noopener" style="text-decoration:none">📍</a>`:""}：${esc(f.d)}</li>`).join("")}</ul></div>`).join("");
 }
 
 function renderTables(){
@@ -519,11 +621,43 @@ function checkAlertsNoDate(){
   });
 })();
 
+/* ---------- 地圖（Leaflet + OpenStreetMap） ---------- */
+function icon(n, hotel){
+  return L.divIcon({className:"", html:`<div class="num-icon${hotel?" hotel":""}">${n}</div>`, iconSize:[24,24], iconAnchor:[12,12]});
+}
+function drawMap(el, pts){
+  const map = L.map(el, {scrollWheelZoom:false});
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom:18,
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+  const lls = pts.map(p=>[p.k[2], p.k[3]]);
+  L.polyline(lls, {color:getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#c2502e", weight:3, dashArray:"6 6", opacity:.8}).addTo(map);
+  pts.forEach(p=>L.marker([p.k[2],p.k[3]], {icon:icon(p.label, p.k[4])}).addTo(map)
+    .bindPopup(`<b>${esc(p.k[0])}</b><br><a href="${gDir(p.k[1])}" target="_blank" rel="noopener">📍 Google Maps 導航</a>`));
+  map.fitBounds(L.latLngBounds(lls).pad(0.2), {maxZoom:14});
+  return map;
+}
+function initMaps(){
+  if(!window.L){ document.querySelectorAll(".daymap").forEach(el=>{ el.style.height="auto"; el.style.padding="10px";
+    el.textContent="地圖暫時無法載入，請使用上方的導航按鈕。"; }); return; }
+  const io = new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting) return; io.unobserve(e.target);
+    const i = +e.target.dataset.day, {origin, stops} = dayStops(i);
+    const pts = (origin?[{k:P[origin], label:"住"}]:[]).concat(stops.map((k,n)=>({k:P[k], label:n+1})));
+    drawMap(e.target, pts);
+  }), {rootMargin:"200px"});
+  document.querySelectorAll(".daymap[data-day]").forEach(el=>io.observe(el));
+  // 全程總覽
+  const seq = ["airport"]; NAV.forEach(d=>d.forEach(([,k])=>{ if(seq[seq.length-1]!==k) seq.push(k); }));
+  const uniq = [...new Set(seq)];
+  drawMap($("#overviewMap"), seq.map(k=>({k:P[k], label:uniq.indexOf(k)+1})));
+}
+
 renderNav(); renderDays(); renderFood(); renderTables();
 const initial = new URLSearchParams(location.search).get("start") || store.get("kyushu-start") || "";
 $("#startDate").value = initial;
 $("#startDate").addEventListener("change", e=>setStart(e.target.value));
 setStart(initial);
+window.addEventListener("load", initMaps);
 </script>
 </body>
 </html>
