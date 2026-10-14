@@ -144,7 +144,7 @@ footer{color:var(--tertiary);font-size:12.5px;padding:24px 0 48px}
 .links a.nav{background:var(--primary-50);border-color:transparent;color:var(--primary)}
 .award{display:inline-block;font-size:11px;font-weight:600;padding:0 5px;border-radius:var(--radius-sm);background:var(--warn-soft);color:var(--warn-ink);border:1px solid var(--warn);margin-left:4px}
 .rec{display:inline-block;font-size:11px;font-weight:700;padding:0 5px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;margin-left:4px}
-.shop{background:var(--sea-soft)} .shop h4{color:var(--sea)}
+.shop{background:var(--sea-soft);margin:0 0 12px} .shop h4{color:var(--sea)}
 .shop .n{font-weight:700}
 .sh-cat{margin-bottom:8px}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden}
@@ -563,8 +563,21 @@ const RATE = {
   "青島ういろう":{"t":"青島屋 売店（參道口賣外郎糕）","s":3.02,"r":17,"u":"https://tabelog.com/miyazaki/A4501/A450101/45010598/dtlrvwlst/"},
   "おぐら":{"t":"味のおぐら 本店（週二公休）","s":3.53,"r":2184,"u":"https://tabelog.com/miyazaki/A4501/A450101/45000012/dtlrvwlst/","aw":"洋食 百名店 2025"}
 };
-/* 買陀螺（ベイブレードX／傳統こま）：n=店名（Google Maps 搜尋用） d=說明 ll=約略座標 h=營業時間 type=beyblade|traditional|both */
-const TOPS = [];
+/* 買陀螺（ベイブレードX／傳統こま，2026/10 查詢；B4＝タカラトミー公認店，庫存請先電話確認）：n=店名（Google Maps 搜尋用） d=說明 ll=約略座標 h=營業時間 type=beyblade|traditional|both b4=タカラトミー公認 B4 店 */
+const TOPS = [
+  {"n":"トイザらス 鹿児島店","b4":1,"d":"ベイブレードX 官方公認 B4 店，新品最齊全，有公認大會；在ニシムタ N's CITY 2F，往平川動物公園順路","ll":[31.5528,130.5447],"h":"10:00–21:00","type":"beyblade"},
+  {"n":"駿河屋 天文館店","d":"大型新品／中古玩具店（B3F–4F），可找二手或絕版ベイブレード，庫存要現場看","ll":[31.588,130.556],"h":"10:00–20:00（無休）","type":"beyblade"},
+  {"n":"丸新玩具 天文館店","d":"山形屋旁 80 年老玩具店，1F 角色玩具、2F 羽子板等傳統玩具；ベイブレード／傳統こま有無不確定，建議先打電話","ll":[31.5895,130.5575],"h":"10:30–18:00（週二公休）","type":"both"},
+  {"n":"鹿児島ブランドショップ","d":"縣營特產店（よかど鹿児島 2F），有鄉土玩具與工藝品；有無木製こま不確定，可先電話 099-225-6120","ll":[31.5889,130.558],"h":"10:00–18:00（每月第 2 個週二公休）","type":"traditional"},
+  {"n":"駿河屋 七ッ島店","d":"大型中古玩具店，免費停車場；可找二手ベイブレード，可與トイザらス、平川動物公園排同一天","ll":[31.506,130.542],"h":"10:00–21:00（無休）","type":"beyblade"},
+  {"n":"MEGAドン・キホーテ霧島隼人店","b4":1,"d":"ベイブレードX 官方公認 B4 店（可報名 S1 大會）；隼人站步行約 200 m，霧島往返順路","ll":[31.744,130.736],"h":null,"type":"beyblade"},
+  {"n":"サンサンランド国分店","b4":1,"d":"ベイブレードX 官方公認 B4 店（トイセンター・タカオカ），有新品與公認大會","ll":[31.733,130.756],"h":null,"type":"beyblade"},
+  {"n":"トイザらス・ベビーザらス 宮交シティ店","b4":1,"d":"ベイブレードX 官方公認 B4 店，宮崎最齊全；2025/11 由舊宮崎店搬來（宮交シティ 2F，南宮崎站旁）","ll":[31.899,131.424],"h":"平日 10:00–20:00／週末假日 10:00–21:00","type":"beyblade"},
+  {"n":"トイザらス イオンモール宮崎店","d":"Day 7 AEON 補貨時可順路看；2025/12 開幕、偏大人玩具（盲盒、LEGO、Tomica），有無ベイブレードX 未確認","ll":[31.937,131.4525],"h":"10:00–21:00","type":"beyblade"},
+  {"n":"エディオン宮崎本店","d":"2026/6 重新開幕，2F 新增玩具與卡牌區；有無ベイブレード未確認，當備選","ll":[31.9,131.418],"h":"10:00–20:00","type":"beyblade"},
+  {"n":"城の駅 佐土原いろは館","d":"佐土原傳統玩具：竹製會嗡嗡響的「神代こま」（約 ¥1,500–1,900）與うずら車，很適合當伴手禮；喜來登北邊約 20 分車程（價格與時間為 2021 年資料）","ll":[32.001,131.417],"h":"09:00–18:00（2021 年資料）","type":"traditional"},
+  {"n":"MEGAドン・キホーテ 都城店","b4":1,"d":"ベイブレードX 官方公認 B4 店，營業到深夜、可退稅；Day 5 高千穗牧場往宮崎可順路","ll":[31.7395,131.079],"h":"09:00–翌 02:00","type":"beyblade"}
+];
 const TOP_TYPE = {beyblade:"ベイブレードX", traditional:"傳統陀螺", both:"ベイブレード＋傳統"};
 const REC_TAGS = new Set(["推薦","首選","必吃","親子友善","10週年"]);
 const gDir = q => `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(q)}`;
@@ -687,6 +700,7 @@ function renderDays(){
         <span class="s">${dayStops(i).origin?`從 ${esc(P[dayStops(i).origin][0])} 出發 → `:""}${dayStops(i).stops.map(k=>esc(P[k][0])).join(" → ")}</span>
       </div>
       <div class="daymap" id="map${i}" data-day="${i}"></div>
+      ${dayTopsBox(i)}
       <ul class="timeline">${d.items.map((it,j)=>renderItem(it,i,j)).join("")}</ul>
       <div class="daypager">
         <button type="button" class="btn-ghost" data-go="${i-1}" ${i===0?"disabled":""}>← Day ${i}</button>
@@ -720,12 +734,23 @@ function nearbyBox(places, skip){
   const list = FOODS.filter(f=>!skip.has(f.base))
     .map(f=>({f, d:Math.min(...pts.map(p=>km(p,f.ll)))})).filter(x=>x.d<=3).sort((a,b)=>a.d-b.d).slice(0,5);
   const more = places.map(k=>`<a class="more" href="${gNearby([P[k][2],P[k][3]])}" target="_blank" rel="noopener">🔎 在 Google Maps 找「${esc(P[k][0])}」附近餐廳</a>`).join("<br>");
-  const tops = TOPS.map(t=>({t, d:Math.min(...pts.map(p=>km(p,t.ll)))})).filter(x=>x.d<=5).sort((a,b)=>a.d-b.d).slice(0,2);
   return `<div class="box food near"><h4>🍴 這附近也能吃</h4>${list.length?`<ul>${list.map(({f,d})=>
-    `<li>${foodTitle(f)}<span class="km">${kmTxt(d)}</span>${foodLinks(f)}<div>${esc(f.d)}</div></li>`).join("")}</ul>`:""}${more}</div>` +
-    (tops.length ? `<div class="box shop"><h4>🌀 這附近買陀螺</h4><ul>${tops.map(({t,d})=>`<li>${topTitle(t)}<span class="km">${kmTxt(d)}</span>${topLinks(t)}<div>${esc(t.d)}</div></li>`).join("")}</ul></div>` : "");
+    `<li>${foodTitle(f)}<span class="km">${kmTxt(d)}</span>${foodLinks(f)}<div>${esc(f.d)}</div></li>`).join("")}</ul>`:""}${more}</div>`;
 }
-function topTitle(t){ return `<span class="n">${esc(t.n)}</span><span class="pill">${esc(TOP_TYPE[t.type]||"陀螺")}</span>`; }
+/* 當天行程地點（含前一晚住宿）12 km 內可買陀螺的店，每天列一次 */
+function dayTopsBox(i){
+  const {origin, stops} = dayStops(i);
+  const keys = (origin?[origin]:[]).concat(stops);
+  const list = TOPS.map(t=>{
+    let best = {d:Infinity};
+    keys.forEach(k=>{ const d = km([P[k][2],P[k][3]], t.ll); if(d<best.d) best = {d, from:P[k][0]}; });
+    return {t, ...best};
+  }).filter(x=>x.d<=12).sort((a,b)=>(b.t.b4||0)-(a.t.b4||0) || a.d-b.d).slice(0,4);
+  if(!list.length) return "";
+  return `<div class="box shop"><h4>🌀 今天順路買陀螺</h4><ul>${list.map(({t,d,from})=>
+    `<li>${topTitle(t)}<span class="km">距${esc(from)} ${kmTxt(d)}</span>${topLinks(t)}<div>${esc(t.d)}${t.h?`　🕘 ${esc(t.h)}`:""}</div></li>`).join("")}</ul></div>`;
+}
+function topTitle(t){ return `<span class="n">${esc(t.n)}</span><span class="pill">${esc(TOP_TYPE[t.type]||"陀螺")}</span>${t.b4?`<span class="rec">B4 公認店</span>`:""}`; }
 function topLinks(t){
   return `<div class="links"><a href="${gSearch(t.n)}" target="_blank" rel="noopener">💬 Google 評論／營業時間</a><a class="nav" href="${gDir(t.n)}" target="_blank" rel="noopener">🧭 導航</a></div>`;
 }
