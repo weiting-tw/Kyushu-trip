@@ -327,7 +327,7 @@ const DAYS = [
    notes:["AMU Plaza 有付費停車、育嬰室、兒童椅，雨天也最方便。","AMU Plaza 頂樓有摩天輪「Amuran」，大寶可能會吵著要搭 😄"],
    food:[
     {n:"AMU Plaza 美食樓層", d:"拉麵、黑豚、壽司、洋食一次滿足，電梯廁所齊全。", tag:"親子友善"},
-    {n:"吾愛人（わいど）", d:"鹿兒島關東煮（おでん）與黑豚料理老店，湯頭清淡，孩子可分食。"},
+    {n:"吾愛人（わかな）", d:"鹿兒島關東煮（おでん）與黑豚料理老店，湯頭清淡，孩子可分食。"},
     {n:"迴轉壽司 めっけもん", d:"鹿兒島在地迴轉壽司，孕媽咪可點炙燒、玉子燒、茶碗蒸、烏龍麵。"},
    ]},
   {t:"14:00~", drive:"15 分鐘", title:"返回城山飯店休息（續住）", plan:"大寶在房間深度午睡，媽媽靜養。", alt:"大寶太興奮不睡：在飯店室內散步或觀景台看火山。", tip:"下午兩點就回到飯店，大人小孩都完全不累。",
@@ -371,7 +371,7 @@ const DAYS = [
    food:[
     {n:"霧島民藝村 食事處", d:"大鳥居旁，村內有食事處（麵食、定食），座位多。", tag:"親子友善"},
     {n:"霧島溫泉市場", d:"回旅館路上，溫泉蒸蛋、蒸地瓜、黑豚包子，邊吃邊泡足湯。"},
-    {n:"Google Maps 搜尋「霧島神宮 そば」", d:"周邊有數家手打蕎麥小店，營業日不固定，出發前查最新營業狀態。"},
+    {n:"霧島蕎麦處 かわぐち（手打蕎麥）", d:"霧島神宮周邊評價最高的手打蕎麥，完全預約制、週三四公休、賣完即止，只收現金；沒訂到就在 Google 搜「霧島神宮 そば」找其他小店。"},
    ]},
   {t:"14:30~", drive:"15 分鐘", title:"返回溫泉旅館", plan:"自駕返回旅館，準備下午活動。", tip:"車程超短，隨時可回防。"},
   {t:"15:00-16:30", title:"下午獨處與泡湯時光", plan:"【標準動線】大寶午睡，夫妻泡私人湯屋。", alt:"【備用動線】帶大寶去溫泉市場蒸氣足湯。", tip:"湯屋空間大，大寶不睡也可帶進去榻榻米區玩。",
@@ -502,10 +502,10 @@ const FOODQ = {
   "黒かつ亭 中央駅本店":"黒かつ亭 中央駅本店","いちにいさん（AMU Plaza／天文館）":"いちにいさん 鹿児島","あぢもり（天文館）":"あぢもり 天文館",
   "仙巖園內 茶屋・餐廳":"仙巌園","磯街道 兩棒餅老店（平田屋／中川家）":"両棒餅 平田屋 鹿児島","城山飯店館內餐廳":"SHIROYAMA HOTEL kagoshima",
   "天文館むじゃき（白熊冰）":"天文館むじゃき","天文館むじゃき":"天文館むじゃき","道之驛 櫻島「火の島めぐみ館」":"道の駅 桜島 火の島めぐみ館",
-  "Rainbow 櫻島（國民宿舍）":"国民宿舎レインボー桜島","AMU Plaza 美食樓層":"アミュプラザ鹿児島","吾愛人（わいど）":"吾愛人 本店 鹿児島",
+  "Rainbow 櫻島（國民宿舍）":"国民宿舎レインボー桜島","AMU Plaza 美食樓層":"アミュプラザ鹿児島","吾愛人（わかな）":"吾愛人 本店 鹿児島",
   "迴轉壽司 めっけもん":"めっけもん 回転寿司 鹿児島","こむらさき（天文館）":"ラーメン こむらさき 天文館","豚とろ（天文館本店）":"豚とろ 天文館本店",
   "平川動物公園 園內餐廳／賣店":"平川動物公園","霧島神宮 參道茶屋・霧島民藝村":"霧島民芸村","霧島民藝村 食事處":"霧島民芸村",
-  "霧島溫泉市場":"霧島温泉市場","霧島溫泉市場（回程方向）":"霧島温泉市場","Google Maps 搜尋「霧島神宮 そば」":"霧島神宮 そば",
+  "霧島溫泉市場":"霧島温泉市場","霧島溫泉市場（回程方向）":"霧島温泉市場","霧島蕎麦處 かわぐち（手打蕎麥）":"霧島蕎麦處 かわぐち",
   "高千穗牧場 野外美食區":"高千穂牧場 都城","高千穗牧場「まきばのレストラン」":"高千穂牧場 都城",
   "南洋餐廳 noa noa（園內）":"サンメッセ日南","南洋餐廳 noa noa（Sun Messe 內）":"サンメッセ日南","道之驛 フェニックス":"道の駅フェニックス",
   "AOSHIMAYA（青島參道）":"AOSHIMAYA 青島","AOSHIMAYA":"AOSHIMAYA 青島","青島 Beach Village":"AOSHIMA BEACH VILLAGE",
@@ -520,15 +520,45 @@ const FOODAT = {
   "道之驛 櫻島「火の島めぐみ館」":[31.5927,130.6012],"Rainbow 櫻島":"nagisa","AMU Plaza 美食樓層":"amu",
   "吾愛人":"tenmonkan","迴轉壽司 めっけもん":"amu","こむらさき":"tenmonkan","豚とろ":"tenmonkan",
   "平川動物公園 園內餐廳／賣店":"hirakawa","霧島神宮 參道茶屋・霧島民藝村":"mingei","霧島民藝村 食事處":"mingei",
-  "霧島溫泉市場":"ichiba","Google Maps 搜尋「霧島神宮 そば」":"jingu","高千穗牧場 野外美食區":"bokujo",
+  "霧島溫泉市場":"ichiba","霧島蕎麦處 かわぐち（手打蕎麥）":"jingu","高千穗牧場 野外美食區":"bokujo",
   "高千穗牧場「まきばのレストラン」":"bokujo","渡假村內 鐵板燒":"sheraton","渡假村內 日式／壽司餐廳":"sheraton",
   "渡假村內 地雞／鄉土料理":"sheraton","晚餐：渡假村內輕鬆用餐":"sheraton","南洋餐廳 noa noa":"sunmesse",
   "道之驛 フェニックス":[31.7640,131.4750],"AOSHIMAYA":"aoshima","青島 Beach Village":"aoshima","青島ういろう":"aoshima",
   "おぐら":[31.9105,131.4230],"AEON MALL 宮崎 美食街":"aeon","館內迴轉壽司／定食店":"aeon",
   "鹿兒島機場 國內線航廈 美食街／伴手禮":"airport",
 };
-/* 食べログ評分（分數會變動，以連結頁面為準）。s=分數 r=口コミ數 u=口コミ頁 aw=獎項 t=食べログ店名 */
-const RATE = {};
+/* 食べログ評分（2026/10 查詢；分數會變動，以連結頁面為準）。s=分數 r=口コミ數 u=口コミ頁 aw=獎項 t=食べログ店名 g=Google 搜尋字（覆蓋 FOODQ） */
+const RATE = {
+  "黒かつ亭 中央駅本店":{"t":"黒かつ亭 中央駅本店","s":3.49,"r":700,"u":"https://tabelog.com/kagoshima/A4601/A460101/46000074/dtlrvwlst/","aw":"とんかつ 百名店 2017"},
+  "いちにいさん":{"t":"いちにいさん アミュプラザ鹿児島店","s":3.34,"r":213,"u":"https://tabelog.com/kagoshima/A4601/A460101/46000961/dtlrvwlst/"},
+  "あぢもり":{"t":"黒豚料理 あぢもり","s":3.67,"r":1100,"u":"https://tabelog.com/kagoshima/A4601/A460101/46000029/dtlrvwlst/","aw":"しゃぶしゃぶ 百名店 2024"},
+  "仙巖園內 茶屋・餐廳":{"t":"桜華亭（仙巌園）","s":3.38,"r":125,"u":"https://tabelog.com/kagoshima/A4601/A460101/46009515/dtlrvwlst/"},
+  "磯街道 兩棒餅老店":{"t":"ぢゃんぼ餅 平田屋","s":3.58,"r":304,"u":"https://tabelog.com/kagoshima/A4601/A460101/46002504/dtlrvwlst/"},
+  "天文館むじゃき":{"t":"天文館むじゃき 本店","s":3.49,"r":230,"u":"https://tabelog.com/kagoshima/A4601/A460101/46018508/dtlrvwlst/"},
+  "道之驛 櫻島「火の島めぐみ館」":{"t":"道の駅 桜島 火の島 めぐみ館","s":3.27,"r":204,"u":"https://tabelog.com/kagoshima/A4601/A460101/46001044/dtlrvwlst/"},
+  "Rainbow 櫻島":{"t":"レインボー桜島","s":3.18,"r":24,"u":"https://tabelog.com/kagoshima/A4601/A460101/46009103/dtlrvwlst/"},
+  "吾愛人":{"t":"天文館 吾愛人 本店（わかな）","s":3.55,"r":854,"u":"https://tabelog.com/kagoshima/A4601/A460101/46000031/dtlrvwlst/"},
+  "迴轉壽司 めっけもん":{"t":"廻る寿司 めっけもん 鹿児島中央駅店","s":3.39,"r":216,"u":"https://tabelog.com/kagoshima/A4601/A460101/46005807/dtlrvwlst/"},
+  "こむらさき":{"t":"こむらさき 天文館店","s":3.57,"r":699,"u":"https://tabelog.com/kagoshima/A4601/A460101/46000032/dtlrvwlst/"},
+  "豚とろ":{"t":"鹿児島ラーメン豚とろ 天文館本店","s":3.61,"r":1711,"u":"https://tabelog.com/kagoshima/A4601/A460101/46000030/dtlrvwlst/"},
+  "城山飯店館內餐廳":{"t":"城山ホテル鹿児島（飯店整體，口コミ多為早餐 buffet）","s":3.28,"r":306,"u":"https://tabelog.com/kagoshima/A4601/A460101/46000904/dtlrvwlst/"},
+  "平川動物公園 園內餐廳／賣店":{"t":"平川動物園食堂オープンテラス","s":3.07,"r":11,"u":"https://tabelog.com/kagoshima/A4601/A460101/46011101/dtlrvwlst/"},
+  "霧島神宮 參道茶屋・霧島民藝村":{"t":"神宮亭（霧島民芸村內）","s":3.17,"r":36,"u":"https://tabelog.com/kagoshima/A4603/A460301/46007573/dtlrvwlst/"},
+  "霧島民藝村 食事處":{"t":"神宮亭（霧島民芸村內）","s":3.17,"r":36,"u":"https://tabelog.com/kagoshima/A4603/A460301/46007573/dtlrvwlst/"},
+  "霧島溫泉市場":{"t":"霧島温泉市場","s":3.12,"r":87,"u":"https://tabelog.com/kagoshima/A4603/A460301/46008957/dtlrvwlst/"},
+  "霧島蕎麦處 かわぐち（手打蕎麥）":{"t":"霧島蕎麦處 かわぐち（完全預約制、週三四休、只收現金）","s":3.62,"r":55,"u":"https://tabelog.com/kagoshima/A4603/A460301/46005420/dtlrvwlst/","g":"霧島蕎麦處 かわぐち"},
+  "高千穗牧場「まきばのレストラン」":{"t":"まきばのレストラン（高千穂牧場）","s":3.13,"r":23,"u":"https://tabelog.com/miyazaki/A4503/A450301/45007161/dtlrvwlst/"},
+  "鹿兒島機場 國內線航廈 美食街／伴手禮":{"t":"いわさきのキッチンさつま（國內線 3F）","s":3.45,"r":217,"u":"https://tabelog.com/kagoshima/A4603/A460301/46015396/dtlrvwlst/"},
+  "渡假村內 鐵板燒":{"t":"鉄板焼 ふかみ（喜來登館內）","s":3.66,"r":75,"u":"https://tabelog.com/miyazaki/A4501/A450101/45000017/dtlrvwlst/","aw":"鉄板焼 百名店 2025","g":"鉄板焼 ふかみ シェラトン 宮崎"},
+  "渡假村內 日式／壽司餐廳":{"t":"日本料理 日向海（Ocean Tower 1F，2026/3 新開）","s":3.25,"r":21,"u":"https://tabelog.com/miyazaki/A4501/A450101/45013762/dtlrvwlst/","g":"日本料理 日向海 シーガイア"},
+  "渡假村內 地雞／鄉土料理":{"t":"ガーデンビュッフェ パインテラス（宮崎鄉土料理 buffet；度假村內無地雞專門店）","s":3.47,"r":254,"u":"https://tabelog.com/miyazaki/A4501/A450101/45000028/dtlrvwlst/","g":"パインテラス シーガイア"},
+  "南洋餐廳 noa noa":{"t":"南洋レストラン noa・noa（週三公休）","s":3.07,"r":12,"u":"https://tabelog.com/miyazaki/A4502/A450201/45012235/dtlrvwlst/"},
+  "道之驛 フェニックス":{"t":"道の駅 フェニックス","s":3.26,"r":187,"u":"https://tabelog.com/miyazaki/A4501/A450101/45004777/dtlrvwlst/"},
+  "AOSHIMAYA":{"t":"青島屋レストラン","s":3.23,"r":89,"u":"https://tabelog.com/miyazaki/A4501/A450101/45003490/dtlrvwlst/"},
+  "青島 Beach Village":{"t":"LDK（青島 Beach Village 內義式餐廳）","s":3.31,"r":82,"u":"https://tabelog.com/miyazaki/A4501/A450101/45011824/dtlrvwlst/"},
+  "青島ういろう":{"t":"青島屋 売店（參道口賣外郎糕）","s":3.02,"r":17,"u":"https://tabelog.com/miyazaki/A4501/A450101/45010598/dtlrvwlst/"},
+  "おぐら":{"t":"味のおぐら 本店（週二公休）","s":3.53,"r":2184,"u":"https://tabelog.com/miyazaki/A4501/A450101/45000012/dtlrvwlst/","aw":"洋食 百名店 2025"}
+};
 const REC_TAGS = new Set(["推薦","首選","必吃","親子友善","10週年"]);
 const gDir = q => `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(q)}`;
 const gSearch = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
@@ -543,10 +573,10 @@ const isRec = f => REC_TAGS.has(f.tag) || (rateOf(f)?.s||0) >= 3.5;
 /* 名稱旁：推薦標記＋獎項；下一行：食べログ評分（點了到口コミ頁）、Google 評論、導航 */
 function foodTitle(f){
   const r = rateOf(f);
-  return `<span class="n">${esc(f.n)}</span>${f.tag?`<span class="tag">${esc(f.tag)}</span>`:""}${isRec(f)?`<span class="rec">推薦</span>`:""}${r?.aw?`<span class="award">🏅 ${esc(r.aw)}</span>`:""}`;
+  return `<span class="n">${esc(f.n)}</span>${f.tag&&f.tag!=="推薦"?`<span class="tag">${esc(f.tag)}</span>`:""}${isRec(f)?`<span class="rec">推薦</span>`:""}${r?.aw?`<span class="award">🏅 ${esc(r.aw)}</span>`:""}`;
 }
 function foodLinks(f){
-  const r = rateOf(f), q = FOODQ[f.n] || f.q || f.n;
+  const r = rateOf(f), q = r?.g || FOODQ[f.n] || f.q || f.n;
   return `<div class="links">${r?.u?`<a class="rate" href="${esc(r.u)}" target="_blank" rel="noopener" title="${esc(r.t||"")}｜食べログ口コミ">⭐ ${r.s!=null?r.s.toFixed(2):"–"}${r.r?` <small>(${r.r})</small>`:""} 食べログ</a>`:""}` +
     `<a href="${gSearch(q)}" target="_blank" rel="noopener">💬 Google 評論</a>` +
     `<a class="nav" href="${gDir(q)}" target="_blank" rel="noopener">🧭 導航</a></div>`;
