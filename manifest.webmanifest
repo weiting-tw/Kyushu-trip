@@ -1,0 +1,17 @@
+{
+  "name": "九州親子慢旅行程",
+  "short_name": "九州慢旅",
+  "description": "8天7夜【鹿兒島＋霧島＋宮崎】親子＆孕婦友善自駕行程",
+  "lang": "zh-Hant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F9F9FA",
+  "theme_color": "#0E86FE",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
