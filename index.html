@@ -168,6 +168,19 @@ html.is-offline .offline{display:inline-block}
 .links a.nav{background:var(--primary-50);border-color:transparent;color:var(--primary)}
 .award{display:inline-block;font-size:11px;font-weight:600;padding:0 5px;border-radius:var(--radius-sm);background:var(--warn-soft);color:var(--warn-ink);border:1px solid var(--warn);margin-left:4px}
 .rec{display:inline-block;font-size:11px;font-weight:700;padding:0 5px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;margin-left:4px}
+.carnav{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0 0;font-size:12.5px;color:var(--tertiary)}
+.code{font:inherit;font-size:13.5px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--ink);background:var(--card);
+  border:1px dashed var(--primary-200);border-radius:var(--radius-md);padding:2px 10px;cursor:pointer}
+.code small{font-weight:500;color:var(--tertiary);margin-right:4px}
+.code:hover{border-style:solid;border-color:var(--primary)}
+.code.ok{border-style:solid;border-color:var(--warn);background:var(--warn-soft)}
+.toast{position:fixed;left:50%;bottom:calc(70px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:20;background:var(--ink);color:var(--bg);
+  font-size:13.5px;padding:8px 14px;border-radius:var(--radius-md);box-shadow:var(--shadow-accent);opacity:0;transition:opacity .15s ease-in;pointer-events:none}
+.toast.show{opacity:1}
+.cn-day{margin:0 0 14px}
+.cn-day h3{font-size:14.5px;margin:0 0 6px}
+.cn-row{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;padding:6px 0;border-bottom:1px solid var(--line-soft)}
+.cn-row .nm{flex:1 1 100%;font-weight:600;font-size:14px}
 .park{background:var(--hover);border:1px solid var(--line-soft)} .park h4{color:var(--ink)}
 .park dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:0}
 .park dt{color:var(--tertiary);font-size:12.5px;white-space:nowrap;padding-top:1px}
@@ -266,6 +279,13 @@ dialog.sheet.info{max-width:900px}
   <div class="sh-head"><h2><span id="overviewT">🗺 全程路線總覽</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
   <div class="sh-body"><div id="overviewMap" class="daymap"></div>
     <div class="note">地圖上的位置僅供示意；導航按鈕會用日文店名／景點名開啟 Google Maps，位置最準。</div></div>
+</dialog>
+<dialog class="sheet info" id="carnav" aria-labelledby="carnavT">
+  <div class="sh-head"><h2><span id="carnavT">🚗 車機導航碼</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
+  <div class="sh-body">
+    <p class="note" style="margin:0 0 12px">日本租車的車機選「マップコード」或「電話番号」輸入最準（不用打日文）。MAPCODE 輸入時 * 後面的數字可以省略。點一下號碼就會複製。</p>
+    <div id="carnavList"></div>
+  </div>
 </dialog>
 <dialog class="sheet info" id="rain" aria-labelledby="rainT">
   <div class="sh-head"><h2><span id="rainT">☔ 雨天／疲累日替代方案</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
@@ -661,6 +681,8 @@ const PARK = {
   aeon:{"lot":"イオンモール宮崎 駐車場","sp":4300,"fee":"免費","walk":"平面與屋頂停車場，停好直接進商場","tip":"週末 13–16 點最擠，盡量上午去；找靠入口的禮讓車位指示。"}
 };
 const PARK_ALIAS = {airportReturn:"airport"};
+/* 日本車機導航：mc=MAPCODE（マップコード） tel=電話號碼 note=位置說明（2026/10 查詢；只收錄有來源的 MAPCODE） */
+const CARNAV = {};
 const REC_TAGS = new Set(["推薦","首選","必吃","親子友善","10週年"]);
 const gDir = q => `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(q)}`;
 const gSearch = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
@@ -766,7 +788,7 @@ const WMO = c => c===0?["☀️","晴"]:c<=2?["🌤️","晴時多雲"]:c===3?["
 function renderNav(){
   $("#daynav").innerHTML = `<span role="tablist" style="display:contents">` +
     DAYS.map((d,i)=>`<button type="button" role="tab" id="tab${i}" aria-controls="day${i+1}" aria-selected="false" data-day="${i}">Day ${i+1}<span class="today-dot" hidden>今天</span></button>`).join("") +
-    `</span><span class="sep" aria-hidden="true"></span><a href="#" data-open="overview">地圖</a><a href="#" data-food>餐廳</a><a href="#" data-tops>陀螺</a><a href="#" data-open="rain">雨天備案</a><a href="#" data-open="care">提醒</a><a href="#" data-open="checklist">檢查表</a>`;
+    `</span><span class="sep" aria-hidden="true"></span><a href="#" data-open="overview">地圖</a><a href="#" data-open="carnav">車機碼</a><a href="#" data-food>餐廳</a><a href="#" data-tops>陀螺</a><a href="#" data-open="rain">雨天備案</a><a href="#" data-open="care">提醒</a><a href="#" data-open="checklist">檢查表</a>`;
 }
 
 function renderDays(){
@@ -796,6 +818,7 @@ function renderItem(it, di, ii){
   const places = NAV[di].filter(([j])=>j===ii).map(([,k])=>k);
   const navs = places.map(k=>`<a class="navbtn" href="${gDir(P[k][1])}" target="_blank" rel="noopener">📍 導航：${esc(P[k][0])}</a>`).join("");
   const parks = places.map(k=>parkBox(k)).join("");
+  const cars = places.map(k=>carnavRow(k)).join("");
   const notes = it.notes?.length ? `<div class="box tips"><h4>💡 注意與推薦</h4><ul>${it.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div>` : "";
   const food = it.food?.length ? `<div class="box food"><h4>🍽 附近餐廳</h4><ul>${it.food.map(f=>
      `<li>${foodTitle(f)}${FOODQ[f.n]?foodLinks(f):""}<div>${esc(f.d)}</div></li>`).join("")}</ul></div>` : "";
@@ -807,8 +830,39 @@ function renderItem(it, di, ii){
     ${it.alt?`<div class="row"><b>備用</b>${esc(it.alt)}</div>`:""}
     ${it.tip?`<div class="row"><b>貼心</b>${esc(it.tip)}</div>`:""}
     ${navs?`<div>${navs}</div>`:""}
-    ${parks}${notes}${food}${near}
+    ${cars}${parks}${notes}${food}${near}
   </li>`;
+}
+
+/* 🚗 車機導航：MAPCODE／電話，點一下複製 */
+const codeBtn = (label, v) => `<button type="button" class="code" data-copy="${esc(v)}"><small>${label}</small>${esc(v)}</button>`;
+function carnavRow(k, withName){
+  const c = CARNAV[k] || CARNAV[PARK_ALIAS[k]];
+  if(!c || (!c.mc && !c.tel)) return "";
+  return `<div class="carnav">${withName?"":"🚗 車機"}${c.mc?codeBtn("MAPCODE", c.mc):""}${c.tel?codeBtn("☎", c.tel):""}${c.note?`<span>${esc(c.note)}</span>`:""}</div>`;
+}
+function renderCarnav(){
+  $("#carnavList").innerHTML = DAYS.map((d,i)=>{
+    const {stops} = dayStops(i);
+    const rows = stops.filter(k=>CARNAV[k]||CARNAV[PARK_ALIAS[k]]).map(k=>`<div class="cn-row"><span class="nm">${esc(P[k][0])}</span>${carnavRow(k,true)}</div>`).join("");
+    return rows ? `<div class="cn-day"><h3>Day ${i+1}｜${esc(d.title)}</h3>${rows}</div>` : "";
+  }).join("");
+}
+function initCopy(){
+  const toast = document.createElement("div"); toast.className = "toast"; document.body.appendChild(toast);
+  let timer;
+  document.addEventListener("click", async e=>{
+    const b = e.target.closest("[data-copy]"); if(!b) return;
+    const v = b.dataset.copy;
+    let ok = false;
+    try{ await navigator.clipboard.writeText(v); ok = true; }catch(err){
+      const t = document.createElement("textarea"); t.value = v; document.body.appendChild(t); t.select();
+      try{ ok = document.execCommand("copy"); }catch(e2){} t.remove();
+    }
+    toast.textContent = ok ? `已複製 ${v}` : v;
+    toast.classList.add("show"); b.classList.add("ok");
+    clearTimeout(timer); timer = setTimeout(()=>{ toast.classList.remove("show"); b.classList.remove("ok"); }, 1600);
+  });
 }
 
 /* 🅿️ 停車：停車場名、費用、車位、時間、步行距離與親子提醒，附「導航到停車場」 */
@@ -1134,7 +1188,7 @@ function initApp(){
   window.addEventListener("online", net); window.addEventListener("offline", net); net();
 }
 
-renderNav(); renderDays(); renderTables(); initDayTabs(); initFood(); initInfoDialogs(); initApp();
+renderNav(); renderDays(); renderTables(); renderCarnav(); initDayTabs(); initFood(); initInfoDialogs(); initApp(); initCopy();
 const initial = new URLSearchParams(location.search).get("start") || store.get("kyushu-start") || TRIP_START;
 $("#startDate").value = initial;
 $("#startDate").addEventListener("change", e=>setStart(e.target.value));
