@@ -2,7 +2,16 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#F9F9FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16161C" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="九州慢旅">
 <title>九州親子慢旅行程</title>
 <meta name="description" content="8天7夜【鹿兒島＋霧島＋宮崎】親子＆孕婦友善自駕行程：景點注意事項、附近餐廳、每日天氣。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,7 +63,7 @@ a{color:var(--primary)}
 a:hover{color:var(--primary-hover)}
 :focus-visible{outline:none;box-shadow:var(--focus)}
 .wrap{max-width:980px;margin:0 auto;padding:0 16px}
-header.hero{padding:36px 0 20px}
+header.hero{padding:36px 16px 20px}
 .hero h1{font-size:clamp(22px,4.5vw,30px);margin:0 0 6px;line-height:1.3;font-weight:700}
 .hero p{margin:0;color:var(--muted)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
@@ -127,6 +136,19 @@ tr:hover td{background:var(--hover)}
 footer{color:var(--tertiary);font-size:12.5px;padding:24px 0 48px}
 .themebtn{position:fixed;right:14px;bottom:14px;z-index:6;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius-md);padding:8px 12px;font:inherit;font-size:13px;cursor:pointer;box-shadow:var(--shadow-accent)}
 .themebtn:hover{border-color:var(--primary-200)}
+/* 加到主畫面（App 模式）時避開瀏海與底部橫條 */
+header.hero{padding-top:max(36px, calc(env(safe-area-inset-top) + 16px))}
+nav.daynav{padding-top:env(safe-area-inset-top)}
+.themebtn{right:max(14px, env(safe-area-inset-right));bottom:max(14px, env(safe-area-inset-bottom))}
+.foodfab{left:max(14px, env(safe-area-inset-left));bottom:max(14px, env(safe-area-inset-bottom))}
+dialog.sheet{padding-bottom:env(safe-area-inset-bottom)}
+.installbtn{display:inline-flex;align-items:center;gap:4px;margin-top:12px;font:inherit;font-size:13.5px;font-weight:600;color:#fff;background:var(--gradient-primary);
+  border:0;border-radius:var(--radius-md);padding:7px 14px;cursor:pointer;box-shadow:var(--shadow-btn)}
+.steps{margin:0;padding-left:20px;font-size:14.5px}
+.steps li{margin:6px 0}
+.steps .k{display:inline-block;border:1px solid var(--line);border-radius:var(--radius-sm);padding:0 6px;background:var(--hover);font-weight:600}
+.offline{display:none;font-size:12px;font-weight:600;color:var(--warn-ink);background:var(--warn-soft);border:1px solid var(--warn);border-radius:var(--radius-sm);padding:0 6px;margin-left:6px;vertical-align:3px}
+html.is-offline .offline{display:inline-block}
 @media print{dialog.sheet.info{display:block !important;position:static;max-height:none;box-shadow:none;border-radius:0;margin:16px 0}
   dialog.sheet.info .sh-close,#overview{display:none !important}
   nav.daynav,.themebtn,.foodfab,dialog.sheet,.settings input,.daypager{display:none}.day[hidden]{display:block !important}.card{break-inside:avoid}}
@@ -203,13 +225,14 @@ dialog.sheet.info{max-width:900px}
 </head>
 <body>
 <header class="hero wrap">
-  <h1>🗓️ 8天7夜【鹿兒島＋霧島＋宮崎】親子慢旅</h1>
+  <h1>🗓️ 8天7夜【鹿兒島＋霧島＋宮崎】親子慢旅<span class="offline">離線中</span></h1>
   <p>2026/10/15（四）– 10/22（四）・去程 11:00 降落鹿兒島／回程 12:30 起飛 ・ 自駕 ・ 孕媽咪＋3 歲大寶 ・ 10 週年紀念</p>
   <div class="chips">
     <span class="chip">🏨 城山飯店鹿兒島 ×2</span>
     <span class="chip">♨️ 霧島國際飯店 ×2</span>
     <span class="chip">🌊 宮崎喜來登（Phoenix Seagaia）×3</span>
   </div>
+  <button type="button" class="installbtn" id="installBtn" hidden>📲 加到主畫面（App）</button>
 </header>
 
 <nav class="daynav" aria-label="天數導覽"><div class="wrap" id="daynav"></div></nav>
@@ -251,6 +274,27 @@ dialog.sheet.info{max-width:900px}
   <div class="sh-head"><h2><span id="checklistT">✅ 行前檢查表</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
   <div class="sh-body"><div class="check"><ul id="checkList"></ul>
     <p class="meta" style="margin:10px 0 0">勾選狀態只存在這台裝置的瀏覽器中。</p></div></div>
+</dialog>
+<dialog class="sheet info" id="installDlg" aria-labelledby="installDlgT">
+  <div class="sh-head"><h2><span id="installDlgT">📲 加到主畫面，當 App 用</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
+  <div class="sh-body">
+    <div id="installIos">
+      <p style="margin:0 0 6px;font-weight:600">iPhone／iPad（請用 Safari 開這個網頁）</p>
+      <ol class="steps">
+        <li>點下方工具列的 <span class="k">分享 ⬆️</span></li>
+        <li>往下滑，選 <span class="k">加入主畫面</span></li>
+        <li>右上角按 <span class="k">新增</span>，主畫面就會出現「九州慢旅」</li>
+      </ol>
+    </div>
+    <div id="installOther">
+      <p style="margin:12px 0 6px;font-weight:600">Android（Chrome）</p>
+      <ol class="steps">
+        <li>點右上角 <span class="k">⋮</span></li>
+        <li>選 <span class="k">安裝應用程式</span> 或 <span class="k">加到主畫面</span></li>
+      </ol>
+    </div>
+    <p class="note" style="margin-top:12px">打開過一次之後，行程、餐廳、陀螺店與看過的地圖在沒網路時也能看；天氣會顯示最後一次查到的預報。</p>
+  </div>
 </dialog>
 <dialog class="sheet" id="foodSheet" aria-labelledby="foodSheetTitle">
   <div class="sh-head">
@@ -1028,7 +1072,28 @@ function initInfoDialogs(){
   });
 }
 
-renderNav(); renderDays(); renderTables(); initDayTabs(); initFood(); initInfoDialogs();
+/* ---------- 手機 App（PWA）：離線快取＋加到主畫面 ---------- */
+function initApp(){
+  if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  }
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+  const btn = $("#installBtn");
+  let deferred = null;
+  window.addEventListener("beforeinstallprompt", e=>{ e.preventDefault(); deferred = e; if(!standalone) btn.hidden = false; });
+  window.addEventListener("appinstalled", ()=>{ btn.hidden = true; deferred = null; });
+  if(!standalone && ios) btn.hidden = false;
+  btn.addEventListener("click", async ()=>{
+    if(deferred){ deferred.prompt(); await deferred.userChoice.catch(()=>{}); deferred = null; btn.hidden = true; return; }
+    $("#installIos").hidden = !ios; $("#installOther").hidden = ios;
+    $("#installDlg").showModal();
+  });
+  const net = ()=>document.documentElement.classList.toggle("is-offline", !navigator.onLine);
+  window.addEventListener("online", net); window.addEventListener("offline", net); net();
+}
+
+renderNav(); renderDays(); renderTables(); initDayTabs(); initFood(); initInfoDialogs(); initApp();
 const initial = new URLSearchParams(location.search).get("start") || store.get("kyushu-start") || TRIP_START;
 $("#startDate").value = initial;
 $("#startDate").addEventListener("change", e=>setStart(e.target.value));
