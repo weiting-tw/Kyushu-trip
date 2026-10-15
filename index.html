@@ -168,6 +168,11 @@ html.is-offline .offline{display:inline-block}
 .links a.nav{background:var(--primary-50);border-color:transparent;color:var(--primary)}
 .award{display:inline-block;font-size:11px;font-weight:600;padding:0 5px;border-radius:var(--radius-sm);background:var(--warn-soft);color:var(--warn-ink);border:1px solid var(--warn);margin-left:4px}
 .rec{display:inline-block;font-size:11px;font-weight:700;padding:0 5px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;margin-left:4px}
+.park{background:var(--hover);border:1px solid var(--line-soft)} .park h4{color:var(--ink)}
+.park dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:0}
+.park dt{color:var(--tertiary);font-size:12.5px;white-space:nowrap;padding-top:1px}
+.park dd{margin:0}
+.park .lot{font-weight:700}
 .shop{background:var(--sea-soft);margin:0 0 12px} .shop h4{color:var(--sea)}
 .shop .n{font-weight:700}
 .sh-cat{margin-bottom:8px}
@@ -632,6 +637,9 @@ const TOPS = [
   {"n":"MEGAドン・キホーテ 都城店","b4":1,"d":"ベイブレードX 官方公認 B4 店，營業到深夜、可退稅；Day 5 高千穗牧場往宮崎可順路","ll":[31.7395,131.079],"h":"09:00–翌 02:00","type":"beyblade"}
 ];
 const TOP_TYPE = {beyblade:"ベイブレードX", traditional:"傳統陀螺", both:"ベイブレード＋傳統"};
+/* 停車資訊（2026/10 查詢；費用與車位以現場為準）：key 同導航地點 P。lot=停車場名（導航用） sp=車位 fee=費用 h=時間 walk=到入口 tip=親子提醒 */
+const PARK = {};
+const PARK_ALIAS = {airportReturn:"airport"};
 const REC_TAGS = new Set(["推薦","首選","必吃","親子友善","10週年"]);
 const gDir = q => `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(q)}`;
 const gSearch = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
@@ -766,6 +774,7 @@ function renderDays(){
 function renderItem(it, di, ii){
   const places = NAV[di].filter(([j])=>j===ii).map(([,k])=>k);
   const navs = places.map(k=>`<a class="navbtn" href="${gDir(P[k][1])}" target="_blank" rel="noopener">📍 導航：${esc(P[k][0])}</a>`).join("");
+  const parks = places.map(k=>parkBox(k)).join("");
   const notes = it.notes?.length ? `<div class="box tips"><h4>💡 注意與推薦</h4><ul>${it.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div>` : "";
   const food = it.food?.length ? `<div class="box food"><h4>🍽 附近餐廳</h4><ul>${it.food.map(f=>
      `<li>${foodTitle(f)}${FOODQ[f.n]?foodLinks(f):""}<div>${esc(f.d)}</div></li>`).join("")}</ul></div>` : "";
@@ -777,8 +786,19 @@ function renderItem(it, di, ii){
     ${it.alt?`<div class="row"><b>備用</b>${esc(it.alt)}</div>`:""}
     ${it.tip?`<div class="row"><b>貼心</b>${esc(it.tip)}</div>`:""}
     ${navs?`<div>${navs}</div>`:""}
-    ${notes}${food}${near}
+    ${parks}${notes}${food}${near}
   </li>`;
+}
+
+/* 🅿️ 停車：停車場名、費用、車位、時間、步行距離與親子提醒，附「導航到停車場」 */
+function parkBox(k){
+  const p = PARK[k] || PARK[PARK_ALIAS[k]];
+  if(!p) return "";
+  const row = (t,v) => v ? `<dt>${t}</dt><dd>${esc(v)}</dd>` : "";
+  return `<div class="box park"><h4>🅿️ 停車：${esc(P[k][0])}</h4><dl>
+    <dt>停車場</dt><dd class="lot">${esc(p.lot)}</dd>
+    ${row("費用", p.fee)}${row("車位", p.sp!=null?`約 ${p.sp} 台`:"")}${row("時間", p.h)}${row("步行", p.walk)}${row("提醒", p.tip)}
+  </dl><div class="links"><a class="nav" href="${gDir(p.q||p.lot)}" target="_blank" rel="noopener">🅿️ 導航到停車場</a></div></div>`;
 }
 
 /* 這個地點方圓 3 km 內、行程其他地方提到的餐廳 */
