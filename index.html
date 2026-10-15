@@ -681,8 +681,30 @@ const PARK = {
   aeon:{"lot":"イオンモール宮崎 駐車場","sp":4300,"fee":"免費","walk":"平面與屋頂停車場，停好直接進商場","tip":"週末 13–16 點最擠，盡量上午去；找靠入口的禮讓車位指示。"}
 };
 const PARK_ALIAS = {airportReturn:"airport"};
-/* 日本車機導航：mc=MAPCODE（マップコード） tel=電話號碼 note=位置說明（2026/10 查詢；只收錄有來源的 MAPCODE） */
-const CARNAV = {};
+/* 日本車機導航（每個地點可多筆）：mc=MAPCODE（マップコード） tel=電話號碼 addr=地址 note=位置說明（2026/10 查詢；只收錄有來源的 MAPCODE） */
+const CARNAV = {
+  airport:[{"mc":"42 776 430*34","tel":"0995-73-3638","note":"機場航廈"}],
+  airportReturn:[{"mc":"42 746 796*66","tel":"0995-58-2306","note":"若租 Toyota：鹿兒島空港店（還車）"},{"mc":"42 776 305*73","note":"若租 Nippon Rent-A-Car：鹿兒島空港營業所（官方建議用 MAPCODE）"},{"mc":"42 776 430*34","tel":"0995-73-3638","note":"機場航廈"}],
+  kurokatsu:[{"mc":"393 575 350*08","tel":"099-285-2300","note":"店面（無停車場）"}],
+  sengan:[{"mc":"42 099 712*01","tel":"099-247-1551"}],
+  shiroyama:[{"mc":"42 005 776*84","tel":"099-224-2211"}],
+  ferry:[{"mc":"42 037 144*24","tel":"099-223-7271","note":"鹿兒島港乘船口"}],
+  nagisa:[{"mc":"42 011 496*58","tel":"099-293-2443","note":"電話為隔壁櫻島遊客中心"}],
+  dino:[{"addr":"鹿児島市桜島横山町79","note":"查不到 MAPCODE，車機用地址輸入"}],
+  amu:[{"mc":"393 575 548*38","tel":"099-812-7700"}],
+  tenmonkan:[{"mc":"42 007 521*25","tel":"099-227-6498","note":"山形屋いづろ駐車場"}],
+  hirakawa:[{"mc":"393 150 135*53","tel":"099-261-2326"}],
+  kih:[{"mc":"376 204 829*05","tel":"0995-78-2621"}],
+  jingu:[{"mc":"376 089 326","tel":"0995-57-0001","note":"停車場"}],
+  mingei:[{"tel":"0995-57-3153","note":"霧島神宮大鳥居旁"}],
+  ichiba:[{"mc":"376 204 613*47","tel":"0995-78-4001","note":"停車場"}],
+  bokujo:[{"mc":"227 000 651*65","tel":"0986-33-2102"}],
+  sheraton:[{"mc":"66 446 590*41","tel":"0985-21-1133","note":"飯店（已更名「フェニックス・シーガイア・オーシャン・タワー」）"}],
+  sunmesse:[{"mc":"274 565 850*27","tel":"0987-29-1900"}],
+  aoshima:[{"mc":"843 192 098*21","tel":"0985-65-1262","note":"青島神社（停車場在參道口）"}],
+  aeon:[{"mc":"66 325 270*37","tel":"0985-60-8000"}],
+  shosenkyu:[{"note":"在度假村內，走路或搭接駁巴士，不用開車"}]
+};
 const REC_TAGS = new Set(["推薦","首選","必吃","親子友善","10週年"]);
 const gDir = q => `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(q)}`;
 const gSearch = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
@@ -837,9 +859,9 @@ function renderItem(it, di, ii){
 /* 🚗 車機導航：MAPCODE／電話，點一下複製 */
 const codeBtn = (label, v) => `<button type="button" class="code" data-copy="${esc(v)}"><small>${label}</small>${esc(v)}</button>`;
 function carnavRow(k, withName){
-  const c = CARNAV[k] || CARNAV[PARK_ALIAS[k]];
-  if(!c || (!c.mc && !c.tel)) return "";
-  return `<div class="carnav">${withName?"":"🚗 車機"}${c.mc?codeBtn("MAPCODE", c.mc):""}${c.tel?codeBtn("☎", c.tel):""}${c.note?`<span>${esc(c.note)}</span>`:""}</div>`;
+  const list = CARNAV[k] || CARNAV[PARK_ALIAS[k]];
+  if(!list) return "";
+  return list.map(c=>`<div class="carnav">${withName?"":"🚗 車機"}${c.mc?codeBtn("MAPCODE", c.mc):""}${c.tel?codeBtn("☎", c.tel):""}${c.addr?codeBtn("地址", c.addr):""}${c.note?`<span>${esc(c.note)}</span>`:""}</div>`).join("");
 }
 function renderCarnav(){
   $("#carnavList").innerHTML = DAYS.map((d,i)=>{
