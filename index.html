@@ -168,6 +168,11 @@ html.is-offline .offline{display:inline-block}
 .links a.nav{background:var(--primary-50);border-color:transparent;color:var(--primary)}
 .award{display:inline-block;font-size:11px;font-weight:600;padding:0 5px;border-radius:var(--radius-sm);background:var(--warn-soft);color:var(--warn-ink);border:1px solid var(--warn);margin-left:4px}
 .rec{display:inline-block;font-size:11px;font-weight:700;padding:0 5px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;margin-left:4px}
+.park{background:var(--hover);border:1px solid var(--line-soft)} .park h4{color:var(--ink)}
+.park dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:0}
+.park dt{color:var(--tertiary);font-size:12.5px;white-space:nowrap;padding-top:1px}
+.park dd{margin:0}
+.park .lot{font-weight:700}
 .shop{background:var(--sea-soft);margin:0 0 12px} .shop h4{color:var(--sea)}
 .shop .n{font-weight:700}
 .sh-cat{margin-bottom:8px}
@@ -348,7 +353,7 @@ const DAYS = [
   {t:"13:15-14:30", meal:true, title:"午餐：薩摩黑豬肉料理", plan:"享用黑豬肉涮涮鍋或全熟炸豬排。", tip:"孕期請避免半熟肉品，務必點全熟。",
    notes:["涮涮鍋要涮到肉完全變色；黑豚「炸豬排」最保險。","午餐時段 13:00 後人潮較少，抵達日不用排隊。"],
    food:[
-    {n:"黒かつ亭 中央駅本店", d:"黑豚炸豬排老店，有兒童可分食的套餐，離 AMU Plaza 近、停車方便。", tag:"親子友善"},
+    {n:"黒かつ亭 中央駅本店", d:"黑豚炸豬排老店，有兒童可分食的套餐，離 AMU Plaza 近；店家沒有停車場，停附近投幣停車場或 AMU Plaza。", tag:"親子友善"},
     {n:"いちにいさん（AMU Plaza／天文館）", d:"招牌「黑豚涮涮鍋」用蕎麥湯底，口味清淡，孕媽咪不負擔。", tag:"推薦"},
     {n:"あぢもり（天文館）", d:"黑豚涮涮鍋元祖，氣氛較正式，適合想吃好一點；建議預約。"},
    ]},
@@ -632,6 +637,30 @@ const TOPS = [
   {"n":"MEGAドン・キホーテ 都城店","b4":1,"d":"ベイブレードX 官方公認 B4 店，營業到深夜、可退稅；Day 5 高千穗牧場往宮崎可順路","ll":[31.7395,131.079],"h":"09:00–翌 02:00","type":"beyblade"}
 ];
 const TOP_TYPE = {beyblade:"ベイブレードX", traditional:"傳統陀螺", both:"ベイブレード＋傳統"};
+/* 停車資訊（2026/10 查詢；費用與車位以現場為準）：key 同導航地點 P。lot=停車場名（導航用） sp=車位 fee=費用 h=時間 walk=到入口 tip=親子提醒 */
+const PARK = {
+  kurokatsu:{"lot":"タイムズ中央町第10","sp":6,"fee":"店家沒有停車場；這個投幣停車場 8–21 時 20 分 ¥200（最高 ¥1,500）","h":"24 小時","walk":"同在中央町，步行數分","tip":"只有 6 格、限高 2.1 m，只能刷卡／電子錢包；滿了改停タイムズ中央町第8，或停 AMU Plaza（購物可折抵）走過去。"},
+  sengan:{"lot":"仙巌園 お客様駐車場1","fee":"普通車 1 日約 ¥500","h":"園區 9:00–17:00","walk":"園區旁","tip":"有「思いやり駐車場」（體貼車位），孕媽咪可詢問；10:30–15:00 最擠，10 點前到最好。"},
+  shiroyama:{"lot":"SHIROYAMA HOTEL kagoshima 駐車場","sp":780,"fee":"住客第 1 晚 ¥1,300，之後每晚 +¥500","walk":"飯店自有（東・西・地下）","tip":"不能預約、先到先停；停地下停車場可避開雨和火山灰，抱小孩推車最方便。"},
+  ferry:{"lot":"桜島フェリーターミナル 鹿児島港 航送車両入口","q":"桜島フェリー 鹿児島港 車両乗り場","fee":"車長 4–5 m ¥2,350（含駕駛）；同車大人 ¥250、兒童 ¥130；到櫻島港收費站再付","h":"24 小時運行（白天約 15 分一班，深夜班次較少）","walk":"直接開上船，船程約 15 分","tip":"鹿兒島港這邊不用先買票，排進車輛入口照指示上船，櫻島港收費站付款（可刷卡／IC 卡）；連假可能要等約 1 小時，下船前要回車上。"},
+  nagisa:{"lot":"桜島溶岩なぎさ公園 駐車場","sp":30,"fee":"免費","walk":"距櫻島港約 500 m，足湯在公園內","tip":"遊客中心那側只有約 9 格，停公園停車場比較好找；有上下車區。"},
+  dino:{"lot":"桜島自然恐竜公園 駐車場","sp":77,"fee":"免費","walk":"公園旁","tip":"只給公園使用者、車位有限；遊具在坡地上，推車要注意。"},
+  amu:{"lot":"アミュプラザ鹿児島 東1駐車場","q":"アミュプラザ鹿児島 駐車場","sp":2046,"fee":"30 分 ¥200；購物滿 ¥2,000 免費 1 小時、¥5,000 免費 2 小時（收據可合計）","h":"24 小時","walk":"直通商場","tip":"限高 2.1 m；西 2 常滿，東 1 最容易有位；附近黒かつ亭用餐也可停這裡。"},
+  tenmonkan:{"lot":"山形屋いづろ駐車場","sp":649,"fee":"30 分 ¥150；山形屋購物滿 ¥2,000 免費 1 小時、¥3,000 免費 2 小時","h":"8:30–21:00","walk":"山形屋自有，天文館步行可到","tip":"限高 2.1 m；買的東西可請店員送到停車場。備案：中央地下駐車場セラ602。朝日通り立体駐車場已於 2026/1 關閉。"},
+  hirakawa:{"lot":"平川動物公園 駐車場","sp":630,"fee":"普通車 ¥400／次","h":"9:00–17:00（16:30 停止入園）","walk":"入口前","tip":"園內坡道多，推嬰兒車、孕媽咪多休息；週末 10 點前到。"},
+  airport:{"lot":"鹿児島空港駐車場","sp":1937,"fee":"前 2 小時免費，之後每小時 ¥100；24 小時上限 ¥1,200（9–11 月旺季）","h":"24 小時","walk":"航廈正前方","tip":"租車不在航廈取還：抵達後在館內掃 QR 碼叫接駁車到租車營業所；還車開到營業所再搭接駁回航廈，回程要多抓 20–30 分鐘。"},
+  kih:{"lot":"霧島国際ホテル 駐車場","sp":200,"fee":"住客免費","walk":"平面停車場，旁邊就是玄關（有斜坡）","tip":"有友善車位；可借嬰兒車。Check-in 15:00／Check-out 10:00。"},
+  jingu:{"lot":"霧島神宮 駐車場","sp":500,"fee":"免費","walk":"走參道再上約 80 級石階到拜殿","tip":"可開到社務所前讓孕媽咪先下車再去停車（出發前可電 0995-57-0001 確認）；雨後石階滑，建議用揹巾不推嬰兒車。"},
+  mingei:{"lot":"霧島民芸村 駐車場","sp":50,"fee":"免費","h":"9:00–18:30","walk":"停車場就在店旁，入口有斜坡","tip":"地面是碎石，嬰兒車較顛，短程用抱或揹。"},
+  ichiba:{"lot":"霧島温泉市場 駐車場","sp":52,"fee":"免費","h":"8:30–18:00","walk":"緊鄰市場，1F 走道平坦","tip":"滿車時附近有市營停車場；2F 入口有階梯，嬰兒車走後方斜坡。"},
+  bokujo:{"lot":"高千穂牧場 駐車場","sp":1020,"fee":"免費（入場也免費）","h":"9:00–17:00","walk":"園區入口旁","tip":"假日盡量停靠近主建築的第一停車場；園內坡道多，注意防曬休息。"},
+  sheraton:{"lot":"フェニックス・シーガイア・リゾート 無料駐車場","q":"シェラトン・グランデ・オーシャンリゾート 駐車場","sp":1500,"fee":"免費（免預約）","walk":"飯店旁平面停車場，步行即到大廳","tip":"先開到大廳門口讓孕媽咪和小孩下車、卸行李，再去停車。"},
+  shosenkyu:{"lot":"度假村內（不用另外停車）","q":"シーガイア 松泉宮","fee":"度假村內停車免費","walk":"從喜來登走過去，或搭度假村免費接駁巴士","tip":"不必開車。據報新月浴棟 2026/10/1–2027/1/31 整修停用，月讀、滿月照常；孕媽咪泡湯前請先問醫師。"},
+  sunmesse:{"lot":"サンメッセ日南 駐車場","sp":220,"fee":"免費","h":"9:30–17:00（週三公休；電動車受理至 16:00）","walk":"入口旁，步行約 3 分；摩艾像在坡上","tip":"停車場旁可租園區電動車（約 30 分 ¥1,000，非官方資料），先開到最上面再往下逛，孕媽咪和推車都省力。"},
+  aoshima:{"lot":"青島参道口有料駐車場","sp":100,"fee":"¥500／次","h":"24 小時","walk":"經參道與彌生橋到青島神社約 9 分，平路可推車","tip":"免費的「青島参道南広場駐車場」（約 45–60 台）假日早上 9 點就容易滿，早到可先試；車子不能開上青島。"},
+  aeon:{"lot":"イオンモール宮崎 駐車場","sp":4300,"fee":"免費","walk":"平面與屋頂停車場，停好直接進商場","tip":"週末 13–16 點最擠，盡量上午去；找靠入口的禮讓車位指示。"}
+};
+const PARK_ALIAS = {airportReturn:"airport"};
 const REC_TAGS = new Set(["推薦","首選","必吃","親子友善","10週年"]);
 const gDir = q => `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(q)}`;
 const gSearch = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
@@ -766,6 +795,7 @@ function renderDays(){
 function renderItem(it, di, ii){
   const places = NAV[di].filter(([j])=>j===ii).map(([,k])=>k);
   const navs = places.map(k=>`<a class="navbtn" href="${gDir(P[k][1])}" target="_blank" rel="noopener">📍 導航：${esc(P[k][0])}</a>`).join("");
+  const parks = places.map(k=>parkBox(k)).join("");
   const notes = it.notes?.length ? `<div class="box tips"><h4>💡 注意與推薦</h4><ul>${it.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div>` : "";
   const food = it.food?.length ? `<div class="box food"><h4>🍽 附近餐廳</h4><ul>${it.food.map(f=>
      `<li>${foodTitle(f)}${FOODQ[f.n]?foodLinks(f):""}<div>${esc(f.d)}</div></li>`).join("")}</ul></div>` : "";
@@ -777,8 +807,19 @@ function renderItem(it, di, ii){
     ${it.alt?`<div class="row"><b>備用</b>${esc(it.alt)}</div>`:""}
     ${it.tip?`<div class="row"><b>貼心</b>${esc(it.tip)}</div>`:""}
     ${navs?`<div>${navs}</div>`:""}
-    ${notes}${food}${near}
+    ${parks}${notes}${food}${near}
   </li>`;
+}
+
+/* 🅿️ 停車：停車場名、費用、車位、時間、步行距離與親子提醒，附「導航到停車場」 */
+function parkBox(k){
+  const p = PARK[k] || PARK[PARK_ALIAS[k]];
+  if(!p) return "";
+  const row = (t,v) => v ? `<dt>${t}</dt><dd>${esc(v)}</dd>` : "";
+  return `<div class="box park"><h4>🅿️ 停車：${esc(P[k][0])}</h4><dl>
+    <dt>停車場</dt><dd class="lot">${esc(p.lot)}</dd>
+    ${row("費用", p.fee)}${row("車位", p.sp!=null?`約 ${p.sp} 台`:"")}${row("時間", p.h)}${row("步行", p.walk)}${row("提醒", p.tip)}
+  </dl><div class="links"><a class="nav" href="${gDir(p.q||p.lot)}" target="_blank" rel="noopener">🅿️ 導航到停車場</a></div></div>`;
 }
 
 /* 這個地點方圓 3 km 內、行程其他地方提到的餐廳 */
