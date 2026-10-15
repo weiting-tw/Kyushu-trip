@@ -682,6 +682,8 @@ const PARK = {
 };
 const PARK_ALIAS = {airportReturn:"airport"};
 /* 日本車機導航（每個地點可多筆）：mc=MAPCODE（マップコード） tel=電話號碼 addr=地址 note=位置說明（2026/10 查詢；只收錄有來源的 MAPCODE） */
+/* 餐廳車機碼：key 同餐廳名稱（去掉括號說明）；mc=MAPCODE tel=電話 note=說明 */
+const FOODNAV = {};
 const CARNAV = {
   airport:[{"mc":"42 776 430*34","tel":"0995-73-3638","note":"機場航廈"}],
   airportReturn:[{"mc":"42 746 796*66","tel":"0995-58-2306","note":"若租 Toyota：鹿兒島空港店（還車）"},{"mc":"42 776 305*73","note":"若租 Nippon Rent-A-Car：鹿兒島空港營業所（官方建議用 MAPCODE）"},{"mc":"42 776 430*34","tel":"0995-73-3638","note":"機場航廈"}],
@@ -725,7 +727,7 @@ function foodLinks(f){
   const r = rateOf(f), q = r?.g || FOODQ[f.n] || f.q || f.n;
   return `<div class="links">${r?.u?`<a class="rate" href="${esc(r.u)}" target="_blank" rel="noopener" title="${esc(r.t||"")}｜食べログ口コミ">⭐ ${r.s!=null?r.s.toFixed(2):"–"}${r.r?` <small>(${r.r})</small>`:""} 食べログ</a>`:""}` +
     `<a href="${gSearch(q)}" target="_blank" rel="noopener">💬 Google 評論</a>` +
-    `<a class="nav" href="${gDir(q)}" target="_blank" rel="noopener">🧭 導航</a></div>`;
+    `<a class="nav" href="${gDir(q)}" target="_blank" rel="noopener">🧭 導航</a></div>` + codesHtml(FOODNAV[foodBase(f.n)] || FOODNAV[f.n]);
 }
 const kmTxt = d => d<0.2 ? "就在旁邊" : d<1 ? `約 ${Math.round(d*10)*100} m` : `約 ${d.toFixed(d<10?1:0)} km`;
 /* 全部餐廳（去重），附上座標 */
@@ -857,6 +859,8 @@ function renderItem(it, di, ii){
 }
 
 /* 🚗 車機導航：MAPCODE／電話，點一下複製 */
+/* MAPCODE／電話按鈕列（停車場、餐廳、陀螺店共用） */
+const codesHtml = (c, lead="🚗") => c && (c.mc || c.tel) ? `<div class="carnav">${lead}${c.mc?codeBtn("MAPCODE", c.mc):""}${c.tel?codeBtn("☎", c.tel):""}${c.cnote?`<span>${esc(c.cnote)}</span>`:""}</div>` : "";
 const codeBtn = (label, v) => `<button type="button" class="code" data-copy="${esc(v)}"><small>${label}</small>${esc(v)}</button>`;
 function carnavRow(k, withName){
   const list = CARNAV[k] || CARNAV[PARK_ALIAS[k]];
@@ -866,7 +870,11 @@ function carnavRow(k, withName){
 function renderCarnav(){
   $("#carnavList").innerHTML = DAYS.map((d,i)=>{
     const {stops} = dayStops(i);
-    const rows = stops.filter(k=>CARNAV[k]||CARNAV[PARK_ALIAS[k]]).map(k=>`<div class="cn-row"><span class="nm">${esc(P[k][0])}</span>${carnavRow(k,true)}</div>`).join("");
+    const rows = stops.filter(k=>CARNAV[k]||CARNAV[PARK_ALIAS[k]]).map(k=>{
+      const pk = PARK[k] || PARK[PARK_ALIAS[k]];
+      const park = pk && (pk.mc||pk.tel) ? codesHtml(pk, `🅿️ ${esc(pk.lot)}`) : "";
+      return `<div class="cn-row"><span class="nm">${esc(P[k][0])}</span>${carnavRow(k,true)}${park}</div>`;
+    }).join("");
     return rows ? `<div class="cn-day"><h3>Day ${i+1}｜${esc(d.title)}</h3>${rows}</div>` : "";
   }).join("");
 }
@@ -895,7 +903,7 @@ function parkBox(k){
   return `<div class="box park"><h4>🅿️ 停車：${esc(P[k][0])}</h4><dl>
     <dt>停車場</dt><dd class="lot">${esc(p.lot)}</dd>
     ${row("費用", p.fee)}${row("車位", p.sp!=null?`約 ${p.sp} 台`:"")}${row("時間", p.h)}${row("步行", p.walk)}${row("提醒", p.tip)}
-  </dl><div class="links"><a class="nav" href="${gDir(p.q||p.lot)}" target="_blank" rel="noopener">🅿️ 導航到停車場</a></div></div>`;
+  </dl>${codesHtml(p, "🚗 停車場")}<div class="links"><a class="nav" href="${gDir(p.q||p.lot)}" target="_blank" rel="noopener">🅿️ 導航到停車場</a></div></div>`;
 }
 
 /* 這個地點方圓 3 km 內、行程其他地方提到的餐廳 */
@@ -922,7 +930,7 @@ function dayTopsBox(i){
 }
 function topTitle(t){ return `<span class="n">${esc(t.n)}</span><span class="pill">${esc(TOP_TYPE[t.type]||"陀螺")}</span>${t.b4?`<span class="rec">B4 公認店</span>`:""}`; }
 function topLinks(t){
-  return `<div class="links"><a href="${gSearch(t.n)}" target="_blank" rel="noopener">💬 Google 評論／營業時間</a><a class="nav" href="${gDir(t.n)}" target="_blank" rel="noopener">🧭 導航</a></div>`;
+  return `<div class="links"><a href="${gSearch(t.n)}" target="_blank" rel="noopener">💬 Google 評論／營業時間</a><a class="nav" href="${gDir(t.n)}" target="_blank" rel="noopener">🧭 導航</a></div>` + codesHtml(t);
 }
 
 /* ---------- 附近吃什麼 ---------- */
