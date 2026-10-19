@@ -1,5 +1,5 @@
 /* 九州慢旅：離線快取。改了網站內容要讓手機更新時，把 VERSION 加 1。 */
-const VERSION = "v2";
+const VERSION = "v3";
 const CORE = `core-${VERSION}`, RUNTIME = "runtime", TILES = "tiles";
 const CORE_FILES = [
   "./", "./index.html", "./manifest.webmanifest",
