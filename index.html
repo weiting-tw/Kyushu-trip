@@ -249,7 +249,7 @@ dialog.sheet.info{max-width:900px}
     <span class="chip">🏨 城山飯店鹿兒島 ×2</span>
     <span class="chip">♨️ 霧島國際飯店 ×2</span>
     <span class="chip">🌊 Seagaia Ocean Tower（原宮崎喜來登）×2</span>
-    <span class="chip">♨️ 霧島／機場周邊住宿 ×1</span>
+    <span class="chip">♨️ 京瓷飯店（隼人）×1</span>
   </div>
   <button type="button" class="installbtn" id="installBtn" hidden>📲 加到主畫面（App）</button>
 </header>
@@ -298,9 +298,9 @@ dialog.sheet.info{max-width:900px}
   </div>
 </dialog>
 <dialog class="sheet info" id="stays" aria-labelledby="staysT">
-  <div class="sh-head"><h2><span id="staysT">🛏 霧島住宿候選 10 間（Day 7・10/21 一晚）</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
+  <div class="sh-head"><h2><span id="staysT">🛏 Day 7 住宿：京瓷飯店＆其他候選（10/21 一晚）</span><button type="button" class="sh-close" data-close aria-label="關閉">✕</button></h2></div>
   <div class="sh-body">
-    <div class="alert">⚠️ 空房無法即時查詢：以下依「離鹿兒島機場近、適合孕婦＋幼兒」挑選，請點「查空房」確認 10/21 是否有房再預訂。越靠近機場，Day 8 還車越輕鬆。</div>
+    <div class="alert info">✅ 已改住 <b>ホテル京セラ（京瓷飯店）</b>：<a href="https://hotel.travel.rakuten.co.jp/hotelinfo/plan/1374?f_nen1=2026&amp;f_tuki1=10&amp;f_hi1=21&amp;f_nen2=2026&amp;f_tuki2=10&amp;f_hi2=22&amp;f_otona_su=2&amp;f_s1=0&amp;f_s2=1&amp;f_heya_su=1" target="_blank" rel="noopener">樂天預訂頁（已帶入日期與人數）</a>。小孩用「小學低年級」計價，3 歲不佔床通常更便宜，可再詢問。下面其他候選保留作備案。</div>
     <div class="grid" id="stayGrid"></div>
     <p class="note">一次比價：<a href="https://travel.rakuten.co.jp/yado/kagoshima/oosumi.html" target="_blank" rel="noopener">楽天トラベル（霧島・國分・鹿兒島機場）</a>・<a href="https://www.ikyu.com/spot/lm083795/" target="_blank" rel="noopener">一休（鹿兒島機場周邊）</a>・<a href="https://www.jtb.co.jp/kokunai-hotel/list/460202/feature/family_p/" target="_blank" rel="noopener">JTB 霧島親子方案</a></p>
   </div>
@@ -530,32 +530,38 @@ const DAYS = [
     {n:"渡假村內 鐵板燒（ふかみ）", d:"宮崎牛套餐約 16,000 円起。"},
    ]},
   {t:"19:30-20:30", title:"💖 星空營火卡片交換最終章", plan:"飯店戶外篝火區（The Living Garden）交換 10 週年卡片。", tip:"原 Day 7 的營火移到今晚（Seagaia 最後一晚）。",
-   notes:["營火、烤棉花糖等活動依季節與天候調整，請先在櫃台確認今晚是否舉行；取消就改在面海客房交換卡片。","火堆旁看緊大寶。","今晚把行李打包好，明天退房後就直接出發。"]},
+   notes:["🎃 傍晚順便去「萬聖節花園」變裝拍照；回房可以借桌遊（8:00–19:00 借）。","營火、烤棉花糖等活動依季節與天候調整，請先在櫃台確認今晚是否舉行；取消就改在面海客房交換卡片。","火堆旁看緊大寶。","今晚把行李打包好，明天退房後就直接出發。"]},
 ]},
-{ title:"青島・移動霧島（機場附近）", area:"青島 → 霧島・鹿兒島機場周邊", loc:"nichinan", items:[
-  {t:"08:00-10:00", meal:true, title:"早餐 ＆ 退房", plan:"パインテラス早餐後辦理退房。", tip:"退房時間請在 Check-in 時確認。",
-   notes:["⚠️ 今天 10/21 是週三：Sun Messe 日南公休，已從行程拿掉；松泉宮「月讀」10:00–12:00 也休息，想泡最後一次請在 10:00 前。","如果很想去 Sun Messe：可把它挪到 Day 6（10/20 週二），Day 6 下午出發來回約 1.5 小時車程。"]},
-  {t:"10:30-12:00", drive:"25 分鐘", title:"青島神社 ＆ 鬼之洗衣板", plan:"走過平坦紅磚橋連接沙灘小島，步道完全平坦。", tip:"大寶觀察奇特的波浪狀岩石，夫妻手牽手散步。",
-   notes:["「彌生橋」到島上約 5 分鐘，島一圈約 20–30 分鐘，推車可通行（沙地路段需抬一下）。","青島神社求「姻緣」聞名，很適合 10 週年夫妻來還願；可在「天之平瓮」投瓦片許願。","退潮時鬼之洗衣板露出最多，出發前查潮汐表；岩石濕滑，孕媽咪不要走下礁岩。","附近停車場多為付費。"]},
-  {t:"12:00-13:15", meal:true, title:"午餐：青島南蠻雞", plan:"享用宮崎名物「南蠻雞」（全熟炸雞）。", tip:"南蠻雞的塔塔醬含蛋（已熟），孕媽咪可放心；大寶可以分食。",
+{ title:"Seagaia 早上放電・青島・入住京瓷飯店", area:"宮崎 → 青島 → 霧島市隼人", loc:"nichinan", items:[
+  {t:"08:00-09:00", meal:true, title:"早餐：パインテラス", plan:"Seagaia 最後一頓早餐。", tip:"今天 10/21 是週三：鳳凰自然動物園、Sun Messe 日南都公休；松泉宮「月讀」10:00–12:00 清潔休息。"},
+  {t:"09:00-10:30", open:["seagaiaInfo","🏨 Seagaia 設施＆價目"], title:"退房前放電：KIDS OASIS／室內泳池", plan:"9:00 一開門就去 3F「KIDS OASIS」（攀爬架、彈跳床、13 m 泰山繩、積木、繪本區）。", alt:"想玩水：3F 室內泳池（住客免費，12 歲以下 9:00–18:00、需大人陪同）；天氣好也可租腳踏車騎到海邊（8:00–17:00）。", tip:"KIDS OASIS 2 歲以上 ¥550／人（2 小時）；退房當天住客也能用。",
+   notes:["10:30 回房收拾、10:45 退房（退房時間以櫃台為準）。","趣味腳踏車園區、ASOBI PARK 10:00 才開，時間太趕不建議。","玩水的話留 15 分鐘沖澡換衣，濕衣服用塑膠袋裝好。"]},
+  {t:"11:15-12:30", drive:"25 分鐘", title:"青島神社 ＆ 鬼之洗衣板", plan:"走過平坦紅磚橋連接沙灘小島，步道完全平坦。", tip:"大寶觀察奇特的波浪狀岩石，夫妻手牽手散步。",
+   notes:["「彌生橋」到島上約 5 分鐘，島一圈約 20–30 分鐘，推車可通行（沙地路段需抬一下）。","青島神社求「姻緣」聞名，很適合 10 週年夫妻來還願；可在「天之平瓮」投瓦片許願。","退潮時鬼之洗衣板露出最多；岩石濕滑，孕媽咪不要走下礁岩。","附近停車場多為付費。"]},
+  {t:"12:30-13:30", meal:true, title:"午餐：青島南蠻雞", plan:"享用宮崎名物「南蠻雞」（全熟炸雞）。", tip:"南蠻雞的塔塔醬含蛋（已熟），孕媽咪可放心；大寶可以分食。",
    food:[
     {n:"AOSHIMAYA（青島參道）", d:"南蠻雞、海鮮丼、宮崎在地料理；餐廳約 10:00–15:00。", tag:"推薦"},
     {n:"青島 Beach Village", d:"海邊的貨櫃屋美食區，飲料、刨冰、輕食。"},
     {n:"青島ういろう（外郎糕）", d:"青島名物，Q 彈米糕，大寶好入口（小塊）。"},
    ]},
-  {t:"13:15-13:45", drive:"10 分鐘", title:"（選配）堀切峠・道之驛 Phoenix", plan:"從高處俯瞰整片「鬼之洗衣板」與太平洋。", tip:"芒果霜淇淋是名物；拍完照就上高速往霧島。",
-   food:[{n:"道之驛 フェニックス", d:"堀切峠上的休息站，芒果霜淇淋、海景小吃。"}]},
-  {t:"14:00-15:45", drive:"約 1小時40分", title:"移動：宮崎 → 霧島（鹿兒島機場附近）", plan:"【大寶車上午睡】宮崎IC → 宮崎道 → 九州道 → 溝邊鹿兒島機場IC。", tip:"孕媽咪每 1 小時下車活動，可在「霧島 SA」休息。",
-   notes:["住在機場附近，明天到機場只要 3–30 分鐘，不用一早趕 1 小時 40 分的高速公路。"]},
-  {t:"16:00~", open:["stays","🛏 霧島住宿候選 10 間"], title:"霧島住宿 Check-in", plan:"入住霧島／機場周邊住宿（候選清單見上方選單「霧島住宿」）。", tip:"訂好住宿後在清單裡按「設為我的住宿」，Day 7–8 的導航與地圖會自動更新。",
-   notes:["溫泉旅館多半附晚餐，訂房時備註孕婦（生食改熟食）與 3 歲兒童餐。","今晚是最後一晚：把要託運的行李和隨身行李分好，加油站位置先查好。"]},
-  {t:"18:00~", meal:true, title:"晚餐：住宿內用餐", plan:"旅館會席或飯店餐廳。", tip:"最後一晚早點休息，明天輕鬆去機場。"},
+  {t:"13:30-15:20", drive:"約 1小時40分", title:"移動：青島 → 霧島市（國分・隼人）", plan:"【大寶車上午睡】宮崎IC → 宮崎道 → 九州道 → 國分IC。", tip:"孕媽咪每 1 小時下車活動，可在「霧島 SA」休息。",
+   notes:["堀切峠／道之驛 Phoenix 在反方向，今天時間有限就跳過。"]},
+  {t:"15:30-16:45", drive:"國分IC 約 10 分", title:"上野原繩文之森", plan:"日本最古老、最大規模的繩文早期聚落遺跡；有復原的豎穴住居與展示館。", tip:"9:00–17:00（週一休，10/21 週三有開）；園區平坦，推車可以走。",
+   notes:["原本排在 Day 8 早上，但 12:30 的國際線要 10:30 前到機場，早上太趕，改成今天順路先去。","若 15:30 前到不了（塞車、大寶沒睡醒），就跳過，直接去飯店。","展示館有冷氣與廁所；戶外遺跡區在台地上、風大，帶外套。"]},
+  {t:"17:00~", drive:"約 20 分鐘", open:["stays","🛏 京瓷飯店＆其他候選"], title:"京瓷飯店（ホテル京セラ）Check-in", plan:"入住ホテル京セラ（霧島市隼人，1 晚）。", tip:"Check-in 15:00 起、退房 11:00；免費停車約 300 台；到機場約 18 分鐘。",
+   notes:["大浴場「オクシア」住客免費，但沒有露天風呂、要走樓梯下去；孕媽咪泡湯短時間、扶好扶手。","室內泳池另外收費（大人 ¥1,000）。","訂的是不含餐方案（¥27,060）的話，早餐可在館內自助餐另付，或改訂含早餐方案（¥34,320）。","今晚是最後一晚：把要託運的行李和隨身行李分好，免稅品別拆。"]},
+  {t:"18:00~", meal:true, title:"晚餐：館內或國分／隼人市區", plan:"館內有和食、洋食、自助餐 3 間；想出去也可以開到國分市區（約 10 分鐘）。", tip:"最後一晚早點休息，明天輕鬆去機場。",
+   food:[
+    {n:"京瓷飯店 館內自助餐", d:"不用移動、選擇多，大寶最好吃。", tag:"親子首選"},
+    {n:"京瓷飯店 館內和食／洋食", d:"想吃得安靜一點、慶祝最後一晚。"},
+   ]},
 ]},
-{ title:"霧島 → 鹿兒島機場・返台", area:"霧島 → 鹿兒島機場", loc:"kagoshima", items:[
-  {t:"08:00-09:30", meal:true, title:"旅館早餐 ＆ 辦理退房", plan:"享用早餐，辦理退房。", tip:"收拾隨身行李，準備回台。",
-   notes:["住在機場附近後時間寬裕很多；仍建議 10:30 前抵達航廈（國際線起飛前 2 小時）。"]},
-  {t:"09:30-10:15", drive:"依住宿 3–30 分鐘", title:"加滿油、辦理還車手續", plan:"機場附近加油站加滿 → 還車 → 搭租車公司接駁車到航廈。", tip:"還車手續通常 5–10 分鐘。",
-   notes:["日本規定還車要加滿油並出示收據，記得保留加油收據。","10/22 預報有鋒面帶來降雨，開車放慢、提早出發。"]},
+{ title:"鹿兒島神宮 → 鹿兒島機場・返台", area:"霧島市隼人 → 鹿兒島機場", loc:"kagoshima", items:[
+  {t:"07:30-08:40", meal:true, title:"早餐 ＆ 辦理退房", plan:"享用早餐，8:40 前退房出發。", tip:"收拾隨身行李，準備回台。"},
+  {t:"08:45-09:30", drive:"約 5 分鐘", title:"鹿兒島神宮", plan:"大隅國一之宮，朱紅色社殿，御祭神是山幸彥與豐玉姬（安產、航海守護）。", tip:"很適合最後祈求旅途平安與二寶順產。",
+   notes:["停車場在神宮旁，從停車場到社殿有一段石階，推車由爸爸抱上去或走旁邊坡道。","控制在 45 分鐘內，9:30 一定要出發去加油還車。"]},
+  {t:"09:30-10:15", drive:"約 18–25 分鐘", title:"加滿油、辦理還車手續", plan:"機場附近加油站加滿 → 還車 → 搭租車公司接駁車到航廈。", tip:"還車手續通常 5–10 分鐘，接駁車再約 5 分鐘。",
+   notes:["日本規定還車要加滿油並出示收據，記得保留加油收據。","在鹿兒島機場借、鹿兒島機場還，不會有異地還車費。","10/22 預報有鋒面帶來降雨，開車放慢、提早出發。"]},
   {t:"10:30-12:30", title:"機場辦理登機 ＆ 安全返航", plan:"10:30 抵達航廈，辦理行李託運與通關返台。", tip:"12:30 起飛，帶著滿滿的 10 週年溫暖回憶平安回家！",
    notes:["國際線櫃台多在起飛前 60 分鐘關櫃，請在 11:30 前完成報到。","鹿兒島機場國際線航廈小、餐飲少；想吃東西可先在國內線航廈（走路即到）買便當或伴手禮。","國內線航廈外有免費「天然溫泉足湯」，等候時可以泡一下。","孕婦搭機：多數航空公司 32–36 週後需診斷書，出發前確認航空公司規定。"],
    food:[
@@ -584,6 +590,8 @@ const P = {
   bokujo:["高千穗牧場","高千穂牧場 都城",31.8290,130.9620],
   sheraton:["Seagaia Ocean Tower","フェニックス・シーガイア・オーシャン・タワー",31.9603,131.4690,1],
   horikiri:["道之驛 Phoenix（堀切峠）","道の駅フェニックス",31.7640,131.4750],
+  uenohara:["上野原繩文之森","上野原縄文の森",31.7170,130.7770],
+  kjingu:["鹿兒島神宮","鹿児島神宮",31.7560,130.7400],
   stay:null,
   sunmesse:["Sun Messe 日南","サンメッセ日南",31.7395,131.4680],
   aoshima:["青島神社","青島神社",31.8047,131.4746],
@@ -598,14 +606,14 @@ const NAV = [
   [[1,"jingu"],[2,"mingei"],[3,"kih"],[4,"ichiba"]],
   [[1,"bokujo"],[4,"sheraton"]],
   [[2,"aeon"],[4,"shosenkyu"]],
-  [[1,"aoshima"],[3,"horikiri"],[5,"stay"]],
-  [[1,"airportReturn"]],
+  [[2,"aoshima"],[5,"uenohara"],[6,"stay"]],
+  [[1,"kjingu"],[3,"airportReturn"]],
 ];
 const SLEEP = ["shiroyama","shiroyama","kih","kih","sheraton","sheraton","stay",null];
 
 /* ---------- 霧島／機場周邊住宿候選（Day 7 晚） ---------- */
 const STAYS = [
-  {id:"kyocera", n:"ホテル京セラ（Hotel Kyocera）", area:"霧島市隼人", min:"約 20 分", tier:"中價位", d:"大型度假飯店，溫泉大浴場、房型多、有餐廳，推車好走，親子最省心。", ll:[31.7440,130.7370]},
+  {id:"kyocera", n:"ホテル京セラ（Hotel Kyocera）", area:"霧島市隼人", min:"約 18 分", tier:"✅ 已選定・樂天 2 大 1 小 ¥27,060（不含餐）／¥34,320（含早餐）", d:"Check-in 15:00／退房 11:00；免費停車約 300 台；大浴場「オクシア」住客免費（無露天、要走樓梯）；室內泳池另收費（大人 ¥1,000）；館內和食、洋食、自助餐 3 間。", ll:[31.7440,130.7370]},
   {id:"irifune", n:"ホテルいり舟", area:"機場旁", min:"約 3 分", tier:"平價", d:"離機場最近的商務飯店，還車最快；設施簡單，適合只想睡一晚。", ll:[31.8060,130.7120]},
   {id:"tenkeiso", n:"妙見温泉 天けい荘", area:"妙見溫泉", min:"約 12 分", tier:"中價位", d:"溪畔溫泉旅館，有露天風呂，可詢問家族風呂與兒童餐。", ll:[31.7950,130.7430]},
   {id:"myokenkan", n:"湯治の宿 妙見館", area:"妙見溫泉", min:"約 15 分", tier:"平價", d:"樸實的湯治溫泉宿，價格親民；設施較簡單。", ll:[31.7890,130.7440]},
@@ -617,7 +625,7 @@ const STAYS = [
   {id:"castle", n:"ホテル霧島キャッスル", area:"霧島溫泉鄉", min:"約 30 分", tier:"中價位", d:"霧島溫泉市場附近，步行可逛溫泉市場。", ll:[31.8730,130.8480]},
 ];
 function loadStay(){
-  let id = null; try{ id = localStorage.getItem("kyushu-stay"); }catch(e){}
+  let id = "kyocera"; try{ id = localStorage.getItem("kyushu-stay2") || id; }catch(e){}
   const st = STAYS.find(x=>x.id===id);
   P.stay = st ? [st.n, st.n.replace(/（.*?）/g,""), st.ll[0], st.ll[1], 1] : ["霧島住宿（尚未選定）","鹿児島空港 ホテル",31.7900,130.7400,1];
   return st;
@@ -639,7 +647,7 @@ const FOODQ = {
   "渡假村內 地雞／鄉土料理":"フェニックス・シーガイア・リゾート",
   "自助餐「パインテラス」（晚餐）":"パインテラス シーガイア","自助餐「パインテラス」（午餐）":"パインテラス シーガイア",
   "渡假村內 鐵板燒（ふかみ）":"鉄板焼 ふかみ シーガイア","渡假村內 日式／壽司餐廳（日向海）":"日本料理 日向海 シーガイア",
-  "中國料理「藍海」":"中国料理 藍海 シーガイア","Ristorante ARCO（義式）":"Ristorante ARCO シーガイア","鹿兒島機場 國內線航廈 美食街／伴手禮":"鹿児島空港",
+  "中國料理「藍海」":"中国料理 藍海 シーガイア","京瓷飯店 館內自助餐":"ホテル京セラ","京瓷飯店 館內和食／洋食":"ホテル京セラ","Ristorante ARCO（義式）":"Ristorante ARCO シーガイア","鹿兒島機場 國內線航廈 美食街／伴手禮":"鹿児島空港",
 };
 /* 餐廳位置：對應到上面的導航地點，或約略座標 [緯度, 經度]（用來算「附近」與距離，僅供排序參考） */
 const FOODAT = {
@@ -655,6 +663,7 @@ const FOODAT = {
   "おぐら":[31.9105,131.4230],"AEON MALL 宮崎 美食街":"aeon","館內迴轉壽司／定食店":"aeon",
   "鹿兒島機場 國內線航廈 美食街／伴手禮":"airport",
   "自助餐「パインテラス」":"sheraton","中國料理「藍海」":"sheraton","Ristorante ARCO":"sheraton",
+  "京瓷飯店 館內自助餐":[31.7440,130.7370],"京瓷飯店 館內和食／洋食":[31.7440,130.7370],
 };
 /* 食べログ評分（2026/10 查詢；分數會變動，以連結頁面為準）。s=分數 r=口コミ數 u=口コミ頁 aw=獎項 t=食べログ店名 g=Google 搜尋字（覆蓋 FOODQ） */
 const RATE = {
@@ -855,6 +864,13 @@ const FAC = [
   ["戶外花園泳池","—","夏季限定，2026 年已於 9/27 結束"],
   ["Segway 導覽","5,000 円","主要週末舉辦、週一四休；孕婦與幼兒不適合"],
   ["飛鏢（Activity Center）","30 分 1,500 円","每組最多 4 人"],
+  ["腳踏車租借","依現場公告","8:00–17:00；騎過松林到海邊；2 歲以上"],
+  ["趣味腳踏車園區","去年夏季 ¥800／20 分","10:00–16:00，天候不佳停開；2 歲以上"],
+  ["Mölkky・Snag Golf","依現場公告","8:00–16:00；3 歲以上"],
+  ["桌遊租借（約 100 款）","依現場公告","8:00–19:00；適合晚上在房間玩"],
+  ["ASOBI PARK（室內外兒童遊樂場）","部分遊具另收費","10:00–18:30；0 歲以上"],
+  ["萬聖節花園（變裝拍照點）","—","傍晚；10/20 晚上可去"],
+  ["鳳凰自然動物園（車程約 5 分）","—","9:00–17:00；⚠️ 週三休園（10/21 不能去）"],
   ["停車場・園內接駁巴士","免費",""],
 ];
 const DINE = [
@@ -905,7 +921,7 @@ const CHECK = [
   ["健康","常備藥、退燒藥、OK繃、防蚊、口罩（火山灰）","高","兒童藥以醫師建議為準"],
   ["交通","ETC卡／導航APP／離線地圖","中","Mapcode 或電話號碼導航最準"],
   ["訂位","第一晚城山飯店餐廳、10 週年會席、霧島家族風呂、Seagaia 晚餐","高","會席備註孕婦與紀念日"],
-  ["訂房","Day 7（10/21）霧島／機場周邊住宿","高","候選清單見選單「霧島住宿」"],
+  ["訂房","Day 7（10/21）ホテル京セラ（已選定，確認已完成預訂）","高","Check-in 15:00／退房 11:00；早餐是否含在方案內再確認"],
   ["確認","Seagaia 退房時間、10/21 松泉宮週三 10–12 點休息","中","Check-in 時問櫃台"],
   ["採買","伴手禮清單","低","Day 6 AEON（選配）或機場"],
 ];
@@ -928,7 +944,7 @@ const WMO = c => c===0?["☀️","晴"]:c<=2?["🌤️","晴時多雲"]:c===3?["
 function renderNav(){
   $("#daynav").innerHTML = `<span role="tablist" style="display:contents">` +
     DAYS.map((d,i)=>`<button type="button" role="tab" id="tab${i}" aria-controls="day${i+1}" aria-selected="false" data-day="${i}">Day ${i+1}<span class="today-dot" hidden>今天</span></button>`).join("") +
-    `</span><span class="sep" aria-hidden="true"></span><a href="#" data-open="overview">地圖</a><a href="#" data-open="seagaiaInfo">Seagaia 價目</a><a href="#" data-open="stays">霧島住宿</a><a href="#" data-open="carnav">車機碼</a><a href="#" data-food>餐廳</a><a href="#" data-tops>陀螺</a><a href="#" data-open="rain">雨天備案</a><a href="#" data-open="care">提醒</a><a href="#" data-open="checklist">檢查表</a>`;
+    `</span><span class="sep" aria-hidden="true"></span><a href="#" data-open="overview">地圖</a><a href="#" data-open="seagaiaInfo">Seagaia 價目</a><a href="#" data-open="stays">京瓷飯店</a><a href="#" data-open="carnav">車機碼</a><a href="#" data-food>餐廳</a><a href="#" data-tops>陀螺</a><a href="#" data-open="rain">雨天備案</a><a href="#" data-open="care">提醒</a><a href="#" data-open="checklist">檢查表</a>`;
 }
 
 function renderDays(){
@@ -1148,7 +1164,7 @@ function renderStays(){
   </div>`).join("");
   $("#stayGrid").addEventListener("click", e=>{
     const id = e.target.dataset && e.target.dataset.stay; if(!id) return;
-    try{ localStorage.setItem("kyushu-stay", id); }catch(err){}
+    try{ localStorage.setItem("kyushu-stay2", id); }catch(err){}
     location.reload();
   });
 }
@@ -1257,7 +1273,7 @@ function checkAlerts(start){
   const out = [];
   if(start===TRIP_START){
     const st = loadStay();
-    out.push(st ? `🛏 Day 7 住宿：<b>${esc(st.n)}</b>（到機場${esc(st.min)}）` : `⚠️ <b>Day 7（10/21）的霧島住宿尚未選定</b>：<a href="#" data-open="stays">看 10 間候選</a>，訂好後按「設為我的住宿」。`);
+    out.push(st ? `🛏 Day 7 住宿：<b>${esc(st.n)}</b>（到機場${esc(st.min)}）・Day 7 下午順路去上野原繩文之森，Day 8 早上參拜鹿兒島神宮後還車` : `⚠️ <b>Day 7（10/21）的霧島住宿尚未選定</b>：<a href="#" data-open="stays">看 10 間候選</a>，訂好後按「設為我的住宿」。`);
     out.push(`🔄 <b>行程已調整</b>：Seagaia 只住 2 晚 → Day 6 改為渡假村設施＆美食日（<a href="#" data-open="seagaiaInfo">價目表</a>），原日南／青島移到 Day 7（10/21 週三，Sun Messe 公休已拿掉），Day 7 晚改住霧島，Day 8 到機場只要幾分鐘。`);
   }
   if(start===TRIP_START) out.push(`🌡️ <b>天氣重點</b>：前半段偏熱（平地 26–30°C，像初夏），孕媽咪注意防曬補水、避免中午久曬；霧島溫泉鄉早晚約 13°C，要帶外套。10/18（Day 4）各家預報有雨的可能，10/22（Day 8）鋒面帶來降雨與降溫，回程開車請預留時間。`);
