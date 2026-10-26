@@ -48,7 +48,7 @@ def scene(ax, visor, with_car):
     ax.set_axis_off()
 
 
-def main(stl, out):
+def main(stl, out, heading="倒車鏡頭遮雨眉 — 後緣弦 38 mm / 前緣弦 26 mm / 外伸 14 mm"):
     visor = load(stl)
     views = [
         (15, -70, True, "安裝示意（鏡頭上方）"),
@@ -62,11 +62,12 @@ def main(stl, out):
         scene(ax, visor, car)
         ax.view_init(el, az)
         ax.set_title(title, fontsize=13)
-    fig.suptitle("倒車鏡頭遮雨眉 — 後緣弦 38 mm / 前緣弦 26 mm / 外伸 14 mm", fontsize=15)
+    fig.suptitle(heading, fontsize=15)
     plt.tight_layout()
     plt.savefig(out, dpi=110)
 
 
 if __name__ == "__main__":
     main(sys.argv[1] if len(sys.argv) > 1 else "camera_visor.stl",
-         sys.argv[2] if len(sys.argv) > 2 else "camera_visor_preview.png")
+         sys.argv[2] if len(sys.argv) > 2 else "camera_visor_preview.png",
+         *sys.argv[3:4])
